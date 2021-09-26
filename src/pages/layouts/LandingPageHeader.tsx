@@ -22,26 +22,26 @@ const solutions = [
   {
     name: 'Application Guide',
     description: 'Get a better understanding of where your traffic is coming from.',
-    href: '#',
+    href: '/application-guide',
     icon: NewspaperIcon,
   },
   {
     name: 'Licenses & Permits',
     description: 'Speak directly to your customers in a more meaningful way.',
-    href: '#',
+    href: '/licenses-and-permits',
     icon: GlobeIcon,
   },
   { name: 'International Regulation', description: "Your customers' data will be safe and secure.", href: '#', icon: ShieldCheckIcon },
   {
     name: 'Wildlife Act',
     description: "Connect with third-party tools that you're already using.",
-    href: '#',
+    href: '/wildlife',
     icon: TableIcon,
   },
   {
     name: 'FAQ',
     description: 'Build strategic funnels that will drive your customers to convert',
-    href: '#',
+    href: '/faq',
     icon: QuestionMarkCircleIcon,
   },
 ]
@@ -49,19 +49,19 @@ const resources = [
   {
     name: 'About us',
     description: 'Get all of your questions answered in our forums or contact support.',
-    href: '#',
+    href: '#contactUs',
     icon: SupportIcon,
   },
   {
     name: 'Contact us',
     description: 'Learn how to maximize our platform to get the most out of it.',
-    href: '#',
+    href: '#contactUs',
     icon: BookmarkAltIcon,
   },
   {
     name: 'DNPW Website',
     description: 'See what meet-ups and other events we might be planning near you.',
-    href: '#',
+    href: 'https://wildlifemw.net',
     icon: CalendarIcon,
   },
   { name: 'Usage Policy', description: 'Understand how we take your privacy seriously.', href: '#', icon: ShieldCheckIcon },
@@ -91,24 +91,23 @@ export default function LandingPageHeader() {
           </div>
           <Popover.Group as="nav" className="hidden md:flex space-x-10">
             
-
-            <Link to="#" className="text-base font-medium text-white hover:text-gray-200">
+            <Link to="/application-guide" className="text-base font-medium text-white hover:text-gray-200">
                 Application Guide
             </Link>
 
-            <Link to="#" className="text-base font-medium text-white hover:text-gray-200">
+            <Link to="/licenses-and-permits" className="text-base font-medium text-white hover:text-gray-200">
                 Licenses & Permits
             </Link>
 
-            <Link to="#" className="text-base font-medium text-white hover:text-gray-200">
+            <Link to="/international-regulations" className="text-base font-medium text-white hover:text-gray-200">
                 International Regulation
             </Link>
 
-            <Link to="#" className="text-base font-medium text-white hover:text-gray-200">
+            <Link to="/wildlife" className="text-base font-medium text-white hover:text-gray-200">
                 Wildlife
             </Link>
 
-            <Link to="#" className="text-base font-medium text-white hover:text-gray-200">
+            <Link to="/faq" className="text-base font-medium text-white hover:text-gray-200">
                 FAQ
             </Link>
 
@@ -141,6 +140,7 @@ export default function LandingPageHeader() {
             <div className="pt-5 pb-6 px-5">
               <div className="flex items-center justify-between">
                 <div>
+                  <span className="sr-only">DNPW E-Permitting</span>
                   <img
                     className="h-8 w-auto"
                     src={Icon}

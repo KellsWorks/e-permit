@@ -1,87 +1,72 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from 'react'
 
 import { Fragment } from 'react'
 import { Popover, Transition } from '@headlessui/react'
 import {
   BookmarkAltIcon,
   CalendarIcon,
-  ChartBarIcon,
-  CursorClickIcon,
+  GlobeIcon,
   MenuIcon,
-  PhoneIcon,
-  PlayIcon,
-  RefreshIcon,
+  NewspaperIcon,
+  QuestionMarkCircleIcon,
   ShieldCheckIcon,
   SupportIcon,
-  ViewGridIcon,
+  TableIcon,
   XIcon,
 } from '@heroicons/react/outline'
-import { ChevronDownIcon } from '@heroicons/react/solid'
 
 import Icon from '../../icon.png'
+import { Link } from 'react-router-dom'
 
 const solutions = [
   {
-    name: 'Analytics',
+    name: 'Application Guide',
     description: 'Get a better understanding of where your traffic is coming from.',
     href: '#',
-    icon: ChartBarIcon,
+    icon: NewspaperIcon,
   },
   {
-    name: 'Engagement',
+    name: 'Licenses & Permits',
     description: 'Speak directly to your customers in a more meaningful way.',
     href: '#',
-    icon: CursorClickIcon,
+    icon: GlobeIcon,
   },
-  { name: 'Security', description: "Your customers' data will be safe and secure.", href: '#', icon: ShieldCheckIcon },
+  { name: 'International Regulation', description: "Your customers' data will be safe and secure.", href: '#', icon: ShieldCheckIcon },
   {
-    name: 'Integrations',
+    name: 'Wildlife Act',
     description: "Connect with third-party tools that you're already using.",
     href: '#',
-    icon: ViewGridIcon,
+    icon: TableIcon,
   },
   {
-    name: 'Automations',
+    name: 'FAQ',
     description: 'Build strategic funnels that will drive your customers to convert',
     href: '#',
-    icon: RefreshIcon,
+    icon: QuestionMarkCircleIcon,
   },
-]
-const callsToAction = [
-  { name: 'Watch Demo', href: '#', icon: PlayIcon },
-  { name: 'Contact Sales', href: '#', icon: PhoneIcon },
 ]
 const resources = [
   {
-    name: 'Help Center',
+    name: 'About us',
     description: 'Get all of your questions answered in our forums or contact support.',
     href: '#',
     icon: SupportIcon,
   },
   {
-    name: 'Guides',
+    name: 'Contact us',
     description: 'Learn how to maximize our platform to get the most out of it.',
     href: '#',
     icon: BookmarkAltIcon,
   },
   {
-    name: 'Events',
+    name: 'DNPW Website',
     description: 'See what meet-ups and other events we might be planning near you.',
     href: '#',
     icon: CalendarIcon,
   },
-  { name: 'Security', description: 'Understand how we take your privacy seriously.', href: '#', icon: ShieldCheckIcon },
-]
-const recentPosts = [
-  { id: 1, name: 'Boost your conversion rate', href: '#' },
-  { id: 2, name: 'How to use search engine optimization to drive traffic to your site', href: '#' },
-  { id: 3, name: 'Improve your customer experience', href: '#' },
+  { name: 'Usage Policy', description: 'Understand how we take your privacy seriously.', href: '#', icon: ShieldCheckIcon },
 ]
 
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ')
-}
 
 export default function LandingPageHeader() {
     return (
@@ -89,17 +74,17 @@ export default function LandingPageHeader() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex justify-between items-center border-b-2 border-green-600 py-6 md:justify-start md:space-x-10">
           <div className="flex justify-start lg:w-0 lg:flex-1">
-            <a href="#">
-              <span className="sr-only">Workflow</span>
+            <Link to="#">
+              <span className="sr-only">DNPW E-Permitting</span>
               <img
                 className="h-8 w-auto sm:h-10"
                 src={Icon}
                 alt=""
               />
-            </a>
+            </Link>
           </div>
           <div className="-mr-2 -my-2 md:hidden">
-            <Popover.Button className="bg-white rounded-sm p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-green-500">
+            <Popover.Button className="bg-green-700 rounded-sm p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-green-500">
               <span className="sr-only">Open menu</span>
               <MenuIcon className="h-6 w-6" aria-hidden="true" />
             </Popover.Button>
@@ -107,37 +92,37 @@ export default function LandingPageHeader() {
           <Popover.Group as="nav" className="hidden md:flex space-x-10">
             
 
-            <a href="#" className="text-base font-medium text-white hover:text-gray-200">
+            <Link to="#" className="text-base font-medium text-white hover:text-gray-200">
                 Application Guide
-            </a>
+            </Link>
 
-            <a href="#" className="text-base font-medium text-white hover:text-gray-200">
+            <Link to="#" className="text-base font-medium text-white hover:text-gray-200">
                 Licenses & Permits
-            </a>
+            </Link>
 
-            <a href="#" className="text-base font-medium text-white hover:text-gray-200">
+            <Link to="#" className="text-base font-medium text-white hover:text-gray-200">
                 International Regulation
-            </a>
+            </Link>
 
-            <a href="#" className="text-base font-medium text-white hover:text-gray-200">
+            <Link to="#" className="text-base font-medium text-white hover:text-gray-200">
                 Wildlife
-            </a>
+            </Link>
 
-            <a href="#" className="text-base font-medium text-white hover:text-gray-200">
+            <Link to="#" className="text-base font-medium text-white hover:text-gray-200">
                 FAQ
-            </a>
+            </Link>
 
           </Popover.Group>
           <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
-            <a href="#" className="whitespace-nowrap text-base font-medium text-white hover:text-gray-200">
+            <Link to="#" className="whitespace-nowrap text-base font-medium text-white hover:text-gray-200">
               Sign in
-            </a>
-            <a
-              href="#"
+            </Link>
+            <Link
+              to="#"
               className="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-sm shadow-sm text-base font-medium text-white bg-green-600 hover:bg-green-700"
             >
               Sign up
-            </a>
+            </Link>
           </div>
         </div>
       </div>
@@ -152,14 +137,14 @@ export default function LandingPageHeader() {
         leaveTo="opacity-0 scale-95"
       >
         <Popover.Panel focus className="absolute top-0 inset-x-0 p-2 transition transform origin-top-right md:hidden">
-          <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white divide-y-2 divide-gray-50">
+          <div className="rounded-sm border shadow-lg ring-1 ring-black ring-opacity-5 bg-white divide-y-2 divide-gray-50">
             <div className="pt-5 pb-6 px-5">
               <div className="flex items-center justify-between">
                 <div>
                   <img
                     className="h-8 w-auto"
                     src={Icon}
-                    alt="Workflow"
+                    alt="favicon"
                   />
                 </div>
                 <div className="-mr-2">
@@ -172,49 +157,42 @@ export default function LandingPageHeader() {
               <div className="mt-6">
                 <nav className="grid gap-y-8">
                   {solutions.map((item) => (
-                    <a
+                    <Link
                       key={item.name}
-                      href={item.href}
+                      to={item.href}
                       className="-m-3 p-3 flex items-center rounded-sm hover:bg-gray-50"
                     >
                       <item.icon className="flex-shrink-0 h-6 w-6 text-green-600" aria-hidden="true" />
                       <span className="ml-3 text-base font-medium text-gray-900">{item.name}</span>
-                    </a>
+                    </Link>
                   ))}
                 </nav>
               </div>
             </div>
             <div className="py-6 px-5 space-y-6">
               <div className="grid grid-cols-2 gap-y-4 gap-x-8">
-                <a href="#" className="text-base font-medium text-white hover:text-gray-200">
-                  Pricing
-                </a>
-
-                <a href="#" className="text-base font-medium text-white hover:text-gray-200">
-                  Docs
-                </a>
                 {resources.map((item) => (
-                  <a
+                  <Link
                     key={item.name}
-                    href={item.href}
+                    to={item.href}
                     className="text-base font-medium text-gray-900 hover:text-gray-700"
                   >
                     {item.name}
-                  </a>
+                  </Link>
                 ))}
               </div>
               <div>
-                <a
-                  href="#"
+                <Link
+                  to="/sign-up"
                   className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-sm shadow-sm text-base font-medium text-white bg-green-600 hover:bg-green-700"
                 >
                   Sign up
-                </a>
+                </Link>
                 <p className="mt-6 text-center text-base font-medium text-gray-500">
-                  Existing customer?{' '}
-                  <a href="#" className="text-green-600 hover:text-green-500">
+                  Existing member?{' '}
+                  <Link to="/sign-in" className="text-green-600 hover:text-green-500">
                     Sign in
-                  </a>
+                  </Link>
                 </p>
               </div>
             </div>

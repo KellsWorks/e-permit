@@ -1,13 +1,24 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Icon from '../../icon.png'
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
+
+import 'react-phone-number-input/style.css'
+import PhoneInput from 'react-phone-number-input'
 
 export default function Signup() {
+
+    const [startDate, setStartDate] = useState(new Date());
+
+    const [value, setValue] = useState("")
+    
     return (
-        <div className="min-h-screen px-5 flex items-center justify-center bg-gray-50 dark:bg-black">
+        <div className="min-h-screen px-5 flex items-center justify-center bg-white dark:bg-black">
         <div className="max-w-md w-full mb-10">
           <div>
-              <img src={Icon} alt="favicon" className="w-24 h-24 mx-auto"/>
+              <img src={Icon} alt="favicon" className="w-24 h-24 mx-auto sm:mt-5"/>
             <h2 className="text-center text-3xl font-extrabold text-gray-900 dark:text-gray-300 mt-4">Create a new account</h2>
 
           </div>
@@ -41,53 +52,45 @@ export default function Signup() {
 
               <div>
                 <label className="block text-gray-700 dark:text-gray-300">Date of birth<span className="text-red-500">*</span></label>
-                <input
-                  id="email-address"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
-                  placeholder="Your email address"
-                />
+                <DatePicker 
+                selected={startDate} 
+                onChange={(date: any) => setStartDate(date)}
+                className="w-full py-3 px-2 focus:outline-none border rounded-sm focus:ring-green-500 focus:border-green-500 focus:z-10"
+                 />
               </div>
 
               <div>
                 <label className="block text-gray-700 dark:text-gray-300">Phone number<span className="text-red-500">*</span></label>
-                <input
-                  id="email-address"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
-                  placeholder="Your email address"
-                />
+                <PhoneInput
+                    placeholder="Enter your phone number"
+                    value={value}
+                    className="border py-3 px-2 focus:outline-none"
+                    onChange={setValue}/>
               </div>
 
               <div>
                 <label className="block text-gray-700 dark:text-gray-300">Physical address<span className="text-red-500">*</span></label>
                 <input
-                  id="email-address"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
+                  id="physical-address"
+                  name="physical"
+                  type="text"
+                  autoComplete="address"
                   required
                   className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
-                  placeholder="Your email address"
+                  placeholder="Your physical address"
                 />
               </div>
 
               <div>
                 <label className="block text-gray-700 dark:text-gray-300">Nationality<span className="text-red-500">*</span></label>
                 <input
-                  id="email-address"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
+                  id="nationality"
+                  name="nationality"
+                  type="text"
+                  autoComplete="country"
                   required
                   className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
-                  placeholder="Your email address"
+                  placeholder="Country of origin"
                 />
               </div>
 

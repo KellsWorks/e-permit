@@ -5,14 +5,14 @@ import Icon from '../../icon.png'
 
 export default function SignIn() {
     return (
-        <div className="min-h-screen px-5 flex items-center justify-center bg-gray-50 dark:bg-black">
+        <div className="min-h-screen px-5 flex items-center justify-center bg-white dark:bg-black">
         <div className="max-w-md w-full mb-10">
           <div className="justify-center items-center">
               <img src={Icon} alt="favicon" className="w-24 h-24 mx-auto"/>
             <h2 className="text-center text-3xl font-extrabold dark:text-gray-300 text-gray-900">Welcome back</h2>
 
             <p className="text-center mt-2 font-medium dark:text-gray-300">
-              Or, sign in with your email
+              Sign in to start your session
             </p>
 
           </div>

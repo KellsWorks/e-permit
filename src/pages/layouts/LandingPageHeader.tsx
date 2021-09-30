@@ -74,17 +74,18 @@ export default function LandingPageHeader() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex justify-between items-center py-6 md:justify-start md:space-x-10">
           <div className="flex justify-start lg:w-0 lg:flex-1">
-            <Link to="/">
-              <span className="sr-only">DNPW E-Permitting</span>
+            <Link to="/" className="flex items-center">
               <img
                 className="h-8 w-auto sm:h-10"
                 src={Icon}
                 alt="favicon"
               />
+              <h3 className="sm:hidden font-semibold ml-3 text-white hover:text-gray-300 transition duration-150">DNPW E-Permitting</h3>
+              
             </Link>
           </div>
           <div className="-mr-2 -my-2 md:hidden">
-            <Popover.Button className="bg-green-700 rounded-sm p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-green-500">
+            <Popover.Button className="bg-green-600 rounded-sm p-2 inline-flex items-center justify-center text-white hover:text-gray-300 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-green-500">
               <span className="sr-only">Open menu</span>
               <MenuIcon className="h-6 w-6" aria-hidden="true" />
             </Popover.Button>
@@ -139,14 +140,15 @@ export default function LandingPageHeader() {
           <div className="rounded-sm border shadow-lg ring-1 ring-black ring-opacity-5 bg-white divide-y-2 divide-gray-50">
             <div className="pt-5 pb-6 px-5">
               <div className="flex items-center justify-between">
-                <div>
-                  <span className="sr-only">DNPW E-Permitting</span>
+                <Link to="/" className="flex items-center">
                   <img
-                    className="h-8 w-auto"
+                    className="h-8 w-auto sm:h-10"
                     src={Icon}
                     alt="favicon"
                   />
-                </div>
+                  <h3 className="sm:hidden font-semibold ml-3 text-gray-600 hover:text-gray-300 transition duration-150">DNPW E-Permitting</h3>
+                  
+                </Link>
                 <div className="-mr-2">
                   <Popover.Button className="bg-white rounded-sm p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-green-500">
                     <span className="sr-only">Close menu</span>

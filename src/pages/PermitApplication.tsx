@@ -198,7 +198,12 @@ export default function PermitApplication() {
                         </button>
                     }
                     {
-                        openTab === 3 ? <SubmitButton text="Submit permit request"/> : <button onClick={(event) => setOpenTab(openTab+1)} className="border text-green-500 border-green-500  flex px-4 py-2 rounded-sm mt-2 justify-right">Next
+                        openTab === 3 ? <SubmitButton text="Submit permit request"/> : <button onClick={
+                            (event) => {
+                                // openTab === 1 ? setStepOneComplete(true) : <></>
+                                setOpenTab(openTab+1)
+                            }
+                        } className="border text-green-500 border-green-500  flex px-4 py-2 rounded-sm mt-2 justify-right">Next
                         </button>
                     }
                 </div>

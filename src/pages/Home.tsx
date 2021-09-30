@@ -7,23 +7,20 @@ const Home = () => {
         <div>
             {/* Hero section */}
             <section className="text-gray-600 body-font">
-                <div className="container mx-auto flex px-10 py-5 md:flex-row flex-col items-center">
-                    <div className="lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center">
-                    <h1 className="title-font sm:text-4xl text-3xl mb-4 font-semibold text-gray-900">Department of National Parks and Wildlife - Malawi
+                <div className="container bg-cover w-full h-128 flex px-10 py-5 md:flex-row flex-col items-center" style={{ backgroundImage: `url(${Wildlife})` }}>
+                    <div className="lg:flex-grow w-full flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center">
+                    <h1 className="title-font sm:text-4xl text-3xl mb-4 font-semibold text-white">Department of National Parks and Wildlife - Malawi
                     </h1>
-                    <p className="mb-8 leading-relaxed">Welcome to the DNPW Electronic Permit Application Portal (ePermit).</p>
+                    <p className="mb-8 leading-relaxed text-gray-200">Welcome to the DNPW Electronic Permit Application Portal (ePermit).</p>
                     <div className="flex justify-center">
                         <button className="inline-flex text-white transition duration-150 bg-green-500 border-0 py-2 px-4 focus:outline-none hover:bg-green-600 rounded-sm text-md">Get started</button>
                     </div>
-                    </div>
-                    <div className="lg:max-w-lg lg:w-full md:w-1/2 w-5/6">
-                        <img className="object-cover object-center rounded" alt="hero" src={Wildlife}/>
                     </div>
                 </div>
                 </section>
 
                 {/* Get started */}
-                <div className="container px-5 py-24 mx-auto flex flex-wrap border-t-2 border-gray-100 mt-10" id="getStarted">
+                <div className="container px-5 sm:py-24 py-5 mx-auto flex flex-wrap border-gray-100 mt-2" id="getStarted">
                     <section className="text-gray-600 body-font">
                         <div className="container sm:px-24 px-5 sm:py-5 mx-auto">
                             <div className="flex flex-wrap sm:-m-4 -mx-4 -mb-10 -mt-4 md:space-y-0 space-y-6">

@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function LicencesPermits() {
     return (
-        <div className="py-12">
+        <div className="sm:py-12 py-5 px-5">
 
         <div>
             <div className="container mx-auto pt-10">
@@ -13,7 +13,7 @@ export default function LicencesPermits() {
 
                 </div>
 
-                <div className="w-10/12 mx-auto">
+                <div className="mx-auto">
 
                   <p className="px-2 py-2 align-left">
                       The Department of National Parks and Wildlife (DNPW) is the Malawi Government agency mandated by law to conserve, manage and regulate the sustainable use of wildlife resources in and outside protected areas. In order

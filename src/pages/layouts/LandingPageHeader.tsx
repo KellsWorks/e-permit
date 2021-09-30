@@ -29,9 +29,9 @@ const solutions = [
     name: 'Licenses & Permits',
     description: 'Speak directly to your customers in a more meaningful way.',
     href: '/licenses-and-permits',
-    icon: GlobeIcon,
+    icon: ShieldCheckIcon,
   },
-  { name: 'International Regulation', description: "Your customers' data will be safe and secure.", href: '#', icon: ShieldCheckIcon },
+  { name: 'International Regulation', description: "Your customers' data will be safe and secure.", href: '/international-regulations', icon: GlobeIcon },
   {
     name: 'Wildlife Act',
     description: "Connect with third-party tools that you're already using.",
@@ -105,7 +105,7 @@ export default function LandingPageHeader() {
             </Link>
 
             <Link to="/wildlife" className="text-base font-medium text-white hover:text-gray-200">
-                Wildlife
+                Wildlife Act
             </Link>
 
             <Link to="/faq" className="text-base font-medium text-white hover:text-gray-200">

@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 export default function Cta() {
     return (
@@ -12,9 +13,9 @@ export default function Cta() {
                 </div>
                 <div className="flex md:ml-auto md:mr-0 mx-auto items-center flex-shrink-0 space-x-4">
                     {/* @auth */}
-                    <button  className="bg-transparent transition duration-150 text-white font-medium hover:text-yellow-400 py-2 px-4 border border-blue border-dashed outline-none focus:outline-none hover:border-yellow-400 rounded-sm">
+                    <Link to="/permit-application"  className="bg-transparent transition duration-150 text-white font-medium hover:text-yellow-400 py-2 px-4 border border-blue border-dashed outline-none focus:outline-none hover:border-yellow-400 rounded-sm">
                         Start your application
-                    </button>
+                    </Link>
                     {/* @else
                     <a href="/login" className="bg-transparent text-white font-semibold hover:text-yellow-400 py-2 px-4 border border-white hover:border-transparent rounded-sm">
                         Sign in

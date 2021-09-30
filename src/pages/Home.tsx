@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import Wildlife from '../assets/wildlife-malawi-bg-2.jpg'
 
 const Home = () => {

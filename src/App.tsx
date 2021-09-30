@@ -11,6 +11,7 @@ import InternationalRegulations from './pages/InternationalRegulations';
 import LicencesPermits from './pages/LicencesPermits';
 import Wildlife from './pages/Wildlife';
 import Faq from './pages/Faq';
+import PermitApplication from './pages/PermitApplication';
 
 function App() {
   return (
@@ -32,6 +33,14 @@ function App() {
         <Route path="/sign-up" exact>
           <LandingPageHeader/>
             <Signup/>
+          <LandingPageFooter/>
+        </Route>
+
+        {/* Permit application */}
+
+        <Route path="/permit-application" exact>
+          <LandingPageHeader/>
+            <PermitApplication/>
           <LandingPageFooter/>
         </Route>
 

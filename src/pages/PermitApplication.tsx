@@ -9,11 +9,9 @@ export default function PermitApplication() {
 
     const [openTab, setOpenTab] = useState(1);
 
-    const color = 'blue'
-
     const [useCredentials, setUseCredentials] = useState(true)
 
-    const [stepOneComplete, setStepOneComplete] = useState(false)
+    const [stepOneComplete] = useState(false)
 
     return (
         <div className="bg-white">

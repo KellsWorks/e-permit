@@ -7,18 +7,33 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import 'react-phone-number-input/style.css'
 import PhoneInput from 'react-phone-number-input'
+import SubmitButton from '../../components/SubmitButton';
 
 export default function Signup() {
 
     const [startDate, setStartDate] = useState(new Date());
 
     const [value, setValue] = useState("")
+
+    const [name, setName] = useState("")
+
+    const [email, setEmail] = useState("")
+
+    const [physicalAddress, setPhysicalAddress] = useState("")
+
+    const [nationality, setNationality] = useState("")
+
+    const [password, setPassword] = useState("")
+
+    const [confirmPassword, setConfirmPassword] = useState("")
+
+    const [onLoad] = useState(false)
     
     return (
         <div className="min-h-screen px-5 flex items-center justify-center bg-white dark:bg-black">
         <div className="max-w-md w-full mb-10">
           <div>
-              <img src={Icon} alt="favicon" className="w-24 h-24 mx-auto sm:mt-5"/>
+              <img src={Icon} alt="favicon" className="w-24 h-24 mx-auto mt-5"/>
             <h2 className="text-center text-3xl font-extrabold text-gray-900 dark:text-gray-300 mt-4">Create a new account</h2>
 
           </div>
@@ -33,6 +48,8 @@ export default function Signup() {
                   type="text"
                   autoComplete="name"
                   required
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                   className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
                   placeholder="Your first and last name"
                 />
@@ -45,6 +62,8 @@ export default function Signup() {
                   type="email"
                   autoComplete="email"
                   required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
                   placeholder="Your email address"
                 />
@@ -76,6 +95,8 @@ export default function Signup() {
                   type="text"
                   autoComplete="address"
                   required
+                  value={physicalAddress}
+                  onChange={(e) => setPhysicalAddress(e.target.value)}
                   className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
                   placeholder="Your physical address"
                 />
@@ -89,6 +110,8 @@ export default function Signup() {
                   type="text"
                   autoComplete="country"
                   required
+                  value={nationality}
+                  onChange={(e) => setNationality(e.target.value)}
                   className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
                   placeholder="Country of origin"
                 />
@@ -102,6 +125,8 @@ export default function Signup() {
                   type="password"
                   autoComplete="current-password"
                   required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
                   placeholder="Password"
                 />
@@ -115,6 +140,8 @@ export default function Signup() {
                   type="password"
                   autoComplete="current-password"
                   required
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                   className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
                   placeholder="Confirm password"
                 />
@@ -132,17 +159,12 @@ export default function Signup() {
             </div>
 
             <div>
-              <button
-                type="submit"
-                className="group w-full flex justify-center p-4 border border-transparent text-sm font-medium rounded-none text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-              >
-                Continue to sign up
-              </button>
+              <SubmitButton text="continue to create account" onLoad={onLoad}/> 
             </div>
 
             <div>
                 <p className="text-center justify-center text-sm  dark:text-gray-300">
-                    Already a member? <span className="text-green-500 hover:text-green-700">
+                    Already have an account? <span className="text-green-500 hover:text-green-700">
                         <Link to="/sign-in">Sign in</Link>
                     </span>
                 </p>

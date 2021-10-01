@@ -27,7 +27,7 @@ class UrlService {
 
     static mainUrl(){
 
-        return apiDomain + 'api/v1/'
+        return 'http://127.0.0.1:8000'
         
     }
 }

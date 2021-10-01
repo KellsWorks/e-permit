@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { Route, Switch} from 'react-router-dom'
+import { Redirect, Route, Switch} from 'react-router-dom'
 import Home from './pages/Home';
 import LandingPageHeader from './pages/layouts/LandingPageHeader';
 import LandingPageFooter from './pages/layouts/LandingPageFooter';
@@ -12,8 +12,18 @@ import LicencesPermits from './pages/LicencesPermits';
 import Wildlife from './pages/Wildlife';
 import Faq from './pages/Faq';
 import PermitApplication from './pages/PermitApplication';
+import CookieService from './services/CookieService';
 
+function isLoggedIn(){
+    if(CookieService.get('access_token') !== undefined){
+      return true
+    }else{
+      return false
+    }
+  }
+  
 function App() {
+  
   return (
     <Switch>
         <Route path="/" exact>
@@ -38,11 +48,16 @@ function App() {
 
         {/* Permit application */}
 
-        <Route path="/permit-application" exact>
-          <LandingPageHeader/>
-            <PermitApplication/>
-          <LandingPageFooter/>
-        </Route>
+        <Route path="/permit-application" render={() => (
+            isLoggedIn() ? (
+              <><LandingPageHeader/>
+                <PermitApplication/>
+            <LandingPageFooter/></>
+            ) : (
+              <Redirect to="/sign-in"/>
+            )
+          )}> 
+          </Route>
 
         {/* Pages */}
 

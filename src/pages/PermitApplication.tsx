@@ -196,7 +196,7 @@ export default function PermitApplication() {
                         </button>
                     }
                     {
-                        openTab === 3 ? <SubmitButton text="Submit permit request"/> : <button onClick={
+                        openTab === 3 ? <SubmitButton text="Submit permit request" onLoad={false}/> : <button onClick={
                             (event) => {
                                 // openTab === 1 ? setStepOneComplete(true) : <></>
                                 setOpenTab(openTab+1)

@@ -69,7 +69,7 @@ export default function SignIn() {
             </div>
 
             <div>
-              <SubmitButton text="Continue to sign in"/>
+              <SubmitButton text="Continue to sign in" onLoad={true}/>
             </div>
 
             <div>

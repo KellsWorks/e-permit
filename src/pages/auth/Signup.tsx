@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import Icon from '../../icon.png'
 import DatePicker from "react-datepicker";
 
@@ -8,6 +8,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import 'react-phone-number-input/style.css'
 import PhoneInput from 'react-phone-number-input'
 import SubmitButton from '../../components/SubmitButton';
+import { ExclamationCircleIcon } from '@heroicons/react/outline';
+import RegisterService from '../../services/RegisterService';
 
 export default function Signup() {
 
@@ -27,7 +29,42 @@ export default function Signup() {
 
     const [confirmPassword, setConfirmPassword] = useState("")
 
-    const [onLoad] = useState(false)
+    const [onLoad, setOnLoad] = useState(false)
+
+    const history =  useHistory()
+
+    const handleSubmit = async () => {
+
+      setOnLoad(true)
+
+      const postData = {
+
+      name: name,
+
+      email: email,
+
+      date_of_birth: startDate.toLocaleDateString(),
+
+      country: nationality,
+
+      phone: value,
+
+      physical_address: physicalAddress,
+
+      password: password
+
+    }
+
+    const response = await RegisterService.processRegister(postData)
+
+    if(response === 'You have registered successfully!'){
+      setOnLoad(false)
+      history.push('/sign-in')
+    }else{
+      setOnLoad(false)
+      console.log('Something went wrong, please try again.')
+    }
+    }
     
     return (
         <div className="min-h-screen px-5 flex items-center justify-center bg-white dark:bg-black">
@@ -37,7 +74,12 @@ export default function Signup() {
             <h2 className="text-center text-3xl font-extrabold text-gray-900 dark:text-gray-300 mt-4">Create a new account</h2>
 
           </div>
-          <form className="mt-2 space-y-6" action="#" method="POST">
+          <form className="mt-2 space-y-6"
+          onSubmit={(event) => {
+            event.preventDefault()
+            handleSubmit()
+          }}
+          >
             <input type="hidden" name="remember" defaultValue="true" />
             <div className="rounded shadow-sm -space-y-px">
               <div>
@@ -125,6 +167,8 @@ export default function Signup() {
                   type="password"
                   autoComplete="current-password"
                   required
+                  maxLength={8}
+                  minLength={8}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
@@ -140,12 +184,24 @@ export default function Signup() {
                   type="password"
                   autoComplete="current-password"
                   required
+                  maxLength={8}
+                  minLength={8}
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
                   placeholder="Confirm password"
                 />
               </div>
+
+              {
+                password !== confirmPassword ? <div className="flex items-center font-semibold">
+                <ExclamationCircleIcon className="text-red-500 w-5 h-5"/>
+                <p className="text-red-500 mb-2 mt-2 ml-3">
+                 Passwords do not match
+                </p>
+              </div> : <></>
+              }
+
             </div>
 
             <div className="flex items-center justify-between">

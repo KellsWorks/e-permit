@@ -46,7 +46,7 @@ export default function LandingPageFooter() {
                 </span>
                 </div>
             </footer>
-
+            <a id="backToTop"></a>
         </div>
     )
 }

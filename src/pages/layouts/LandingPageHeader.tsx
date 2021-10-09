@@ -1,13 +1,12 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 
 import { Fragment } from 'react'
-import { Popover, Transition } from '@headlessui/react'
+import { Popover, Transition, Menu } from '@headlessui/react'
 import {
   BookmarkAltIcon,
   CalendarIcon,
   GlobeIcon,
   MenuIcon,
-  MoonIcon,
   NewspaperIcon,
   QuestionMarkCircleIcon,
   ShieldCheckIcon,
@@ -17,7 +16,7 @@ import {
 } from '@heroicons/react/outline'
 
 import Icon from '../../icon.png'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import CookieService from '../../services/CookieService'
 
 const solutions = [
@@ -69,8 +68,26 @@ const resources = [
   { name: 'Usage Policy', description: 'Understand how we take your privacy seriously.', href: '#', icon: ShieldCheckIcon },
 ]
 
+const user = {
+  name: 'Tom Cook',
+  email: 'tom@example.com',
+  imageUrl:
+    'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+}
+
 
 export default function LandingPageHeader() {
+
+  const history = useHistory()
+
+  const signOut = () => {
+
+    CookieService.remove('access_token')
+    localStorage.clear()
+
+    history.push('/sign-in')
+
+  }
 
   return (
       <Popover className="relative bg-green-500">
@@ -118,13 +135,15 @@ export default function LandingPageHeader() {
         </Popover.Group>
         {
           CookieService.get("access_token") ? <div className="flex items-center space-x-4">
-            <button className="bg-green-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+            <button className="bg-green-800 p-1 rounded-full text-gray-300 hover:text-white focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-offset-gray-800 focus:ring-white">
               <span className="sr-only">View notifications</span>
 
-              <MoonIcon className="h-6 w-6"/>
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+              </svg>
 
             </button>
-            <button className="bg-green-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+            <button className="bg-green-800 p-1 rounded-full text-gray-300 hover:text-white focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-offset-gray-800 focus:ring-white">
               <span className="sr-only">View notifications</span>
 
               <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -132,12 +151,48 @@ export default function LandingPageHeader() {
               </svg>
 
             </button>
-            <img
-              className="inline-block h-8 w-8 rounded-full ring-2 ring-white"
-              src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-              alt="avatar"
-            />
-          </div>
+            <Menu as="div" className="ml-3 relative">
+              <div>
+                <Menu.Button className="max-w-xs bg-gray-800 rounded-full flex items-center text-sm focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-offset-gray-800 focus:ring-white">
+                  <span className="sr-only">Open user menu</span>
+                  <img className="h-8 w-8 rounded-full focus:ring-0 focus:outline-none" src={user.imageUrl} alt="avatar" />
+                </Menu.Button>
+              </div>
+              <Transition
+                as={Fragment}
+                enter="transition ease-out duration-100"
+                enterFrom="transform opacity-0 scale-95"
+                enterTo="transform opacity-100 scale-100"
+                leave="transition ease-in duration-75"
+                leaveFrom="transform opacity-100 scale-100"
+                leaveTo="transform opacity-0 scale-95"
+              >
+                <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-sm shadow-lg py-1 bg-white border ring-0 ring-black ring-opacity-5 focus:outline-none">
+                    <Menu.Item>
+                        <Link to="/permit-application"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 transition duration-150"
+                        >
+                          Start application
+                        </Link>
+                    </Menu.Item>
+                    <Menu.Item>
+                        <Link to="#"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 transition duration-150"
+                        >
+                          Profile
+                        </Link>
+                    </Menu.Item><Menu.Item>
+                        <Link to="#"
+                          onClick={() => {signOut()}}
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-red-500 hover:text-white transition duration-150"
+                        >
+                          Log out
+                        </Link>
+                    </Menu.Item>
+                </Menu.Items>
+              </Transition>
+            </Menu>
+            </div>
           : <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
           <Link to="/sign-in" className="whitespace-nowrap text-base font-medium text-white hover:text-gray-200">
             Sign in

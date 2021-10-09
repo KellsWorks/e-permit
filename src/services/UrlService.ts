@@ -36,6 +36,11 @@ class UrlService {
         
     }
 
+    static supportMessage(){
+
+        return apiDomain + 'support/message'
+        
+    }
 
     static mainUrl(){
 

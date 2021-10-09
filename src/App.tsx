@@ -15,6 +15,7 @@ import PermitApplication from './pages/PermitApplication';
 import CookieService from './services/CookieService';
 import ForgotPassword from './pages/auth/ForgotPassword';
 import ResetPassword from './pages/auth/ResetPassword';
+import TermsOfService from './pages/TermsOfService';
 
 function isLoggedIn(){
     if(CookieService.get('access_token') !== undefined){
@@ -102,6 +103,12 @@ function App() {
         <Route path="/faq" exact>
           <LandingPageHeader/>
             <Faq/>
+          <LandingPageFooter/>
+        </Route>
+
+        <Route path="/privacy-policy-and-terms-of-service" exact>
+          <LandingPageHeader/>
+            <TermsOfService/>
           <LandingPageFooter/>
         </Route>
         

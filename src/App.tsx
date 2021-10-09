@@ -13,6 +13,8 @@ import Wildlife from './pages/Wildlife';
 import Faq from './pages/Faq';
 import PermitApplication from './pages/PermitApplication';
 import CookieService from './services/CookieService';
+import ForgotPassword from './pages/auth/ForgotPassword';
+import ResetPassword from './pages/auth/ResetPassword';
 
 function isLoggedIn(){
     if(CookieService.get('access_token') !== undefined){
@@ -43,6 +45,18 @@ function App() {
         <Route path="/sign-up" exact>
           <LandingPageHeader/>
             <Signup/>
+          <LandingPageFooter/>
+        </Route>
+
+        <Route path="/forgot-password" exact>
+          <LandingPageHeader/>
+            <ForgotPassword/>
+          <LandingPageFooter/>
+        </Route>
+
+        <Route path="/reset-password" exact>
+          <LandingPageHeader/>
+            <ResetPassword/>
           <LandingPageFooter/>
         </Route>
 

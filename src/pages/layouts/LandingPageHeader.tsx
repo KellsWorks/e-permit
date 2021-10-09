@@ -134,7 +134,7 @@ export default function LandingPageHeader() {
 
         </Popover.Group>
         {
-          CookieService.get("access_token") ? <div className="flex items-center space-x-4">
+          CookieService.get("access_token") ? <div className="hidden md:flex items-center space-x-4">
             <button className="bg-green-800 p-1 rounded-full text-gray-300 hover:text-white focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-offset-gray-800 focus:ring-white">
               <span className="sr-only">View notifications</span>
 

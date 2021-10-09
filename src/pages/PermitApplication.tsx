@@ -178,9 +178,69 @@ export default function PermitApplication() {
             </div>
 
             <div className={openTab === 2 ? "block" : "hidden"} id="link2">
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo aliquid et maxime atque expedita quae vitae? Nemo possimus id, voluptas reiciendis blanditiis vitae qui? Neque iure libero cumque amet ut.
+                <p className="mb-2">
+                    The Department of National Parks and Wildlife (DNPW) is the Malawi Government agency mandated by law to conserve, manage and regulate the sustainable use of wildlife resources in and outside protected areas. In order to execute this mandate, the department issues various forms of permits and licenses for different wildlife and wildlife products.
                 </p>
+                <label className="font-bold mb-1 text-gray-700 block">Select permit type</label>
+                <div className="col-span-6 sm:col-span-3">
+                    <select
+                        id="country"
+                        name="country"
+                        autoComplete="country"
+                        className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                        >
+                    <option>Local permit</option>
+                    <option>International permit</option>
+                    </select>
+                </div>
+                <label className="font-bold mb-1 mt-2 text-gray-700 block">Select permit purpose</label>
+                <div className="mt-4 space-y-4">
+                      <div className="flex items-center">
+                        <input
+                          id="push-everything"
+                          name="push-notifications"
+                          type="radio"
+                          className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
+                        />
+                        <label htmlFor="push-everything" className="ml-3 block text-sm font-medium text-gray-700">
+                          Export
+                        </label>
+                      </div>
+                      <div className="flex items-center">
+                        <input
+                          id="push-email"
+                          name="push-notifications"
+                          type="radio"
+                          className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
+                        />
+                        <label htmlFor="push-email" className="ml-3 block text-sm font-medium text-gray-700">
+                          Re-Export
+                        </label>
+                      </div>
+                      <div className="flex items-center">
+                        <input
+                          id="push-nothing"
+                          name="push-notifications"
+                          type="radio"
+                          className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
+                        />
+                        <label htmlFor="push-nothing" className="ml-3 block text-sm font-medium text-gray-700">
+                          Import
+                        </label>
+                      </div>
+                      <div className="flex items-center">
+                        <input
+                          id="push-nothing"
+                          name="push-notifications"
+                          type="radio"
+                          className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
+                        />
+                        <label htmlFor="push-nothing" className="ml-3 block text-sm font-medium text-gray-700">
+                          Others
+                        </label>
+                      </div>
+                    </div>
+                    
             </div>
 
             <div className={openTab === 3 ? "block" : "hidden"} id="link3">

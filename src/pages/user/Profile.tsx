@@ -1,15 +1,16 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { InformationCircleIcon, PaperClipIcon } from '@heroicons/react/outline'
-import React from 'react'
-import Avatar from '../../assets/avatar.jpg'
+import ChangeProfile from '../../components/ChangeProfile'
+import DeactivateAccount from '../../components/DeactivateAccount'
 import SubmitButton from '../../components/SubmitButton'
 
 export default function Profile() {
+    
     return (
         <div className="px-24 py-10 bg-gray-50">
             <div className="flex justify-between">
                 <div className="flex">
-                    <img src={Avatar} className="w-20 h-20 rounded-full" alt="avatar"/>
+                    <ChangeProfile/>
                     <div>
                         <h3 className="text-2xl font-semibold m-2">
                             Kelvin Chidothi
@@ -21,9 +22,8 @@ export default function Profile() {
                     <button className="border h-10 bg-white rounded-sm py-1 px-2">
                         Edit profile
                     </button>
-                    <button className="border h-10 bg-red-500 text-white rounded-sm py-1 px-2">
-                        Deactivate account
-                    </button>
+                    
+                    <DeactivateAccount/>
                 </div>
             </div>
             <div className="w-full flex space-x-2 mt-3">

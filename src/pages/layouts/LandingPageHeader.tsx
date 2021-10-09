@@ -176,7 +176,7 @@ export default function LandingPageHeader() {
                         </Link>
                     </Menu.Item>
                     <Menu.Item>
-                        <Link to="#"
+                        <Link to="/profile"
                           className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 transition duration-150"
                         >
                           Profile

@@ -24,6 +24,12 @@ class UrlService {
         
     }
 
+    static userUrl(){
+
+        return apiDomain + 'user/me'
+        
+    }
+
     static forgotPassword(){
 
         return apiDomain + 'auth/forgot-password'

@@ -13,6 +13,7 @@ class AuthService{
     async doUserLogin(credentials: Credentials){
         try{
             const response = await axios.post(UrlService.loginUrl(), credentials)
+            
             return response.data
         }
         catch(error){
@@ -26,6 +27,7 @@ class AuthService{
             const options = {
                 path : "/"
             }
+            CookieService.set('user_id', response.user.id, options)
             CookieService.set('access_token', response.token, options)
             return true
         }

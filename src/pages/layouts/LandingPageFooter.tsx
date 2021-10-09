@@ -1,10 +1,12 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react'
+import { ScrollToTop } from '../../components/ScrollToTop'
 import Cta from './Cta'
 
 export default function LandingPageFooter() {
     return (
         <div>
+            <ScrollToTop/>
             <Cta/>
             <footer className="text-gray-600 bg-green-500 body-font">
                 <div className="container px-5 py-8 mx-auto flex items-center sm:flex-row flex-col">
@@ -46,7 +48,6 @@ export default function LandingPageFooter() {
                 </span>
                 </div>
             </footer>
-            <a id="backToTop"></a>
         </div>
     )
 }

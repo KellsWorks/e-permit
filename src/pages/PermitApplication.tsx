@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 
 import { Link } from 'react-router-dom';
 
-import Avatar from '../assets/avatar.jpg'
 import SubmitButton from '../components/SubmitButton';
 import CookieService from '../services/CookieService';
 import UrlService from '../services/UrlService';
@@ -13,8 +12,6 @@ import UrlService from '../services/UrlService';
 export default function PermitApplication() {
 
     const [openTab, setOpenTab] = useState(1);
-
-    const [useCredentials, setUseCredentials] = useState(true)
 
     const [stepOneComplete] = useState(false)
 
@@ -30,7 +27,9 @@ export default function PermitApplication() {
 
     const [countryOfExport, setCountryOfExport] = useState("")
 
+    /* */
     const [avatar, setAvatar] = useState("")
+    /* */
 
     const [physicalAddress, setPhysicalAddress] = useState("")
 
@@ -56,10 +55,12 @@ export default function PermitApplication() {
             }).then(response => {
                 return response.json()
             }).then(data => {
-                setAvatar(data.user.user_avatar)
+              console.log(data.user);
+              setAvatar(data.user.user_avatar)
           }).catch((error) => {
               console.log(error)
           })
+          
     }, [])
 
     const handleSubmit = () => {
@@ -104,7 +105,7 @@ export default function PermitApplication() {
                 Start application
             </p>
             <p className="text-gray-700">
-                Please follow through the application guide. It takes 5 - 7 minutes to finish. Click <a className="text-blue-400 font-bold underline" href="{{ route('permits-guide') }}">here</a> to view licence guide and scope of permit application.
+                Please follow through the application guide. It takes 5 - 7 minutes to finish. Click <Link className="text-blue-400 font-bold underline" to="/licenses-and-permits">here</Link> to view licence guide and scope of permit application.
             </p>
         </div>
 
@@ -183,73 +184,71 @@ export default function PermitApplication() {
             <div className="sm:mt-10 mt-5 p-2">
                 <div className="tab-content tab-space">
                     <div className={openTab === 1 ? "block" : "hidden"} id="link1">
-                {
-                    useCredentials === false ? <div>
+                  <div>
                         <div className="mb-5 text-center">
                             <div className="mx-auto w-32 h-32 mb-2 border rounded-full relative bg-gray-100 shadow-inset">
-                                <img className="object-cover w-full h-32 rounded-full" src={Avatar} alt="user-avatar" />
+                                <img className="object-cover w-full h-32 rounded-full" src={"http://localhost:8000/storage/images/profile/" + avatar } alt="user-avatar" />
                             </div>
 
                         </div>
 
-                <div className="mb-5">
-                    <label htmlFor="fullname" className="font-bold mb-1 text-gray-700 block">Full name</label>
-                    <input type="text"
-                        name="fullname"
-                        id="fullname"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        className="w-full px-4 py-2 rounded-sm border border-gray-200 focus:border-green-500 fucus:ring-0 focus:outline-none text-gray-600 font-medium"
-                        placeholder="Enter your name"/>
-                </div>
+                      <div className="mb-5">
+                          <label htmlFor="fullname" className="font-bold mb-1 text-gray-700 block">Full name</label>
+                          <input type="text"
+                              name="fullname"
+                              id="fullname"
+                              value={name}
+                              onChange={(e) => setName(e.target.value)}
+                              className="w-full px-4 py-2 rounded-sm border border-gray-200 focus:border-blue-500 fucus:ring-0 focus:outline-none text-gray-600 font-medium"
+                              placeholder="Enter your name"/>
+                      </div>
 
-                <div className="mb-5">
-                    <label htmlFor="email" className="font-bold mb-1 text-gray-700 block">Email</label>
-                    <input
-                        type="email"
-                        id="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="w-full px-4 py-2 rounded-sm border border-gray-200 focus:border-green-500 fucus:ring-0 focus:outline-none text-gray-600 font-medium"
-                        placeholder="Enter your email address"/>
-                </div>
+                      <div className="mb-5">
+                          <label htmlFor="email" className="font-bold mb-1 text-gray-700 block">Email</label>
+                          <input
+                              type="email"
+                              id="email"
+                              value={email}
+                              onChange={(e) => setEmail(e.target.value)}
+                              className="w-full px-4 py-2 rounded-sm border border-gray-200 focus:border-blue-500 fucus:ring-0 focus:outline-none text-gray-600 font-medium"
+                              placeholder="Enter your email address"/>
+                      </div>
 
-                <div className="mb-5">
-                    <label htmlFor="phone" className="font-bold mb-1 text-gray-700 block">Mobile phone number</label>
-                    <input
-                        type="phone"
-                        id="phone"
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                        className="w-full px-4 py-2 rounded-sm border border-gray-200 focus:border-green-500 fucus:ring-0 focus:outline-none text-gray-600 font-medium"
-                        placeholder="Enter your phone number"/>
-                </div>
+                      <div className="mb-5">
+                          <label htmlFor="phone" className="font-bold mb-1 text-gray-700 block">Mobile phone number</label>
+                          <input
+                              type="phone"
+                              id="phone"
+                              value={phone}
+                              onChange={(e) => setPhone(e.target.value)}
+                              className="w-full px-4 py-2 rounded-sm border border-gray-200 focus:border-blue-500 fucus:ring-0 focus:outline-none text-gray-600 font-medium"
+                              placeholder="Enter your phone number"/>
+                      </div>
 
-                <div className="mb-5">
-                    <label htmlFor="country" className="font-bold mb-1 text-gray-700 block">Country</label>
-                    <input
-                        type="text"
-                        id="country"
-                        name="country"
-                        value={country}
-                        onChange={(e) => setCountry(e.target.value)}
-                        className="w-full px-4 py-2 rounded-sm border border-gray-200 focus:border-green-500 fucus:ring-0 focus:outline-none text-gray-600 font-medium"
-                        placeholder="Your country of origin"/>
-                </div>
+                      <div className="mb-5">
+                          <label htmlFor="country" className="font-bold mb-1 text-gray-700 block">Country</label>
+                          <input
+                              type="text"
+                              id="country"
+                              name="country"
+                              value={country}
+                              onChange={(e) => setCountry(e.target.value)}
+                              className="w-full px-4 py-2 rounded-sm border border-gray-200 focus:border-blue-500 fucus:ring-0 focus:outline-none text-gray-600 font-medium"
+                              placeholder="Your country of origin"/>
+                      </div>
 
-                <div className="mb-5">
-                    <label htmlFor="address" className="font-bold mb-1 text-gray-700 block">Address</label>
-                    <input
-                        type="text"
-                        id="physical_address"
-                        name="physical_address"
-                        value={physicalAddress}
-                        onChange={(e) => setPhysicalAddress(e.target.value)}
-                        className="w-full px-4 py-2 rounded-sm border border-gray-200 focus:border-green-500 fucus:ring-0 focus:outline-none text-gray-600 font-medium"
-                        placeholder="Your current physical address"/>
-                </div>
-                    </div> : <></>
-                }
+                      <div className="mb-5">
+                          <label htmlFor="address" className="font-bold mb-1 text-gray-700 block">Address</label>
+                          <input
+                              type="text"
+                              id="physical_address"
+                              name="physical_address"
+                              value={physicalAddress}
+                              onChange={(e) => setPhysicalAddress(e.target.value)}
+                              className="w-full px-4 py-2 rounded-sm border border-gray-200 focus:border-blue-500 fucus:ring-0 focus:outline-none text-gray-600 font-medium"
+                              placeholder="Your current physical address"/>
+                      </div>
+                    </div> 
 
                 <div className="mb-5">
                     <label htmlFor="national_id" className="font-bold mb-1 text-gray-700 block">National ID Number</label>
@@ -262,19 +261,7 @@ export default function PermitApplication() {
                         className="w-full px-4 py-2 rounded-sm border border-gray-200 focus:border-green-500 fucus:ring-0 focus:outline-none text-gray-600 font-medium"
                         placeholder="Enter your national ID number"/>
                 </div>
-                <div className="flex">
-                    <input
-                    id="remember-me"
-                    name="remember-me"
-                    type="checkbox"
-                    onChange={(event) => setUseCredentials(!useCredentials)}
-                    checked={useCredentials ? true : false}
-                    className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-              />
-              <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
-                Use my DNPW E-Permitting account credentials
-              </label>
-            </div>
+                
             </div>
 
             <div className={openTab === 2 ? "block" : "hidden"} id="link2">
@@ -384,7 +371,7 @@ export default function PermitApplication() {
                             className="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
                           >
                             <span>Upload a file</span>
-                            <input onChange={(e) => {
+                            <input onChange={() => {
                               // setAttachments(e.target.files)
                             }} multiple={false} id="file-upload" name="file-upload" type="file" className="sr-only" />
                           </label>
@@ -400,12 +387,12 @@ export default function PermitApplication() {
             </div>
                 <div className="flex justify-between">
                     {
-                        openTab === 1 ? <></> : <button onClick={(event) => setOpenTab(openTab-1)} className="border-gray-300 border  flex px-4 py-2 rounded-sm mt-2 justify-right">Previous
+                        openTab === 1 ? <></> : <button onClick={() => setOpenTab(openTab-1)} className="border-gray-300 border  flex px-4 py-2 rounded-sm mt-2 justify-right">Previous
                         </button>
                     }
                     {
                         openTab === 3 ? <SubmitButton text="Submit permit application" onLoad={onLoad}/> : <button onClick={
-                            (event) => {
+                            () => {
                                 setOpenTab(openTab+1)
                             }
                         } className="border text-green-500 border-green-500  flex px-4 py-2 rounded-sm mt-2 justify-right">Next

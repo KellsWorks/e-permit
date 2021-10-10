@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 
-import { Fragment } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Popover, Transition, Menu } from '@headlessui/react'
 import {
   BookmarkAltIcon,
@@ -18,6 +18,7 @@ import {
 import Icon from '../../icon.png'
 import { Link, useHistory } from 'react-router-dom'
 import CookieService from '../../services/CookieService'
+import UrlService from '../../services/UrlService'
 
 const solutions = [
   {
@@ -68,13 +69,6 @@ const resources = [
   { name: 'Usage Policy', description: 'Understand how we take your privacy seriously.', href: '#', icon: ShieldCheckIcon },
 ]
 
-const user = {
-  name: 'Tom Cook',
-  email: 'tom@example.com',
-  imageUrl:
-    'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-}
-
 
 export default function LandingPageHeader() {
 
@@ -88,6 +82,22 @@ export default function LandingPageHeader() {
     history.push('/sign-in')
 
   }
+
+  const [user, setUser] = useState("")
+
+  useEffect(() => {
+      fetch(UrlService.userUrl(),{
+          method: 'post',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ id: CookieService.get('user_id') })
+          }).then(response => {
+              return response.json()
+          }).then(data => {
+              setUser(data.user.user_avatar)
+        }).catch((error) => {
+            console.log(error)
+        })
+  }, [])
 
   return (
       <Popover className="relative bg-green-500">
@@ -135,15 +145,8 @@ export default function LandingPageHeader() {
         </Popover.Group>
         {
           CookieService.get("access_token") ? <div className="hidden md:flex items-center space-x-4">
-            <button className="bg-green-800 p-1 rounded-full text-gray-300 hover:text-white focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-offset-gray-800 focus:ring-white">
-              <span className="sr-only">View notifications</span>
-
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
-                <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
-              </svg>
-
-            </button>
-            <button className="bg-green-800 p-1 rounded-full text-gray-300 hover:text-white focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-offset-gray-800 focus:ring-white">
+            
+            <button className="bg-gray-600 p-1 rounded-full text-gray-300 hover:text-white focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-offset-gray-800 focus:ring-white">
               <span className="sr-only">View notifications</span>
 
               <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -155,7 +158,7 @@ export default function LandingPageHeader() {
               <div>
                 <Menu.Button className="max-w-xs bg-gray-800 rounded-full flex items-center text-sm focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-offset-gray-800 focus:ring-white">
                   <span className="sr-only">Open user menu</span>
-                  <img className="h-8 w-8 rounded-full focus:ring-0 focus:outline-none" src={user.imageUrl} alt="avatar" />
+                  <img className="h-8 w-8 rounded-full focus:ring-0 focus:outline-none" src={"http://localhost:8000/storage/images/profile/" + user } alt="avatar" />
                 </Menu.Button>
               </div>
               <Transition

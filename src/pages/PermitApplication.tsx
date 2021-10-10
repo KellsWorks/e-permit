@@ -1,9 +1,13 @@
 import { QuestionMarkCircleIcon } from '@heroicons/react/outline';
-import React, { useState } from 'react'
+
+import { useEffect, useState } from 'react'
+
 import { Link } from 'react-router-dom';
 
 import Avatar from '../assets/avatar.jpg'
 import SubmitButton from '../components/SubmitButton';
+import CookieService from '../services/CookieService';
+import UrlService from '../services/UrlService';
 
 
 export default function PermitApplication() {
@@ -14,6 +18,85 @@ export default function PermitApplication() {
 
     const [stepOneComplete] = useState(false)
 
+    const [onLoad, setOnLoad] = useState(false)
+
+    const [name, setName] = useState("")
+
+    const [email, setEmail] = useState("")
+
+    const [phone, setPhone] = useState("")
+
+    const [country, setCountry] = useState("")
+
+    const [countryOfExport, setCountryOfExport] = useState("")
+
+    const [avatar, setAvatar] = useState("")
+
+    const [physicalAddress, setPhysicalAddress] = useState("")
+
+    const [idNumber, setIdNumber] = useState("")
+
+    const [permitType, setPermitType] = useState("Local permit")
+
+    const [isLocal, setIsLocal] = useState(true)
+
+    const [transactionPurpose, setTransactionPurpose] = useState("Export")
+
+    const [scientificName, setScientificName] = useState("")
+
+    const [specimenDescription, setSpecimenDescription] = useState("")
+
+    const [successMessage, setSuccessMessage] = useState("")
+
+    useEffect(() => {
+      fetch(UrlService.userUrl(),{
+            method: 'post',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({ id: CookieService.get('user_id') })
+            }).then(response => {
+                return response.json()
+            }).then(data => {
+                setAvatar(data.user.user_avatar)
+          }).catch((error) => {
+              console.log(error)
+          })
+    }, [])
+
+    const handleSubmit = () => {
+
+      permitType === "Local permit" ? setIsLocal(true) : <></>
+
+      setOnLoad(true)
+
+      fetch(UrlService.permitApplication(),{
+        method: 'post',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ 
+          user_id: CookieService.get('user_id'),
+          email: email, name: name, phone: phone,
+          country: country, avatar: avatar,
+          physical_address: physicalAddress,
+          id_no: idNumber,
+          is_local: isLocal,
+          permit_type: permitType,
+          transaction_purpose: transactionPurpose,
+          scientific_name: scientificName,
+          specimen_description: specimenDescription,
+          quality: 'High'
+        })
+        }).then(response => {
+            return response.json()
+        }).then(data => {
+            console.log(data)
+            setSuccessMessage(data.message)
+            setOnLoad(false)
+      }).catch((error) => {
+          console.log(error)
+          setOnLoad(false)
+      })
+
+    }
+    
     return (
         <div className="bg-white">
             <div className="bg-yellow-300 sm:px-32 px-5 sm:py-10 py-5">
@@ -93,23 +176,29 @@ export default function PermitApplication() {
                 </Link>
             </ul>
 
+            <form onSubmit={(event) => {
+              event.preventDefault()
+              handleSubmit()
+            }}>
             <div className="sm:mt-10 mt-5 p-2">
                 <div className="tab-content tab-space">
                     <div className={openTab === 1 ? "block" : "hidden"} id="link1">
                 {
                     useCredentials === false ? <div>
                         <div className="mb-5 text-center">
-                    <div className="mx-auto w-32 h-32 mb-2 border rounded-full relative bg-gray-100 shadow-inset">
-                        <img className="object-cover w-full h-32 rounded-full" src={Avatar} alt="user-avatar" />
-                    </div>
+                            <div className="mx-auto w-32 h-32 mb-2 border rounded-full relative bg-gray-100 shadow-inset">
+                                <img className="object-cover w-full h-32 rounded-full" src={Avatar} alt="user-avatar" />
+                            </div>
 
-                </div>
+                        </div>
 
                 <div className="mb-5">
                     <label htmlFor="fullname" className="font-bold mb-1 text-gray-700 block">Full name</label>
                     <input type="text"
                         name="fullname"
                         id="fullname"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
                         className="w-full px-4 py-2 rounded-sm border border-gray-200 focus:border-green-500 fucus:ring-0 focus:outline-none text-gray-600 font-medium"
                         placeholder="Enter your name"/>
                 </div>
@@ -119,6 +208,8 @@ export default function PermitApplication() {
                     <input
                         type="email"
                         id="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                         className="w-full px-4 py-2 rounded-sm border border-gray-200 focus:border-green-500 fucus:ring-0 focus:outline-none text-gray-600 font-medium"
                         placeholder="Enter your email address"/>
                 </div>
@@ -128,6 +219,8 @@ export default function PermitApplication() {
                     <input
                         type="phone"
                         id="phone"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
                         className="w-full px-4 py-2 rounded-sm border border-gray-200 focus:border-green-500 fucus:ring-0 focus:outline-none text-gray-600 font-medium"
                         placeholder="Enter your phone number"/>
                 </div>
@@ -138,6 +231,8 @@ export default function PermitApplication() {
                         type="text"
                         id="country"
                         name="country"
+                        value={country}
+                        onChange={(e) => setCountry(e.target.value)}
                         className="w-full px-4 py-2 rounded-sm border border-gray-200 focus:border-green-500 fucus:ring-0 focus:outline-none text-gray-600 font-medium"
                         placeholder="Your country of origin"/>
                 </div>
@@ -148,6 +243,8 @@ export default function PermitApplication() {
                         type="text"
                         id="physical_address"
                         name="physical_address"
+                        value={physicalAddress}
+                        onChange={(e) => setPhysicalAddress(e.target.value)}
                         className="w-full px-4 py-2 rounded-sm border border-gray-200 focus:border-green-500 fucus:ring-0 focus:outline-none text-gray-600 font-medium"
                         placeholder="Your current physical address"/>
                 </div>
@@ -160,6 +257,8 @@ export default function PermitApplication() {
                         type="text"
                         id="national_id"
                         name="national_id"
+                        value={idNumber}
+                        onChange={(e) => setIdNumber(e.target.value)}
                         className="w-full px-4 py-2 rounded-sm border border-gray-200 focus:border-green-500 fucus:ring-0 focus:outline-none text-gray-600 font-medium"
                         placeholder="Enter your national ID number"/>
                 </div>
@@ -185,9 +284,8 @@ export default function PermitApplication() {
                 <label className="font-bold mb-1 text-gray-700 block">Select permit type</label>
                 <div className="col-span-6 sm:col-span-3">
                     <select
-                        id="country"
-                        name="country"
-                        autoComplete="country"
+                        value={permitType}
+                        onChange={(e) => setPermitType(e.target.value)}
                         className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                         >
                     <option>Local permit</option>
@@ -195,64 +293,30 @@ export default function PermitApplication() {
                     </select>
                 </div>
                 <label className="font-bold mb-1 mt-2 text-gray-700 block">Select permit purpose</label>
-                <div className="mt-4 space-y-4">
-                      <div className="flex items-center">
-                        <input
-                          id="push-everything"
-                          name="push-notifications"
-                          type="radio"
-                          className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
-                        />
-                        <label htmlFor="push-everything" className="ml-3 block text-sm font-medium text-gray-700">
-                          Export
-                        </label>
-                      </div>
-                      <div className="flex items-center">
-                        <input
-                          id="push-email"
-                          name="push-notifications"
-                          type="radio"
-                          className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
-                        />
-                        <label htmlFor="push-email" className="ml-3 block text-sm font-medium text-gray-700">
-                          Re-Export
-                        </label>
-                      </div>
-                      <div className="flex items-center">
-                        <input
-                          id="push-nothing"
-                          name="push-notifications"
-                          type="radio"
-                          className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
-                        />
-                        <label htmlFor="push-nothing" className="ml-3 block text-sm font-medium text-gray-700">
-                          Import
-                        </label>
-                      </div>
-                      <div className="flex items-center">
-                        <input
-                          id="push-nothing"
-                          name="push-notifications"
-                          type="radio"
-                          className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
-                        />
-                        <label htmlFor="push-nothing" className="ml-3 block text-sm font-medium text-gray-700">
-                          Others
-                        </label>
-                      </div>
-                    </div>
+                <div className="col-span-6 sm:col-span-3">
+                    <select
+                        value={transactionPurpose}
+                        onChange={(e) => setTransactionPurpose(e.target.value)}
+                        className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                        >
+                    <option>Export</option>
+                    <option>Re-Export</option>
+                    <option>Import</option>
+                    <option>Others</option>
+                    </select>
+                </div>
                     <label className="font-bold mb-1 text-gray-700 block">Country of export</label>
                     <div className="col-span-6 sm:col-span-3">
                         <input
                             type="text"
-                            id="national_id"
-                            name="national_id"
+                            value={countryOfExport}
+                            onChange={(e)=> {setCountryOfExport(e.target.value)}}
                             className="w-full px-4 py-1 rounded-sm border border-gray-200 focus:border-blue-500 fucus:ring-0 focus:outline-none font-medium"
                             placeholder="Type in the country of export"/>
                     </div>  
                     <div className="flex space-x-3 items-center mt-2">
                         <QuestionMarkCircleIcon className="h-4 w-4"/>
-                        <p className="text-sm">Check pricing</p>
+                        <Link to="/licences-and-permits" className="text-sm">Check pricing</Link>
                     </div>
             </div>
 
@@ -269,8 +333,8 @@ export default function PermitApplication() {
                         </span>
                         <input
                           type="text"
-                          name="company-website"
-                          id="company-website"
+                          value={scientificName}
+                          onChange={(e) => setScientificName(e.target.value)}
                           className="w-full px-4 py-1 rounded-sm border border-gray-200 focus:border-blue-500 fucus:ring-0 focus:outline-none font-medium"
                           placeholder="For example Acinonyx jubatus for Cheetah"
                         />
@@ -284,12 +348,11 @@ export default function PermitApplication() {
                     </label>
                     <div className="mt-1">
                       <textarea
-                        id="about"
-                        name="about"
+                        value={specimenDescription}
+                        onChange={(e) => setSpecimenDescription(e.target.value)}
                         rows={3}
                         className="w-full px-4 py-1 rounded-sm border border-gray-200 focus:border-blue-500 fucus:ring-0 focus:outline-none font-medium"
                         placeholder="Type the description here"
-                        defaultValue={''}
                       />
                     </div>
                     <p className="mt-2 text-sm text-gray-500">
@@ -297,26 +360,9 @@ export default function PermitApplication() {
                     </p>
                   </div>
 
-                  {/* <div>
-                    <label className="block text-sm font-medium text-gray-700">Photo</label>
-                    <div className="mt-1 flex items-center">
-                      <span className="inline-block h-12 w-12 rounded-full overflow-hidden bg-gray-100">
-                        <svg className="h-full w-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                        </svg>
-                      </span>
-                      <button
-                        type="button"
-                        className="ml-5 bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                      >
-                        Change
-                      </button>
-                    </div>
-                  </div> */}
-
                   <div>
                     <label className="font-bold mb-1 text-gray-700 block">Attachment files</label>
-                    <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-sm">
+                    <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 hover:border-yellow-500 transition duration-150 border-gray-300 border-dashed rounded-sm">
                       <div className="space-y-1 text-center">
                         <svg
                           className="mx-auto h-12 w-12 text-gray-400"
@@ -338,7 +384,9 @@ export default function PermitApplication() {
                             className="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
                           >
                             <span>Upload a file</span>
-                            <input id="file-upload" name="file-upload" type="file" className="sr-only" />
+                            <input onChange={(e) => {
+                              // setAttachments(e.target.files)
+                            }} multiple={false} id="file-upload" name="file-upload" type="file" className="sr-only" />
                           </label>
                           <p className="pl-1">or drag and drop</p>
                         </div>
@@ -356,16 +404,19 @@ export default function PermitApplication() {
                         </button>
                     }
                     {
-                        openTab === 3 ? <SubmitButton text="Submit permit request" onLoad={false}/> : <button onClick={
+                        openTab === 3 ? <SubmitButton text="Submit permit application" onLoad={onLoad}/> : <button onClick={
                             (event) => {
-                                // openTab === 1 ? setStepOneComplete(true) : <></>
                                 setOpenTab(openTab+1)
                             }
                         } className="border text-green-500 border-green-500  flex px-4 py-2 rounded-sm mt-2 justify-right">Next
                         </button>
                     }
                 </div>
+                <p className="text-blue-500 text-center mt-2">
+                  {successMessage}
+                </p>
             </div>
+            </form>
         </div>
         </div>
     )

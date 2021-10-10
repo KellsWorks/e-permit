@@ -1,11 +1,11 @@
+/* eslint-disable jsx-a11y/no-redundant-roles */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { InformationCircleIcon, PaperClipIcon } from '@heroicons/react/outline'
+import { PaperClipIcon } from '@heroicons/react/outline'
 import ChangeProfile from '../../components/ChangeProfile'
 import DeactivateAccount from '../../components/DeactivateAccount'
-import SubmitButton from '../../components/SubmitButton'
 
 export default function Profile() {
-    
+
     return (
         <div className="px-24 py-10 bg-gray-50">
             <div className="flex justify-between">
@@ -27,7 +27,7 @@ export default function Profile() {
                 </div>
             </div>
             <div className="w-full flex space-x-2 mt-3">
-                <div className="w-3/5 bg-white">
+                <div className="border shadow-sm bg-white">
                     <div className="px-4 py-5 sm:px-6">
                         <h3 className="text-lg leading-6 font-semibold text-gray-900">Applicant Information</h3>
                         <p className="mt-1 max-w-2xl text-sm text-gray-500">Personal details and application.</p>
@@ -90,7 +90,7 @@ export default function Profile() {
                         </dl>
                     </div>
                 </div>
-                <div className="w-2/5 bg-white rounded-sm p-3">
+                {/* <div className="w-2/5 bg-white rounded-sm p-3">
                     <h3 className="text-lg font-semibold">
                         Notifications
                     </h3>
@@ -144,7 +144,7 @@ export default function Profile() {
                               <SubmitButton text="Clear notifications" onLoad={false}/>
                           </div>
                       </div>
-                </div>
+                </div> */}
             </div>
         </div>
     )

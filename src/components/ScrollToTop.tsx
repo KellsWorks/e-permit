@@ -41,7 +41,7 @@ export const ScrollToTop = () => {
           'inline-flex items-center p-3 mb-20 rounded-sm shadow-sm text-white bg-green-600 transition-opacity hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500',
         )}
       >
-        <ArrowUpIcon className="h-4 w-4" aria-hidden="true" />
+        <ArrowUpIcon className="h-5 w-5" aria-hidden="true" />
       </button>
     </div>
   )

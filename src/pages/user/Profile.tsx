@@ -7,9 +7,9 @@ import DeactivateAccount from '../../components/DeactivateAccount'
 export default function Profile() {
 
     return (
-        <div className="px-24 py-10 bg-gray-50">
-            <div className="flex justify-between">
-                <div className="flex">
+        <div className="sm:px-24 px-5 py-5 sm:py-10 bg-gray-50">
+            <div className="sm:flex justify-between">
+                <div className="flex mb-3">
                     <ChangeProfile/>
                     <div>
                         <h3 className="text-2xl font-semibold m-2">

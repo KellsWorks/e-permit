@@ -6,7 +6,7 @@ if(process.env.NODE_ENV === 'production'){
 
 }else{
 
-    apiDomain = 'http://127.0.0.1:8000/api/dnpw/v1/'
+    apiDomain = 'http://192.168.43.200:322/api/dnpw/v1/'
 
 }
 

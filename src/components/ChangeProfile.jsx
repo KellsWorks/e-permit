@@ -4,6 +4,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import CookieService from '../services/CookieService'
 import UrlService from '../services/UrlService'
 import Avatar from '../assets/avatar.jpg'
+import SubmitButton from '../components/SubmitButton'
 
 export default function ChangeProfile() {
     
@@ -12,6 +13,12 @@ export default function ChangeProfile() {
   const cancelButtonRef = useRef(null)
 
   const [user, setUser] = useState("")
+
+  const [uploadedImage, setUpLoadedImage] = useState('')
+
+  const [selectedImage, setSelectedImage] = useState('')
+
+  const [onLoad, setOnLoad] = useState(false)
 
   useEffect(() => {
       fetch(UrlService.userUrl(),{
@@ -27,10 +34,39 @@ export default function ChangeProfile() {
         })
   }, [])
 
+  const handleSubmit = () => {
+
+    const formData = new FormData();
+
+        formData.append("avatar", uploadedImage);
+        formData.append("id", CookieService.get('user_id'))
+
+        const requestOptions = {
+            method: 'post',
+            headers: {
+                'Access-Control-Allow-Origin' : 'http://localhost:8000', 
+                'Content-Type':'application/json'
+            },
+            body: formData,
+            redirect: 'follow'
+        };
+
+        fetch(UrlService.changeAvatar(), requestOptions)
+        .then(response => response.json())
+        .then(result => {
+            setOnLoad(false)
+            })
+        .catch(error => {
+            console.log('error', error)
+            setOnLoad(false)
+        });
+
+  }
+
   return (
     <div>
-        <img onClick={() => {setOpen(!open)}} src={"http://192.168.43.200:322/storage/images/profile/" + user } placeholder={Avatar} className="w-20 h-20 rounded-full" alt="avatar"/>
-        <Transition.Root show={open} as={Fragment}>
+      <img onClick={() => {setOpen(!open)}} src={"http://192.168.43.200:322/storage/images/profile/" + user } placeholder={Avatar} className="w-20 h-20 rounded-full" alt="avatar"/>
+      <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" initialFocus={cancelButtonRef} onClose={setOpen}>
         <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
           <Transition.Child
@@ -55,6 +91,10 @@ export default function ChangeProfile() {
             leaveFrom="opacity-100 translate-y-0 sm:scale-100"
             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
+            <form onSubmit={(e) => {
+              e.preventDefault()
+              handleSubmit()
+            }}>
             <div className="inline-block align-bottom bg-white rounded-sm text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
               <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                 <div className="sm:flex sm:items-start">
@@ -102,7 +142,16 @@ export default function ChangeProfile() {
                                 className="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
                             >
                                 <span className="text-center">Upload a file</span>
-                                <input id="file-upload" name="file-upload" type="file" className="sr-only" />
+                                <input 
+                                  id="file-upload" 
+                                  name="file-upload" 
+                                  type="file" 
+                                  className="sr-only" 
+                                  onChange={(item) => {
+                                      setUpLoadedImage(item.target.files[0])
+                                      setSelectedImage(URL.createObjectURL(item.target.files[0]))
+                                  }}
+                                  />
                             </label>
                             <p className="pl-1 text-center">or drag and drop</p>
                             </div>
@@ -115,13 +164,7 @@ export default function ChangeProfile() {
                 </div>
               </div>
               <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                <button
-                  type="button"
-                  className="w-full inline-flex justify-center rounded-sm border border-transparent shadow-sm px-4 py-2 bg-green-500 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
-                  onClick={() => setOpen(false)}
-                >
-                  Update
-                </button>
+                <SubmitButton text="Update" onLoad={onLoad}/>
                 <button
                   type="button"
                   className="mt-3 w-full inline-flex justify-center rounded-sm border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
@@ -132,6 +175,7 @@ export default function ChangeProfile() {
                 </button>
               </div>
             </div>
+            </form>
           </Transition.Child>
         </div>
       </Dialog>

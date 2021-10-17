@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-redundant-roles */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { PaperClipIcon } from '@heroicons/react/outline'
-import ChangeProfile from '../../components/ChangeProfile'
+import ChangeProfile from '../../components/ChangeProfile.jsx'
 import DeactivateAccount from '../../components/DeactivateAccount'
 
 export default function Profile() {

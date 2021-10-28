@@ -13,14 +13,14 @@ export default function LandingPageFooter() {
                 <a className="flex title-font font-medium items-center md:justify-start justify-center text-gray-900">
                     <span className="ml-3 text-md text-white">&copy; {new Date().getFullYear()} Department of National Parks and Wildlife</span>
                 </a>
-                <p className="text-sm text-white sm:ml-4 sm:pl-4 sm:border-l-2 sm:border-gray-200 sm:py-2 sm:mt-0 mt-4">
-                    <a href="https://wildlifemw.net" className="text-white hover:text-red-500 hover:font-medium ml-1" rel="noopener noreferrer" target="_blank">DPNW Website</a>
+                <p className="text-sm text-white sm:ml-4 sm:pl-4 sm:border-l sm:border-gray-200 sm:py-2 sm:mt-0 mt-4">
+                    <a href="https://wildlifemw.net" className="text-white hover:text-gray-100 hover:font-medium ml-1" rel="noopener noreferrer" target="_blank">DPNW Website</a>
                 </p>
-                <p className="text-sm text-white sm:ml-4 sm:pl-4 sm:border-l-2 sm:border-gray-200 sm:py-2 sm:mt-0 mt-4">
-                    <a href="#" className="text-white hover:text-red-500 hover:font-medium ml-1" rel="noopener noreferrer" target="_blank">Privacy Policy</a>
+                <p className="text-sm text-white sm:ml-4 sm:pl-4 sm:border-l sm:border-gray-200 sm:py-2 sm:mt-0 mt-4">
+                    <a href="#" className="text-white hover:text-gray-100 hover:font-medium ml-1" rel="noopener noreferrer" target="_blank">Privacy Policy</a>
                 </p>
-                <p className="text-sm text-white sm:ml-4 sm:pl-4 sm:border-l-2 sm:border-gray-200 sm:py-2 sm:mt-0 mt-4">
-                    <a href="#" className="text-white hover:text-red-500 hover:font-medium ml-1" rel="noopener noreferrer" target="_blank">Usage Policy</a>
+                <p className="text-sm text-white sm:ml-4 sm:pl-4 sm:border-l sm:border-gray-200 sm:py-2 sm:mt-0 mt-4">
+                    <a href="#" className="text-white hover:text-gray-100 hover:font-medium ml-1" rel="noopener noreferrer" target="_blank">Usage Policy</a>
                 </p>
                 <span className="inline-flex sm:ml-auto sm:mt-0 mt-4 justify-center sm:justify-start">
                     <a className="text-white hover:text-blue-800">

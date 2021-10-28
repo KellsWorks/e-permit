@@ -48,7 +48,7 @@ export default function ForgotPassword() {
             <input type="hidden" name="remember" defaultValue="true" />
             <div className="rounded shadow-sm -space-y-px">
                 <p className="text-blue-500 mt-2 mb-2 font-semibold">
-                {successMessage}
+                {successMessage === "passwords.user" ? "This email is not associated with any account" : successMessage}
                 </p>
                 <div className="py-4">
                 <label className="block text-gray-700 dark:text-gray-300">Email<span className="text-red-500">*</span></label>

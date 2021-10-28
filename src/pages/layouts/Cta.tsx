@@ -33,6 +33,7 @@ export default function Cta() {
               setMessage("")
         }).catch((error) => {
             console.log(error)
+            setSuccessMessage("An error occurred!")
             setOnLoad(false)
         })
     }
@@ -124,10 +125,17 @@ export default function Cta() {
                     <p className="text-xs text-gray-500 mb-3">By submitting, you agree to our <Link to="/privacy-policy-and-terms-of-service" className="underline text-blue-500">terms of service</Link></p>
 
                     <SubmitButton text="Send message" onLoad={onLoad}/>
-
-                    <p className="text-blue-500 text-sm mt-1 mb-1 text-center">
-                        {successMessage}
-                    </p>
+                    {
+                        successMessage === "An error occurred!" ? 
+                        <p className="text-red-500 font-medium text-sm mt-1 mb-1 text-center">
+                            {successMessage}
+                        </p>
+                        :
+                        <p className="text-blue-500 font-medium text-sm mt-1 mb-1 text-center">
+                            {successMessage}
+                        </p> 
+                    }
+                    
 
                     </form>
 

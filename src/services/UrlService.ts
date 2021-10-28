@@ -2,7 +2,7 @@ let apiDomain = ''
 
 if(process.env.NODE_ENV === 'production'){
 
-    apiDomain = 'https://dpnw-epermit.mw'
+    apiDomain = 'https://api.dnpw.jobfindermw.com/api/dnpw/v1/'
 
 }else{
 

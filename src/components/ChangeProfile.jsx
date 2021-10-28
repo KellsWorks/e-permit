@@ -16,7 +16,7 @@ export default function ChangeProfile() {
 
   const [uploadedImage, setUpLoadedImage] = useState('')
 
-  const [selectedImage, setSelectedImage] = useState('')
+  const [setSelectedImage] = useState('')
 
   const [onLoad, setOnLoad] = useState(false)
 

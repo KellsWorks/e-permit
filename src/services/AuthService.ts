@@ -13,7 +13,7 @@ class AuthService{
     async doUserLogin(credentials: Credentials){
 
         const instance = axios.create({
-            baseURL: "http://localhost:8000/",
+            baseURL: "http://api.dnpw.jobfindermw.com/",
             withCredentials: false,
             headers: {
                 'Access-Control-Allow-Origin' : '*',

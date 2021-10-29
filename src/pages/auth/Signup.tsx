@@ -31,6 +31,8 @@ export default function Signup() {
 
     const [onLoad, setOnLoad] = useState(false)
 
+    const [message, setMessage] = useState("")
+
     const history =  useHistory()
 
     const handleSubmit = async () => {
@@ -62,7 +64,7 @@ export default function Signup() {
       history.push('/sign-in')
     }else{
       setOnLoad(false)
-      console.log('Something went wrong, please try again.')
+      setMessage('Something went wrong, please try again.')
     }
     }
     
@@ -81,6 +83,14 @@ export default function Signup() {
           }}
           >
             <input type="hidden" name="remember" defaultValue="true" />
+
+            <div className="flex items-center font-semibold">
+              <ExclamationCircleIcon className="text-red-500 w-5 h-5"/>
+              <p className="text-red-500 mb-2 mt-2 ml-3">
+              {message}
+              </p>
+            </div>
+
             <div className="rounded shadow-sm -space-y-px">
               <div>
                 <label className="block text-gray-700 dark:text-gray-300">Full name<span className="text-red-500">*</span></label>

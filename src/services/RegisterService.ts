@@ -12,9 +12,16 @@ class RegisterService {
 
         try {
 
-            console.log(credentials)
+            const instance = axios.create({
+                baseURL: "http://api.dnpw.jobfindermw.com/",
+                withCredentials: false,
+                headers: {
+                    'Access-Control-Allow-Origin' : '*',
+                    'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+                }
+            })
 
-            let response = await axios.post(UrlService.registerUrl(), credentials)
+            let response = await instance.post(UrlService.registerUrl(), credentials)
 
             if(!response.data){
                 return response

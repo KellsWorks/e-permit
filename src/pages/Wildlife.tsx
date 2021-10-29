@@ -26,7 +26,7 @@ export default function Wildlife() {
         <div style={{ backgroundImage: `url(${Wild})`}} className="bg-random flex items-center justify-center px-5 py-5">
     <div className="w-full mx-auto rounded-sm shadow-sm bg-white">
         <ul>
-            <li className="w-full px-5 py-2 border-b border-gray-300">
+            <li className="w-full px-5 py-2 border-b border-t mt-3 border-gray-300">
                 <div className="w-full flex">
                     <div className="flex">
                         <img src={Pdf} alt="pdf" className="w-10 h-10" />

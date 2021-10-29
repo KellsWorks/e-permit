@@ -64,7 +64,7 @@ function App() {
 
         {/* Permit application */}
 
-        <Route path="/permit-application" render={() => (
+        {/* <Route path="/permit-application" render={() => (
             isLoggedIn() ? (
               <><LandingPageHeader/>
                 <PermitApplication/>
@@ -73,9 +73,15 @@ function App() {
               <Redirect to="/sign-in"/>
             )
           )}> 
-          </Route>
+          </Route> */}
 
         {/* Pages */}
+        
+        <Route path="/permit-application" exact>
+          <LandingPageHeader/>
+            <PermitApplication/>
+          <LandingPageFooter/>
+        </Route>
 
         <Route path="/application-guide" exact>
           <LandingPageHeader/>

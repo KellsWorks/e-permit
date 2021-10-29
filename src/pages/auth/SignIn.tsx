@@ -42,7 +42,7 @@ export default function SignIn() {
     }else{
       setOnLoad(false)
       setError(true)
-      setShowAlert('Credentials do not match our records')
+      setShowAlert("Something went wrong, please try again")
     }
   }
 

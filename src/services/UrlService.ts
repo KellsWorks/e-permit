@@ -1,9 +1,6 @@
-let domain = ''
 let apiDomain = ''
 
 if(process.env.NODE_ENV === 'production'){
-
-    domain = 'https://api.dnpw.jobfindermw.com'
 
     apiDomain = 'https://api.dnpw.jobfindermw.com/api/dnpw/v1/'
 

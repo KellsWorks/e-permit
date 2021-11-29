@@ -218,14 +218,14 @@ export default function Signup() {
               
               <div>
                   <p className="text-center text-sm justify-center  dark:text-gray-300">
-                  By continuing to sign up, you agree to Alembi user <span className="text-green-500 underline font-medium">Privacy Policy</span>
+                  By continuing to sign up, you agree to DNPW <span className="text-green-500 underline font-medium">Privacy Policy</span>
                   </p>
               </div>
 
             </div>
 
             <div>
-              <SubmitButton text="continue to create account" onLoad={onLoad}/> 
+              <SubmitButton text="Create account" onLoad={onLoad}/> 
             </div>
 
             <div>

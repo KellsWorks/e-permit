@@ -16,7 +16,7 @@ export default function ApplicationGuide() {
 
     return (
         
-        <div className="bg-white">
+        <div className="bg-white overflow-hidden">
         <section className="text-gray-600 body-font pt-0">
 
             <div className="container sm:py-24 py-3 mx-auto  sm:px-16 px-5">

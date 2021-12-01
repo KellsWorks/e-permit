@@ -1,14 +1,12 @@
 import { useState } from 'react'
-import { Link, useHistory } from 'react-router-dom'
-import Icon from '../../icon.png'
+import { useHistory } from 'react-router-dom'
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 
 import 'react-phone-number-input/style.css'
 import PhoneInput from 'react-phone-number-input'
-import SubmitButton from '../../components/SubmitButton';
-import { ChevronRightIcon, ExclamationCircleIcon } from '@heroicons/react/outline';
+import { ChevronRightIcon } from '@heroicons/react/outline';
 import RegisterService from '../../services/RegisterService';
 
 interface Props{
@@ -78,7 +76,7 @@ export default function Signup() {
       return (
           <button
           onClick={() => {setCurrentStep(currentStep+1)}}
-           className="flex bg-green-500 space-x-1 items-center p-2 hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-green-500 transition duration-150 rounded-sm w-48">
+           className="w-full flex bg-green-500 space-x-1 justify-between sm:items-center p-2 hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-green-500 transition duration-150 rounded-sm sm:w-48">
               <p className="text-md text-white">
                   {buttonText}
               </p>
@@ -87,7 +85,7 @@ export default function Signup() {
       )
   }
     return (
-      <div className="min-h-screen px-24 py-10 bg-white dark:bg-black">
+      <div className="min-h-screen sm:px-24 px-5 py-10 bg-white dark:bg-black">
         {(() => {
         if (currentStep === 1) {
           return (
@@ -112,7 +110,7 @@ export default function Signup() {
               Provide your personal details (as they appears on your ID or passport). Fields marked (*) are required.
             </p>
 
-             <div className="rounded shadow-sm space-y-2">
+             <div className="w-full space-y-2">
               <div>
                 <label className="block text-gray-700 dark:text-gray-300">Full name<span className="text-red-500">*</span></label>
                 <input
@@ -123,7 +121,7 @@ export default function Signup() {
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-1/2 dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
+                  className="sm:w-1/2 w-full dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
                   placeholder="Your first and last name"
                 />
               </div>
@@ -137,21 +135,21 @@ export default function Signup() {
                   required
                   value={nationality}
                   onChange={(e) => setNationality(e.target.value)}
-                  className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-1/2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
+                  className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block sm:w-1/2 w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
                   placeholder="Country of origin"
                 />
               </div>
 
-              <div>
+              <div className='w-full'>
                 <label className="block text-gray-700 dark:text-gray-300">Date of birth<span className="text-red-500">*</span></label>
                 <DatePicker 
                 selected={startDate} 
                 onChange={(date: any) => setStartDate(date)}
-                className="w-1/2 py-3 px-2 focus:outline-none border rounded-sm focus:ring-green-500 focus:border-green-500 focus:z-10"
+                className="sm:w-1/2 w-full py-3 px-2 focus:outline-none border rounded-sm focus:ring-green-500 focus:border-green-500 focus:z-10"
                  />
               </div>
 
-              <div className='w-1/2'>
+              <div className='sm:w-1/2'>
               <WizardButton buttonText="Save and continue"/>
             </div>
               </div>
@@ -180,8 +178,8 @@ export default function Signup() {
             <p className="mt-2 mb-2 text-sm">
               Provide your most up-to-date contact details and a working email. Fields marked (*) are required.
             </p>
-            <div className="flex w-full space-x-4">
-              <div className="w-1/2 rounded shadow-sm space-y-2">
+            <div className="sm:flex flex-row w-full sm:space-x-4 space-y-4">
+              <div className="sm:w-1/2 rounded shadow-sm space-y-2">
               <div>
                 <label className="block text-gray-700 dark:text-gray-300">Postal address<span className="text-red-500">*</span></label>
                 <input
@@ -221,11 +219,9 @@ export default function Signup() {
                     onChange={setValue}/>
               </div>
 
-              <div className='w-1/2'>
-              <WizardButton buttonText={'Save and proceed'}/> 
+              
             </div>
-            </div>
-            <div className="w-1/2 rounded shadow-sm space-y-2">
+            <div className="sm:w-1/2 w-full rounded shadow-sm space-y-2">
               
               <div>
                 <label className="block text-gray-700 dark:text-gray-300">Country of residence<span className="text-red-500">*</span></label>
@@ -258,6 +254,14 @@ export default function Signup() {
               </div>
 
         
+            </div>
+            <div className='flex space-x-2'>
+                <button 
+              onClick={() => {setCurrentStep(currentStep-1)}}
+              className="p-2 bg-gray-700 text-white rounded-sm">
+                Previous
+              </button>
+              <WizardButton buttonText={'Save and proceed'}/> 
             </div>
             </div>
             </div>
@@ -293,9 +297,9 @@ export default function Signup() {
               <li>Contain at least one UPPERCASE letter</li>
             </ul>
 
-             <div className="rounded shadow-sm space-y-2">
+             <div className="space-y-2">
               
-              <div className='w-1/2'>
+              <div className='w-full sm:w-1/2'>
                 <label className="block text-gray-700 dark:text-gray-300">Password<span className="text-red-500">*</span></label>
                 <input
                   id="password"
@@ -312,7 +316,7 @@ export default function Signup() {
                 />
               </div>
 
-              <div className='w-1/2'>
+              <div className='w-full sm:w-1/2'>
                 <label className="block text-gray-700 dark:text-gray-300">Confirm password<span className="text-red-500">*</span></label>
                 <input
                   id="confirm-password"

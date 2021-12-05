@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react'
+import { ToastContainer } from 'react-toastify'
 import { ScrollToTop } from '../../components/ScrollToTop'
 import Cta from './Cta'
 
@@ -48,6 +49,17 @@ export default function LandingPageFooter() {
                 </span>
                 </div>
             </footer>
+            <ToastContainer
+                position="bottom-right"
+                autoClose={5000}
+                hideProgressBar={true}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
         </div>
     )
 }

@@ -1,16 +1,30 @@
 import { useState } from 'react'
+
 import { useHistory } from 'react-router-dom'
+
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 
+import { CountryDropdown } from 'react-country-region-selector';
+
 import 'react-phone-number-input/style.css'
+
 import PhoneInput from 'react-phone-number-input'
-import { ChevronRightIcon, ExclamationCircleIcon } from '@heroicons/react/outline';
+
+import { ChevronLeftIcon, ChevronRightIcon, EyeIcon, EyeOffIcon } from '@heroicons/react/outline';
+
 import RegisterService from '../../services/RegisterService';
 
+import Oval from 'react-loading-icons/dist/components/oval';
+
+import { toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
+
 interface Props{
-  buttonText: string
+  buttonText: string,
+  onProcessing: boolean
 }
 
 export default function Signup() {
@@ -27,15 +41,26 @@ export default function Signup() {
 
     const [physicalAddress, setPhysicalAddress] = useState("")
 
+    const [postAddress, setPostAddress] = useState("")
+
     const [nationality, setNationality] = useState("")
+    const [countryOfOrigin, setCountryOfOrigin] = useState("")
 
     const [password, setPassword] = useState("")
+    const [passwordShown, setPasswordShown] = useState(false)
 
     const [confirmPassword, setConfirmPassword] = useState("")
+    const [confirmPasswordShown, setConfirmPasswordShown] = useState(false)
 
     const [onLoad, setOnLoad] = useState(false)
 
-    const [message, setMessage] = useState("")
+    const [stepOneError, setStepOneError] = useState("")
+    const [stepOneLoad, setStepOneLoad] = useState(false)
+
+    const [stepTwoError, setStepTwoError] = useState("")
+    const [stepTwoLoad, setStepTwoLoad] = useState(false)
+
+    const [stepThreeError, setStepThreeError] = useState("")
 
     const history =  useHistory()
 
@@ -65,25 +90,132 @@ export default function Signup() {
 
     if(response === 'You have registered successfully!'){
       setOnLoad(false)
+
+      toast.success(response, {
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined, 
+        bodyStyle: {borderRadius: 0}  
+      })
+
       history.push('/sign-in')
     }else{
       setOnLoad(false)
-      setMessage('Something went wrong, please try again.')
+      toast.error('Something went wrong, please try again.', {
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined, 
+        bodyStyle: {borderRadius: 0}  
+      })
     }
     }
-    
-    const WizardButton: React.FC<Props> = ({buttonText}) => {
+
+    function processStepOne(){
+      if(name !== '' && nationality !== ''){
+        setStepOneError('')
+        return true
+      }else{
+        setStepOneError('Please enter the fields marked (*)')
+        return false
+      }
+    }
+
+    function processStepTwo(){
+      if(email !== '' && countryOfOrigin !== '' && physicalAddress !== '' && value !== ''){
+        return true
+      }else{
+        setStepTwoError('Please enter the fields marked (*)')
+        return false
+      }
+    }
+
+    function processStepThree(){
+      if(password !== '' && confirmPassword !== ''){
+        if(password === confirmPassword){
+          
+          var regex = {
+              'capital' : /[A-Z]/,
+              'digit'   : /[0-9]/,
+              'except'  : /[aeiou]/,
+          }
+
+          if(regex.capital.test(password) && regex.digit.test(password) && regex.except.test(password)){
+
+            setStepThreeError(''
+            )
+            handleSubmit()
+            return true
+          }else{
+            setStepThreeError('Please check that your password meets the described criteria')
+            return false
+          }
+        }else{
+          setStepThreeError('Passwords do not match')
+          return false
+        }
+      }else{
+        setStepThreeError('Please check that your password meets the described criteria')
+        return false
+      }
+    }
+      
+    const WizardButton: React.FC<Props> = ({buttonText, onProcessing}) => {
       return (
           <button
-          onClick={() => {setCurrentStep(currentStep+1)}}
-           className="w-full flex bg-green-500 space-x-1 justify-between sm:items-center p-2 hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-green-500 transition duration-150 rounded-sm sm:w-48">
+            onClick={() => {
+
+              if(currentStep === 1){
+                 setStepOneLoad(true)
+
+                if(processStepOne() === true){
+                  setCurrentStep(currentStep+1)
+                  setStepOneLoad(false)
+                  
+                }else{
+                  setStepOneLoad(false)
+                }
+              }else if(currentStep === 2){
+                setStepTwoLoad(true)
+
+                if(processStepTwo() === true){
+                  setCurrentStep(currentStep+1)
+                  setStepTwoLoad(false)
+                }else{
+                  
+                  setStepTwoLoad(false)
+                }
+              }
+              else if(currentStep === 3){
+
+                if(processStepThree() === true){
+                  console.log(true)
+                }else{
+                  console.log(false)
+                }
+              }
+
+              }
+            }
+
+            className="w-full flex bg-green-500 space-x-1 justify-between sm:items-center p-2 hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-green-500 transition duration-150 rounded-none sm:w-48">
               <p className="text-md text-white">
                   {buttonText}
               </p>
-              <ChevronRightIcon className="w-6 h-6 text-white"/>
+              {
+                onProcessing ? 
+                <Oval className="w-5 h-5"/> :
+                <ChevronRightIcon className="w-6 h-6 text-white"/>
+              }
           </button>
       )
   }
+
     return (
       <div className="min-h-screen sm:px-24 px-5 py-10 bg-white dark:bg-black">
         {(() => {
@@ -96,9 +228,9 @@ export default function Signup() {
           <p className="mt-3 mb-3 text-sm">
             An account is required to apply for any permit/license including CITES. You can use this account to track your application progress and to send inquiries to DNPW regarding your application.
           </p>
-          {/* <p className="text-center text-red-500 bg-gray-100 m-2 font-medium text-sm">
-            Errors and feedback will load here
-          </p> */}
+          <p className="text-center text-red-500 bg-gray-100 m-2 font-medium text-sm">
+            {stepOneError}
+          </p> 
           <div style={{ backgroundColor: '#FBF3F3' }} className="rounded-sm p-10">
             <div className="flex">
               <div className="rounded-full w-6 text-center bg-green-500 text-white">
@@ -127,18 +259,14 @@ export default function Signup() {
               </div>
               <div>
                 <label className="block text-gray-700 dark:text-gray-300">Nationality<span className="text-red-500">*</span></label>
-                <input
-                  id="nationality"
-                  name="nationality"
-                  type="text"
-                  autoComplete="country"
-                  required
-                  value={nationality}
-                  onChange={(e) => setNationality(e.target.value)}
-                  className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block sm:w-1/2 w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
-                  placeholder="Country of origin"
-                />
+                <div
+                className="bg-white dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block sm:w-1/2 w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
+                >
+                  <CountryDropdown classes='outline-none w-full focus:outline-none focus:ring-green-500 focus:border-green-500' value={nationality} onChange={(e) => setNationality(e)}/>
+                </div>
+
               </div>
+
 
               <div className='w-full'>
                 <label className="block text-gray-700 dark:text-gray-300">Date of birth<span className="text-red-500">*</span></label>
@@ -150,7 +278,7 @@ export default function Signup() {
               </div>
 
               <div className='sm:w-1/2'>
-              <WizardButton buttonText="Save and continue"/>
+              <WizardButton buttonText="Save and continue" onProcessing={stepOneLoad}/>
             </div>
               </div>
           </div>
@@ -165,9 +293,9 @@ export default function Signup() {
           <p className="mt-3 mb-3 text-sm">
             An account is required to apply for any permit/license including CITES. You can use this account to track your application progress and to send inquiries to DNPW regarding your application.
           </p>
-          {/* <p className="text-center text-red-500 bg-gray-100 m-2 font-medium text-sm">
-            Errors and feedback will load here
-          </p> */}
+          <p className="text-center text-red-500 bg-gray-100 m-2 font-medium text-sm">
+            {stepTwoError}
+          </p>
           <div style={{ backgroundColor: '#FBF3F3' }} className="rounded-sm p-10">
             <div className="flex">
               <div className="rounded-full w-6 text-center bg-green-500 text-white">
@@ -179,19 +307,17 @@ export default function Signup() {
               Provide your most up-to-date contact details and a working email. Fields marked (*) are required.
             </p>
             <div className="sm:flex flex-row w-full sm:space-x-4 space-y-4">
-              <div className="sm:w-1/2 rounded shadow-sm space-y-2">
+              <div className="sm:w-1/2 space-y-2">
               <div>
                 <label className="block text-gray-700 dark:text-gray-300">Postal address<span className="text-red-500">*</span></label>
                 <input
-                  id="username"
-                  name="name"
                   type="text"
                   autoComplete="name"
                   required
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  value={postAddress}
+                  onChange={(e) => setPostAddress(e.target.value)}
                   className="w-full dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
-                  placeholder="Your first and last name"
+                  placeholder="Post office address"
                 />
               </div>
               
@@ -215,26 +341,21 @@ export default function Signup() {
                 <PhoneInput
                     placeholder="Enter your phone number"
                     value={value}
+                    style={{ outline: 'none' }}
                     className="border py-3 px-2 focus:outline-none"
                     onChange={setValue}/>
               </div>
 
               
             </div>
-            <div className="sm:w-1/2 w-full rounded shadow-sm space-y-2">
+            <div className="sm:w-1/2 w-full space-y-2">
               
               <div>
                 <label className="block text-gray-700 dark:text-gray-300">Country of residence<span className="text-red-500">*</span></label>
-                <input
-                  id="nationality"
-                  name="nationality"
-                  type="text"
-                  autoComplete="country"
-                  required
-                  value={nationality}
-                  onChange={(e) => setNationality(e.target.value)}
-                  className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
-                  placeholder="Country of origin"
+                <CountryDropdown
+                  value={countryOfOrigin}
+                  onChange={(value) => setCountryOfOrigin(value)}
+                  classes="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
                 />
               </div>
 
@@ -258,12 +379,13 @@ export default function Signup() {
             
             </div>
             <div className='flex space-x-2 mt-3'>
-                <button 
-                  onClick={() => {setCurrentStep(currentStep-1)}}
-                  className="p-2 bg-gray-700 text-white rounded-sm">
-                    Previous
-                </button>
-              <WizardButton buttonText={'Save and proceed'}/> 
+              <button 
+                onClick={() => {setCurrentStep(currentStep-1)}}
+                className="flex items-center p-2 bg-gray-700 text-white rounded-none hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-700 transition duration-150">
+                  <ChevronLeftIcon className='w-5 h-5 text-white'/>
+                <p>Previous</p>
+              </button>
+              <WizardButton buttonText={'Save and proceed'} onProcessing={stepTwoLoad}/> 
             </div>
             </div>
         </div>
@@ -277,10 +399,9 @@ export default function Signup() {
           <p className="mt-3 mb-3 text-sm">
             An account is required to apply for any permit/license including CITES. You can use this account to track your application progress and to send inquiries to DNPW regarding your application.
           </p>
-          <div className="border-l-4 border border-red-500 flex space-x-3 p-2 mb-2 items-center">
-            <ExclamationCircleIcon className='w-4 h-4 text-red-500'/>
-            <p className="text-sm text-red-500 font-medium">The passwords do not match</p>
-          </div>
+          <p className="text-center text-red-500 bg-gray-100 m-2 font-medium text-sm">
+            {stepThreeError}
+          </p>
           <div style={{ backgroundColor: '#FBF3F3' }} className="rounded-sm p-10">
             <div className="flex">
               <div className="rounded-full w-6 text-center bg-green-500 text-white">
@@ -299,50 +420,67 @@ export default function Signup() {
               <li>Contain at least one UPPERCASE letter</li>
             </ul>
 
-             <div className="space-y-2">
+             <div className="">
               
-              <div className='w-full sm:w-1/2'>
+              <div className='w-full sm:w-1/2 relative'>
                 <label className="block text-gray-700 dark:text-gray-300">Password<span className="text-red-500">*</span></label>
                 <input
                   id="password"
                   name="password"
-                  type="password"
                   autoComplete="current-password"
                   required
-                  maxLength={8}
+                  type={passwordShown ? "text" : "password"}
+                  maxLength={12}
                   minLength={8}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
                   placeholder="Password"
                 />
+                <button onClick={(e) => {
+                  passwordShown ? setPasswordShown(false) : setPasswordShown(true)
+                }}>
+                  {
+                    passwordShown ? <EyeOffIcon className="w-5 h-6 text-gray-900 absolute right-0 top-0 mt-9 mr-4"/>:
+                    <EyeIcon className="w-5 h-6 text-gray-900 absolute right-0 top-0 mt-9 mr-4"/>
+                  }
+                </button>
               </div>
 
-              <div className='w-full sm:w-1/2'>
+              <div className='w-full sm:w-1/2 relative'>
                 <label className="block text-gray-700 dark:text-gray-300">Confirm password<span className="text-red-500">*</span></label>
                 <input
                   id="confirm-password"
                   name="c-password"
-                  type="password"
+                  type={confirmPasswordShown ? "text" : "password"}
                   autoComplete="current-password"
                   required
-                  maxLength={8}
+                  maxLength={12}
                   minLength={8}
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
                   placeholder="Confirm password"
                 />
+                <button onClick={(e) => {
+                  confirmPasswordShown ? setConfirmPasswordShown(false) : setConfirmPasswordShown(true)
+                }}>
+                  {
+                    confirmPasswordShown ? <EyeOffIcon className="w-5 h-6 text-gray-900 absolute right-0 top-0 mt-9 mr-4"/>:
+                    <EyeIcon className="w-5 h-6 text-gray-900 absolute right-0 top-0 mt-9 mr-4"/>
+                  }
+                </button>
               </div>
 
               <div className='w-1/2 flex space-x-2'>
                 
               <button 
               onClick={() => {setCurrentStep(currentStep-1)}}
-              className="p-2 bg-gray-700 text-white rounded-sm">
-                Previous
+              className="flex items-center p-2 bg-gray-700 text-white rounded-none hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-700 transition duration-150">
+                <ChevronLeftIcon className='w-5 h-5 text-white'/>
+                <p>Previous</p>
               </button>
-              <WizardButton buttonText={'Finish'}/> 
+              <WizardButton buttonText={'Finish'} onProcessing={onLoad}/> 
             </div>
               </div>
           </div>
@@ -350,6 +488,7 @@ export default function Signup() {
           )
         }
       })()}
+      
       </div>
     )
 }

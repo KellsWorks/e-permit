@@ -31,7 +31,6 @@ class RegisterService {
         }catch(error){
 
             return false
-
         }
 
     }

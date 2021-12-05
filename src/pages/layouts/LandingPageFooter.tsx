@@ -7,7 +7,7 @@ import Cta from './Cta'
 export default function LandingPageFooter() {
     return (
         <div>
-            <ScrollToTop/>
+            
             <Cta/>
             <footer className="text-gray-600 bg-green-500 body-font">
                 <div className="container px-5 py-8 mx-auto flex items-center sm:flex-row flex-col">
@@ -49,6 +49,7 @@ export default function LandingPageFooter() {
                 </span>
                 </div>
             </footer>
+            <ScrollToTop/>
             <ToastContainer
                 position="bottom-right"
                 autoClose={5000}

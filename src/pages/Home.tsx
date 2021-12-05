@@ -13,10 +13,10 @@ const Home = () => {
                     <p className="mb-8 leading-relaxed text-gray-100">Welcome to the DNPW Electronic Permit Application Portal (ePermit).</p>
                     <div className="flex sm:flex-row flex-col sm:justify-center sm:space-x-3 mt-2">
                         <div>
-                            <Link to="#" className="text-center text-white transition duration-150 bg-green-500 py-4 px-10 hover:bg-green-600  text-lg font-bold focus:ring-2 focus:ring-offset-2 focus:ring-green-500">Get started</Link>
+                            <Link to="/sign-in" className="text-center text-white transition duration-150 bg-green-500 py-4 px-10 hover:bg-green-600  text-lg font-bold focus:ring-2 focus:ring-offset-2 focus:ring-green-500">Get started</Link>
                         </div>
                         <div>
-                            <Link to="#" className="bg-transparent border-2 border-white-500 text-white py-4 px-12 hover:bg-green-500 transition duration-150 text-lg font-bold">Start application</Link>
+                            <Link to="/permit-application" className="bg-transparent border-2 border-white-500 text-white py-4 px-12 hover:bg-green-600 transition duration-150 text-lg font-bold">Start application</Link>
                         </div>
                     </div>
                     </div>

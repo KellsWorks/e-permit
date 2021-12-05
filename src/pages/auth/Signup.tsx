@@ -6,7 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import 'react-phone-number-input/style.css'
 import PhoneInput from 'react-phone-number-input'
-import { ChevronRightIcon } from '@heroicons/react/outline';
+import { ChevronRightIcon, ExclamationCircleIcon } from '@heroicons/react/outline';
 import RegisterService from '../../services/RegisterService';
 
 interface Props{
@@ -96,9 +96,9 @@ export default function Signup() {
           <p className="mt-3 mb-3 text-sm">
             An account is required to apply for any permit/license including CITES. You can use this account to track your application progress and to send inquiries to DNPW regarding your application.
           </p>
-          <p className="text-center text-red-500 bg-gray-100 m-2 font-medium text-sm">
+          {/* <p className="text-center text-red-500 bg-gray-100 m-2 font-medium text-sm">
             Errors and feedback will load here
-          </p>
+          </p> */}
           <div style={{ backgroundColor: '#FBF3F3' }} className="rounded-sm p-10">
             <div className="flex">
               <div className="rounded-full w-6 text-center bg-green-500 text-white">
@@ -165,9 +165,9 @@ export default function Signup() {
           <p className="mt-3 mb-3 text-sm">
             An account is required to apply for any permit/license including CITES. You can use this account to track your application progress and to send inquiries to DNPW regarding your application.
           </p>
-          <p className="text-center text-red-500 bg-gray-100 m-2 font-medium text-sm">
+          {/* <p className="text-center text-red-500 bg-gray-100 m-2 font-medium text-sm">
             Errors and feedback will load here
-          </p>
+          </p> */}
           <div style={{ backgroundColor: '#FBF3F3' }} className="rounded-sm p-10">
             <div className="flex">
               <div className="rounded-full w-6 text-center bg-green-500 text-white">
@@ -255,14 +255,15 @@ export default function Signup() {
 
         
             </div>
-            <div className='flex space-x-2'>
-                <button 
-              onClick={() => {setCurrentStep(currentStep-1)}}
-              className="p-2 bg-gray-700 text-white rounded-sm">
-                Previous
-              </button>
-              <WizardButton buttonText={'Save and proceed'}/> 
+            
             </div>
+            <div className='flex space-x-2 mt-3'>
+                <button 
+                  onClick={() => {setCurrentStep(currentStep-1)}}
+                  className="p-2 bg-gray-700 text-white rounded-sm">
+                    Previous
+                </button>
+              <WizardButton buttonText={'Save and proceed'}/> 
             </div>
             </div>
         </div>
@@ -276,9 +277,10 @@ export default function Signup() {
           <p className="mt-3 mb-3 text-sm">
             An account is required to apply for any permit/license including CITES. You can use this account to track your application progress and to send inquiries to DNPW regarding your application.
           </p>
-          <p className="text-center text-red-500 bg-gray-100 m-2 font-medium text-sm">
-            Errors and feedback will load here
-          </p>
+          <div className="border-l-4 border border-red-500 flex space-x-3 p-2 mb-2 items-center">
+            <ExclamationCircleIcon className='w-4 h-4 text-red-500'/>
+            <p className="text-sm text-red-500 font-medium">The passwords do not match</p>
+          </div>
           <div style={{ backgroundColor: '#FBF3F3' }} className="rounded-sm p-10">
             <div className="flex">
               <div className="rounded-full w-6 text-center bg-green-500 text-white">

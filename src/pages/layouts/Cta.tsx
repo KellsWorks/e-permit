@@ -47,7 +47,7 @@ export default function Cta() {
                     <h1 className=" font-medium title-font text-white">Create an account with DNPW E-Permitting and start applying for permits. Returning users proceed to sign-in.</h1>
                 </div>
                 <div className="flex md:ml-auto md:mr-0 mx-auto items-center flex-shrink-0 space-x-4">
-                    <Link to="/permit-application"  className="bg-transparent transition duration-150 text-white font-medium hover:text-yellow-400 py-1 px-4 border border-blue border-dashed outline-none focus:outline-none hover:border-yellow-400 rounded-sm">
+                    <Link to="/permit-application"  className="bg-transparent transition duration-150 text-white font-medium hover:text-yellow-400 py-2 px-4 border-2 outline-none focus:outline-none hover:border-yellow-400 rounded-none">
                         Start your application
                     </Link>
                 </div>
@@ -71,7 +71,7 @@ export default function Cta() {
                     </div>
                 </div>
                 <div className="lg:w-1/3 md:w-1/2 bg-white flex flex-col md:ml-auto w-full md:py-8 mt-8 md:mt-0">
-                    <h2 className="text-gray-900 mb-1 font-semibold text-2xl uppercase">Get in touch</h2>
+                    <h2 className="text-gray-900 mb-1 font-semibold text-2xl uppercase">Get in touch with us</h2>
                     <p className="leading-relaxed mb-5 text-gray-600">Send us a message to get in touch with us.</p>
                     
                     <form onSubmit={(e) => {
@@ -90,7 +90,7 @@ export default function Cta() {
                             setName(e.target.value)
                         }}
                         required
-                        className="w-full focus:border-blue-500 bg-white rounded-sm border border-gray-300 focus:ring-0 text-sm outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"/>
+                        className="w-full focus:border-green-500 bg-white rounded-sm border border-gray-300 focus:ring-0 text-sm outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"/>
                     </div>
 
                     <div className="relative mb-4">
@@ -105,7 +105,7 @@ export default function Cta() {
                         }}
                         name="email"
                         required
-                        className="w-full focus:border-blue-500 bg-white rounded-sm border border-gray-300 focus:ring-0 text-sm outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"/>
+                        className="w-full focus:border-green-500 bg-white rounded-sm border border-gray-300 focus:ring-0 text-sm outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"/>
                     </div>
 
                     <div className="relative mb-4">
@@ -119,7 +119,7 @@ export default function Cta() {
                         }} 
                         name="message" 
                         required
-                        className="w-full focus:border-blue-500 bg-white rounded-sm border border-gray-300 focus:ring-0 h-32 text-sm outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"></textarea>
+                        className="w-full focus:border-green-500 bg-white rounded-sm border border-gray-300 focus:ring-0 h-32 text-sm outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"></textarea>
                     </div>
 
                     <p className="text-xs text-gray-500 mb-3">By submitting, you agree to our <Link to="/privacy-policy-and-terms-of-service" className="underline text-blue-500">terms of service</Link></p>

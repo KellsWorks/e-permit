@@ -1,71 +1,64 @@
-import React from 'react'
-import Lottie from 'react-lottie'
-
-import animationData from '../assets/lf30_editor_ddeyrqgz.json'
+import { PencilAltIcon } from '@heroicons/react/outline';
+import { Link } from 'react-router-dom';
 
 export default function ApplicationGuide() {
-
-    const defaultOptions = {
-      loop: true,
-      autoplay: true, 
-      animationData: animationData,
-      rendererSettings: {
-        preserveAspectRatio: 'xMidYMid slice'
-      }
-    };
 
     return (
         
         <div className="bg-white overflow-hidden">
         <section className="text-gray-600 body-font pt-0">
 
-            <div className="container sm:py-24 py-3 mx-auto  sm:px-16 px-5">
-                <div className="text-center pb-3 md:pb-10 xl:pb-20">
-                    <p className="text-gray-600 text-base lg:text-lg uppercase leading-tight mb-4">Using the application portal</p>
-                    <h1 className="px-2 xl:px-0 xl:text-5xl md:text-3xl text-2xl font-extrabold text-gray-800 mb-3">HOW TO APPLY</h1>
+            <div className="container sm:py-10 py-3 mx-auto  sm:px-16 px-5">
+                <div className="text-center pb-10">
+                    <p className="text-gray-600 text-sm uppercase leading-tight mb-4">Using the application portal</p>
+                    <h3 className='font-bold text-4xl'>
+                            How to apply?
+                        </h3>
                 </div>
 
-              <div className="flex flex-wrap sm:-m-4 -mx-4 -mb-10 -mt-4 md:space-y-0 space-y-6">
+              <div className="flex flex-wrap sm:-m-4 -mx-4 mb-10 md:space-y-0 space-y-6">
 
                 <div className="px-4 md:w-1/3">
-                  <div className="flex bg-white shadow-lg border p-6">
-                    <div className="w-12 h-12 inline-flex items-center justify-center rounded-full bg-green-400 text-white mb-4 flex-shrink-0">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-                        </svg>
-                    </div>
+                  <div className="flex border rounded-sm p-6">
+                    
                     <div className="flex-grow pl-6">
-                      <h2 className="text-gray-900 text-lg title-font mb-2">REGISTER</h2>
-                      <p className="leading-relaxed text-md">Create an account <a href="{{ route('home') }}" className="font-bold txt-yellow">here</a> or login if you already have am account.
+
+                      <div className="flex space-x-2 items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                      </svg>
+                      <h2 className="text-gray-900 text-2xl title-font font-semibold mb-2">Register</h2>
+                      </div>
+                      
+                      <p className="leading-relaxed text-md">Create an account <Link to="/sign-up" className="font-bold text-blue-500">here</Link> or login if you already have am account.
                       Check below for a step-by-step registration guide.</p>
 
                     </div>
                   </div>
                 </div>
                 <div className="px-4 md:w-1/3">
-                  <div className="flex bg-white shadow-lg border p-6">
-                    <div className="w-12 h-12 inline-flex items-center justify-center rounded-full bg-green-400 text-white mb-4 flex-shrink-0">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                    </div>
+                  <div className="flex border rounded-sm p-6">
+                    
                     <div className="flex-grow pl-6">
-                      <h2 className="text-gray-900 text-lg title-font font-medium mb-2">FILL FORM</h2>
+                      <div className="flex space-x-2 items-center">
+                        <PencilAltIcon className='w-12 h-12 text-green-500'/>
+                      <h2 className="text-gray-900 text-2xl title-font font-semibold mb-2">Fill application form</h2>
+                      </div>
                       <p className="leading-relaxed text-base">Select your license/permit category and fill out the required form with your application information.</p>
 
                     </div>
                   </div>
                 </div>
                 <div className="px-4 md:w-1/3 border-5 border-green-600">
-                  <div className="flex bg-white shadow-lg border p-6">
-                    <div className="w-12 h-12 inline-flex items-center justify-center rounded-full bg-green-400 text-white mb-4 flex-shrink-0">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                        </svg>
-                    </div>
+                  <div className="flex border rounded-sm p-6">
                     <div className="flex-grow pl-6">
-                      <h2 className="text-gray-900 text-lg title-font font-medium mb-2">PAY &amp; COLLECT</h2>
+                      <div className="space-x-2 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                      </svg>
+                      <h2 className="text-gray-900 text-2xl title-font font-semibold mb-2">Pay &amp; collect</h2>
+                      
+                      </div>
                       <p className="leading-relaxed text-base">Pay for your application and collect your licence when your permit application has been successful.</p>
 
                     </div>
@@ -147,14 +140,7 @@ export default function ApplicationGuide() {
                     </div>
                   </div>
                 </div>
-                <Lottie options={defaultOptions}
-                    height={100}
-                    width={"100%"}
-                    isStopped={false}
-                    isPaused={false}
-                    />
-              </div>
-            </div>
+            </div></div>
           </section>
     </div>
     )

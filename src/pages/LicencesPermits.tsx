@@ -5,8 +5,8 @@ export default function LicencesPermits() {
         <div className="sm:py-12 py-5 px-5">
 
         <div>
-            <div className="container mx-auto pt-10">
-                <div className="text-center pb-3 md:pb-10 xl:pb-20">
+            <div className="container mx-auto">
+                <div className="text-center pb-3 xl:pb-20">
                     <p className="text-gray-600 text-base lg:text-lg uppercase leading-tight mb-8">Discover the various available licenses and permits.</p>
 
                     <h1 className="px-2 xl:px-0 xl:text-5xl md:text-3xl text-2xl font-extrabold text-gray-800">Licences &amp; Permits</h1>

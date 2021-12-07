@@ -203,7 +203,7 @@ export default function Signup() {
               }
             }
 
-            className="w-full flex bg-green-500 space-x-1 justify-between sm:items-center p-2 hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-green-500 transition duration-150 rounded-none sm:w-48">
+            className="w-full flex bg-green-500 space-x-1 justify-between sm:items-center p-2 hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-400 transition duration-150 rounded-none sm:w-48">
               <p className="text-md text-white">
                   {buttonText}
               </p>
@@ -222,15 +222,20 @@ export default function Signup() {
         if (currentStep === 1) {
           return (
             <div>
-          <h3 className="text-md text-green-500 border-green-500 font-medium border-b pb-2 w-56">
+          <h3 className="text-md text-green-500 border-green-500 font-medium border-b-2 pb-2 w-56">
             Create a new account
           </h3>
           <p className="mt-3 mb-3 text-sm">
             An account is required to apply for any permit/license including CITES. You can use this account to track your application progress and to send inquiries to DNPW regarding your application.
-          </p>
-          <p className="text-center text-red-500 bg-gray-100 m-2 font-medium text-sm">
-            {stepOneError}
           </p> 
+          {
+            stepOneError !== '' ?
+            <div className="p-2 bg-red-800 items-center text-red-100 leading-none lg:rounded-full flex lg:inline-flex sm:w-full" role="alert">
+              <span className="flex rounded-full bg-red-500 uppercase px-2 py-1 text-xs font-bold mr-3">Error</span>
+              <span className="font-semibold mr-2 text-left flex-auto">{stepOneError}</span>
+            </div> :
+          <></>
+          }
           <div style={{ backgroundColor: '#FBF3F3' }} className="rounded-sm p-10">
             <div className="flex">
               <div className="rounded-full w-6 text-center bg-green-500 text-white">
@@ -253,16 +258,16 @@ export default function Signup() {
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="sm:w-1/2 w-full dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
+                  className="sm:w-1/2 w-full dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
                   placeholder="Your first and last name"
                 />
               </div>
               <div>
                 <label className="block text-gray-700 dark:text-gray-300">Nationality<span className="text-red-500">*</span></label>
                 <div
-                className="bg-white dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block sm:w-1/2 w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
+                className="bg-white dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block sm:w-1/2 w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
                 >
-                  <CountryDropdown classes='outline-none w-full focus:outline-none focus:ring-green-500 focus:border-green-500' value={nationality} onChange={(e) => setNationality(e)}/>
+                  <CountryDropdown classes='outline-none w-full focus:outline-none focus:ring-blue-400 focus:border-blue-400' value={nationality} onChange={(e) => setNationality(e)}/>
                 </div>
 
               </div>
@@ -273,7 +278,7 @@ export default function Signup() {
                 <DatePicker 
                 selected={startDate} 
                 onChange={(date: any) => setStartDate(date)}
-                className="sm:w-1/2 w-full py-3 px-2 focus:outline-none border rounded-sm focus:ring-green-500 focus:border-green-500 focus:z-10"
+                className="sm:w-1/2 w-full py-3 px-2 focus:outline-none border rounded-sm focus:ring-blue-400 focus:border-blue-400 focus:z-10"
                  />
               </div>
 
@@ -287,15 +292,20 @@ export default function Signup() {
         } else if (currentStep === 2) {
           return (
             <div>
-          <h3 className="text-md text-green-500 border-green-500 font-medium border-b pb-2 w-56">
+          <h3 className="text-md text-green-500 border-green-500 font-medium border-b-2 pb-2 w-56">
             Create a new account
           </h3>
           <p className="mt-3 mb-3 text-sm">
             An account is required to apply for any permit/license including CITES. You can use this account to track your application progress and to send inquiries to DNPW regarding your application.
           </p>
-          <p className="text-center text-red-500 bg-gray-100 m-2 font-medium text-sm">
-            {stepTwoError}
-          </p>
+          {
+            stepTwoError !== '' ?
+            <div className="sm:w-full p-2 bg-red-800 items-center text-red-100 leading-none lg:rounded-full flex lg:inline-flex" role="alert">
+              <span className="flex rounded-full bg-red-500 uppercase px-2 py-1 text-xs font-bold mr-3">Error</span>
+              <span className="font-semibold mr-2 text-left flex-auto">{stepTwoError}</span>
+            </div> :
+          <></>
+          }
           <div style={{ backgroundColor: '#FBF3F3' }} className="rounded-sm p-10">
             <div className="flex">
               <div className="rounded-full w-6 text-center bg-green-500 text-white">
@@ -316,7 +326,7 @@ export default function Signup() {
                   required
                   value={postAddress}
                   onChange={(e) => setPostAddress(e.target.value)}
-                  className="w-full dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
+                  className="w-full dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
                   placeholder="Post office address"
                 />
               </div>
@@ -331,7 +341,7 @@ export default function Signup() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
+                  className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
                   placeholder="Your email address"
                 />
               </div>
@@ -355,7 +365,7 @@ export default function Signup() {
                 <CountryDropdown
                   value={countryOfOrigin}
                   onChange={(value) => setCountryOfOrigin(value)}
-                  classes="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
+                  classes="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
                 />
               </div>
 
@@ -369,7 +379,7 @@ export default function Signup() {
                   required
                   value={physicalAddress}
                   onChange={(e) => setPhysicalAddress(e.target.value)}
-                  className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
+                  className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
                   placeholder="Your physical address"
                 />
               </div>
@@ -393,15 +403,20 @@ export default function Signup() {
         } else {
           return (
             <div>
-          <h3 className="text-md text-green-500 border-green-500 font-medium border-b pb-2 w-56">
+          <h3 className="text-md text-green-500 border-green-500 font-medium border-b-2 pb-2 w-56">
             Create a new account
           </h3>
           <p className="mt-3 mb-3 text-sm">
             An account is required to apply for any permit/license including CITES. You can use this account to track your application progress and to send inquiries to DNPW regarding your application.
           </p>
-          <p className="text-center text-red-500 bg-gray-100 m-2 font-medium text-sm">
-            {stepThreeError}
-          </p>
+          {
+            stepThreeError !== '' ?
+            <div className="sm:w-full p-2 bg-red-800 items-center text-red-100 leading-none lg:rounded-full flex lg:inline-flex" role="alert">
+              <span className="flex rounded-full bg-red-500 uppercase px-2 py-1 text-xs font-bold mr-3">Error</span>
+              <span className="font-semibold mr-2 text-left flex-auto">{stepThreeError}</span>
+            </div> :
+          <></>
+          }
           <div style={{ backgroundColor: '#FBF3F3' }} className="rounded-sm p-10">
             <div className="flex">
               <div className="rounded-full w-6 text-center bg-green-500 text-white">
@@ -434,7 +449,7 @@ export default function Signup() {
                   minLength={8}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
+                  className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
                   placeholder="Password"
                 />
                 <button onClick={(e) => {
@@ -459,7 +474,7 @@ export default function Signup() {
                   minLength={8}
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
+                  className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
                   placeholder="Confirm password"
                 />
                 <button onClick={(e) => {

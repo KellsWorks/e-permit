@@ -1,10 +1,10 @@
-/* This example requires Tailwind CSS v2.0+ */
 import { Fragment, useEffect, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import CookieService from '../services/CookieService'
 import UrlService from '../services/UrlService'
 import Avatar from '../assets/avatar.jpg'
 import SubmitButton from '../components/SubmitButton'
+import { XIcon } from '@heroicons/react/outline'
 
 export default function ChangeProfile() {
     
@@ -65,7 +65,7 @@ export default function ChangeProfile() {
 
   return (
     <div>
-      <img onClick={() => {setOpen(!open)}} src={"http://127.0.0.1:8000/storage/images/profile/" + user } placeholder={Avatar} className="w-20 h-20 rounded-full" alt="avatar"/>
+      <img onClick={() => {setOpen(!open)}} src={"http://127.0.0.1:8000/storage/images/profile/" + user } placeholder={Avatar} className="w-20 h-20 rounded-full border border-green-500 object-cover" alt="avatar"/>
       <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" initialFocus={cancelButtonRef} onClose={setOpen}>
         <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
@@ -95,18 +95,19 @@ export default function ChangeProfile() {
               e.preventDefault()
               handleSubmit()
             }}>
-            <div className="inline-block align-bottom bg-white rounded-sm text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <div className="inline-block align-bottom bg-white rounded-none text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
               <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                 <div className="sm:flex sm:items-start">
-                  <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-gray-100 sm:mx-0 sm:h-10 sm:w-10">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                  </div>
                   <div className="w-full mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                    <Dialog.Title as="h3" className="text-lg leading-6 font-medium text-gray-900">
-                      Update user avatar
-                    </Dialog.Title>
+                    <div className='flex justify-between'>
+                      <Dialog.Title as="h3" className="text-lg leading-6 font-semibold text-gray-900">
+                        Change profile picture
+                      </Dialog.Title>
+                      <button onClick={() => setOpen(false)}
+                      ref={cancelButtonRef}>
+                        <XIcon className='w-4 h-4'/>
+                      </button>
+                    </div>
                     <div className="mt-2 w-full">
                       <div className="w-full">
                         <div className="mt-1 flex items-center">
@@ -120,7 +121,7 @@ export default function ChangeProfile() {
 
                     <div className="w-full">
                         <label className="w-full text-sm font-medium text-gray-700">Preview</label>
-                        <div className="w-full mt-1 flex px-6 pt-5 pb-6 border-2 hover:border-yellow-500 transition duration-150 border-gray-300 border-dashed rounded-md">
+                        <div className="w-full mt-1 flex px-6 pt-5 pb-6 border-2 hover:border-yellow-500 transition duration-150 border-gray-300 border-dashed rounded-none">
                         <div className="w-full space-y-1 text-center">
                             <svg
                             className="mx-auto h-12 w-12 text-gray-400"
@@ -163,17 +164,8 @@ export default function ChangeProfile() {
                   </div>
                 </div>
               </div>
-              <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                <SubmitButton text="Update" onLoad={onLoad}/>
-                <button
-                  type="button"
-                  className="mt-3 w-full inline-flex justify-center rounded-sm border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                  onClick={() => setOpen(false)}
-                  ref={cancelButtonRef}
-                >
-                  Cancel
-                </button>
-              </div>
+              <div className="bg-gray-50 px-4 py-3 sm:px-6">
+                <SubmitButton text="Update" onLoad={onLoad}/></div>
             </div>
             </form>
           </Transition.Child>

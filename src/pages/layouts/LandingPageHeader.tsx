@@ -3,6 +3,7 @@ import { Popover, Transition, Menu } from '@headlessui/react'
 import {
   BookmarkAltIcon,
   CalendarIcon,
+  ChevronDownIcon,
   GlobeIcon,
   MenuIcon,
   NewspaperIcon,
@@ -145,11 +146,17 @@ export default function LandingPageHeader() {
             CookieService.get("access_token") ? <div className="hidden md:flex items-center space-x-4">
               
               <Menu as="div" className="ml-3 relative">
-                <div>
-                  <Menu.Button className="max-w-xs bg-gray-800 rounded-full flex items-center text-sm focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-offset-gray-800 focus:ring-white">
+                <div className='flex'>
+                  {/* <BellIcon className='w-8 h-8'/> */}
+                   <img className="h-8 w-8 rounded-full focus:ring-0 focus:outline-none" src={"http://localhost:8000/storage/images/profile/" + user } alt="avatar" />
+                  <Menu.Button className="max-w-xs flex items-center text-sm focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-offset-gray-800 focus:ring-white">
                     <span className="sr-only">Open user menu</span>
-                    <img className="h-8 w-8 rounded-full focus:ring-0 focus:outline-none" src={"http://localhost:8000/storage/images/profile/" + user } alt="avatar" />
+                    <div className="ml-2 flex items-center space-x-1">
+                    <p className='text-white'>Kells Kamuzu</p>
+                    <ChevronDownIcon className='w-3 h-3 text-white'/>
+                  </div>
                   </Menu.Button>
+                  
                 </div>
                 <Transition
                   as={Fragment}

@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css?family=Inter');
+@import url('https://fonts.googleapis.com/css?family=Rubik');
 
 *{
-  font-family: 'Inter';
+  font-family: 'Rubik';
 }
 
 @tailwind base;

@@ -17,6 +17,7 @@
     "@types/react-lottie": "^1.2.6",
     "@types/react-phone-number-input": "^3.0.13",
     "axios": "^0.22.0",
+    "draft.js": "^0.2.0",
     "file-saver": "^2.0.5",
     "heroicons": "^1.0.4",
     "moment": "^2.29.1",

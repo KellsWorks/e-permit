@@ -13,10 +13,10 @@ class AuthService{
     async doUserLogin(credentials: Credentials){
 
         const instance = axios.create({
-            baseURL: "http://api.dnpw.jobfindermw.com/",
+            baseURL: "http://localhost:8000",
             withCredentials: false,
             headers: {
-                'Access-Control-Allow-Origin' : '*',
+                'Access-Control-Allow-Origin' : 'http://localhost:8000',
             }
         })
         
@@ -34,12 +34,13 @@ class AuthService{
     }
 
     handleLoginSuccess(response: any, remember: boolean){
+        
         if(!remember){
             const options = {
                 path : "/"
             }
-            CookieService.set('user_id', response.user.id, options)
-            CookieService.set('access_token', response.token, options)
+            CookieService.set('user_id', response.data.user_id, options)
+            CookieService.set('access_token', response.data.token, options)
             return true
         }
 

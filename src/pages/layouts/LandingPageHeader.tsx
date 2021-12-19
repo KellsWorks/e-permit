@@ -4,7 +4,9 @@ import {
   BookmarkAltIcon,
   CalendarIcon,
   ChevronDownIcon,
+  CollectionIcon,
   GlobeIcon,
+  LogoutIcon,
   MenuIcon,
   NewspaperIcon,
   QuestionMarkCircleIcon,
@@ -85,14 +87,15 @@ export default function LandingPageHeader() {
   const [user, setUser] = useState("")
 
   useEffect(() => {
+
       fetch(UrlService.userUrl(),{
           method: 'post',
           headers: {'Content-Type':'application/json'},
-          body: JSON.stringify({ id: CookieService.get('user_id') })
+          body: JSON.stringify({ user_id: CookieService.get('user_id') })
           }).then(response => {
               return response.json()
           }).then(data => {
-              setUser(data.user.user_avatar)
+              setUser(data.data.registrations.avatar)
         }).catch((error) => {
             console.log(error)
         })
@@ -148,7 +151,7 @@ export default function LandingPageHeader() {
               <Menu as="div" className="ml-3 relative">
                 <div className='flex'>
                   {/* <BellIcon className='w-8 h-8'/> */}
-                   <img className="h-8 w-8 rounded-full focus:ring-0 focus:outline-none" src={"http://localhost:8000/storage/images/profile/" + user } alt="avatar" />
+                   <img className="h-8 w-8 rounded-full focus:ring-0 focus:outline-none" src={user !== '' ? "http://localhost:8000/storage/profiles/" + user : 'data:image/jpeg;base64,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' } alt="avatar" />
                   <Menu.Button className="max-w-xs flex items-center text-sm focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-offset-gray-800 focus:ring-white">
                     <span className="sr-only">Open user menu</span>
                     <div className="ml-2 flex items-center space-x-1">
@@ -168,25 +171,21 @@ export default function LandingPageHeader() {
                   leaveTo="transform opacity-0 scale-95"
                 >
                   <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-sm shadow-lg py-1 bg-white border ring-0 ring-black ring-opacity-5 focus:outline-none">
-                      <Menu.Item>
-                          <Link to="/permit-application"
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 transition duration-150"
-                          >
-                            Start application
-                          </Link>
-                      </Menu.Item>
+                      
                       <Menu.Item>
                           <Link to="/profile"
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 transition duration-150"
+                            className="flex items-center space-x-2  px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition duration-150"
                           >
-                            Profile
+                            <CollectionIcon className='w-4 h-4'/>
+                            <p>Dashboard</p>
                           </Link>
                       </Menu.Item><Menu.Item>
                           <Link to="#"
                             onClick={() => {signOut()}}
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-red-500 hover:text-white transition duration-150"
+                            className="flex items-center space-x-2 px-4 py-2 text-sm text-gray-700 hover:bg-red-500 hover:text-white transition duration-150"
                           >
-                            Log out
+                            <LogoutIcon className='w-4 h-4'/>
+                            <p>Log out</p>
                           </Link>
                       </Menu.Item>
                   </Menu.Items>

@@ -32,10 +32,6 @@ export default function SignIn() {
 
     const response = await AuthService.doUserLogin(postData)
 
-    console.log('====================================');
-    console.log(response);
-    console.log('====================================');
-
     if(response){
       AuthService.handleLoginSuccess(response, isChecked)
       history.push('/')

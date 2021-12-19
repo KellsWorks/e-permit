@@ -6,7 +6,7 @@ if(process.env.NODE_ENV === 'production'){
 
 }else{
 
-    apiDomain = 'http://127.0.0.1:8000/api/dnpw/v1/'
+    apiDomain = 'http://localhost:8000/api/'
 
 }
 
@@ -26,7 +26,7 @@ class UrlService {
 
     static userUrl(){
 
-        return apiDomain + 'user/me'
+        return apiDomain + 'profile/user/me'
         
     }
 
@@ -58,6 +58,13 @@ class UrlService {
 
         return apiDomain + 'permit-application/create'
         
+    }
+
+    /* CITES APPLICATION */
+    static createCitesApplication(){
+
+        return apiDomain + 'applications/cites/create'
+
     }
 
     static mainUrl(){

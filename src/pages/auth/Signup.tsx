@@ -52,6 +52,15 @@ export default function Signup() {
     const [confirmPassword, setConfirmPassword] = useState("")
     const [confirmPasswordShown, setConfirmPasswordShown] = useState(false)
 
+    /* Details */
+    const [gender, setGender] = useState("")
+    const [occupation, setOccupation] = useState("")
+    const [district, setDistrict] = useState("")
+    const [identification, setIdentification] = useState("")
+    const [identificationNumber, setIdentificationNumber] = useState("")
+    const [idValidFrom, setIdValidFrom] = useState("")
+    const [idValidTo, setIdValidTo] = useState("")
+
     const [onLoad, setOnLoad] = useState(false)
 
     const [stepOneError, setStepOneError] = useState("")
@@ -69,21 +78,23 @@ export default function Signup() {
       setOnLoad(true)
 
       const postData = {
-
-      name: name,
-
-      email: email,
-
-      date_of_birth: startDate.toLocaleDateString(),
-
-      country: nationality,
-
-      phone: value,
-
-      physical_address: physicalAddress,
-
-      password: password
-
+        name: name, 
+        email: email,
+        phone: value, 
+        password: password,
+        confirm_password: confirmPassword,
+        nationality: nationality,
+        physical_address: physicalAddress, 
+        dob: startDate.toLocaleDateString(),
+        gender: gender,
+        occupation: occupation,
+        postal_address: postAddress,
+        district: district,
+        identification: identification,
+        identification_number: identificationNumber,
+        id_valid_from: idValidFrom,
+        id_valid_to: idValidTo,
+        notes: ''
     }
 
     const response = await RegisterService.processRegister(postData)
@@ -225,13 +236,13 @@ export default function Signup() {
           <h3 className="text-md text-green-500 border-green-500 font-medium border-b-2 pb-2 w-56">
             Create a new account
           </h3>
-          <p className="mt-3 mb-3 text-sm">
+          <p className="mt-3 mb-3">
             An account is required to apply for any permit/license including CITES. You can use this account to track your application progress and to send inquiries to DNPW regarding your application.
           </p> 
           {
             stepOneError !== '' ?
-            <div className="p-2 bg-red-800 items-center text-red-100 leading-none lg:rounded-full flex lg:inline-flex sm:w-full" role="alert">
-              <span className="flex rounded-full bg-red-500 uppercase px-2 py-1 text-xs font-bold mr-3">Error</span>
+            <div className="p-2 bg-red-500 items-center text-red-100 leading-none flex lg:inline-flex sm:w-full" role="alert">
+              <span className="flex rounded-none bg-red-500 uppercase px-2 py-1 text-xs font-bold mr-3">Error</span>
               <span className="font-semibold mr-2 text-left flex-auto">{stepOneError}</span>
             </div> :
           <></>
@@ -243,7 +254,7 @@ export default function Signup() {
               </div>
               <p className='ml-3 text-green-500 font-medium'>User information</p>
             </div>
-            <p className="mt-2 mb-2 text-sm">
+            <p className="mt-2 mb-2">
               Provide your personal details (as they appears on your ID or passport). Fields marked (*) are required.
             </p>
 
@@ -258,14 +269,14 @@ export default function Signup() {
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="sm:w-1/2 w-full dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                  className="sm:w-1/2 w-full dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm"
                   placeholder="Your first and last name"
                 />
               </div>
               <div>
                 <label className="block text-gray-700 dark:text-gray-300">Nationality<span className="text-red-500">*</span></label>
                 <div
-                className="bg-white dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block sm:w-1/2 w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                className="bg-white dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block sm:w-1/2 w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm"
                 >
                   <CountryDropdown classes='outline-none w-full focus:outline-none focus:ring-blue-400 focus:border-blue-400' value={nationality} onChange={(e) => setNationality(e)}/>
                 </div>
@@ -295,13 +306,13 @@ export default function Signup() {
           <h3 className="text-md text-green-500 border-green-500 font-medium border-b-2 pb-2 w-56">
             Create a new account
           </h3>
-          <p className="mt-3 mb-3 text-sm">
+          <p className="mt-3 mb-3">
             An account is required to apply for any permit/license including CITES. You can use this account to track your application progress and to send inquiries to DNPW regarding your application.
           </p>
           {
             stepTwoError !== '' ?
-            <div className="sm:w-full p-2 bg-red-800 items-center text-red-100 leading-none lg:rounded-full flex lg:inline-flex" role="alert">
-              <span className="flex rounded-full bg-red-500 uppercase px-2 py-1 text-xs font-bold mr-3">Error</span>
+            <div className="sm:w-full p-2 bg-red-500 items-center text-red-100 leading-none flex lg:inline-flex" role="alert">
+              <span className="flex rounded-none bg-red-600 uppercase px-2 py-1 text-xs font-bold mr-3">Error</span>
               <span className="font-semibold mr-2 text-left flex-auto">{stepTwoError}</span>
             </div> :
           <></>
@@ -313,7 +324,7 @@ export default function Signup() {
               </div>
               <p className='ml-3 text-green-500 font-medium'>Contact details</p>
             </div>
-            <p className="mt-2 mb-2 text-sm">
+            <p className="mt-2 mb-2">
               Provide your most up-to-date contact details and a working email. Fields marked (*) are required.
             </p>
             <div className="sm:flex flex-row w-full sm:space-x-4 space-y-4">
@@ -322,11 +333,11 @@ export default function Signup() {
                 <label className="block text-gray-700 dark:text-gray-300">Postal address<span className="text-red-500">*</span></label>
                 <input
                   type="text"
-                  autoComplete="name"
+                  autoComplete="postal address"
                   required
                   value={postAddress}
                   onChange={(e) => setPostAddress(e.target.value)}
-                  className="w-full dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                  className="w-full dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm"
                   placeholder="Post office address"
                 />
               </div>
@@ -341,7 +352,7 @@ export default function Signup() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                  className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm"
                   placeholder="Your email address"
                 />
               </div>
@@ -365,7 +376,7 @@ export default function Signup() {
                 <CountryDropdown
                   value={countryOfOrigin}
                   onChange={(value) => setCountryOfOrigin(value)}
-                  classes="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                  classes="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm"
                 />
               </div>
 
@@ -379,7 +390,7 @@ export default function Signup() {
                   required
                   value={physicalAddress}
                   onChange={(e) => setPhysicalAddress(e.target.value)}
-                  className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                  className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm"
                   placeholder="Your physical address"
                 />
               </div>
@@ -406,13 +417,13 @@ export default function Signup() {
           <h3 className="text-md text-green-500 border-green-500 font-medium border-b-2 pb-2 w-56">
             Create a new account
           </h3>
-          <p className="mt-3 mb-3 text-sm">
+          <p className="mt-3 mb-3">
             An account is required to apply for any permit/license including CITES. You can use this account to track your application progress and to send inquiries to DNPW regarding your application.
           </p>
           {
             stepThreeError !== '' ?
-            <div className="sm:w-full p-2 bg-red-800 items-center text-red-100 leading-none lg:rounded-full flex lg:inline-flex" role="alert">
-              <span className="flex rounded-full bg-red-500 uppercase px-2 py-1 text-xs font-bold mr-3">Error</span>
+            <div className="sm:w-full p-2 bg-red-500 items-center text-red-100 leading-none flex lg:inline-flex" role="alert">
+              <span className="flex rounded-none bg-red-600 uppercase px-2 py-1 text-xs font-bold mr-3">Error</span>
               <span className="font-semibold mr-2 text-left flex-auto">{stepThreeError}</span>
             </div> :
           <></>
@@ -424,11 +435,11 @@ export default function Signup() {
               </div>
               <p className='ml-3 text-green-500 font-medium'>Password and security</p>
             </div>
-            <p className="mt-2 mb-2 text-sm">
+            <p className="mt-2 mb-2">
               Set a password for you account here. The password must:
             </p>
 
-            <ul className="list-disc text-sm m-3">
+            <ul className="list-disc m-3">
               <li>Be at least 8 characters long</li>
               <li>Not be a dictionary word or be similar to your name/email</li>
               <li>Contain at least a non-alphabet character e.g. #/@%-</li>
@@ -449,7 +460,7 @@ export default function Signup() {
                   minLength={8}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                  className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm"
                   placeholder="Password"
                 />
                 <button onClick={(e) => {
@@ -474,7 +485,7 @@ export default function Signup() {
                   minLength={8}
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                  className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm"
                   placeholder="Confirm password"
                 />
                 <button onClick={(e) => {

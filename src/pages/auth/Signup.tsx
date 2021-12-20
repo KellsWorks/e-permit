@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useHistory } from 'react-router-dom'
 
@@ -60,6 +60,16 @@ export default function Signup() {
     const [identificationNumber, setIdentificationNumber] = useState("")
     const [idValidFrom, setIdValidFrom] = useState("")
     const [idValidTo, setIdValidTo] = useState("")
+
+    useEffect(() => {
+      setGender("")
+      setOccupation("")
+      setDistrict("")
+      setIdentification("")
+      setIdentificationNumber("")
+      setIdValidFrom("")
+      setIdValidTo("")
+    }, [])
 
     const [onLoad, setOnLoad] = useState(false)
 

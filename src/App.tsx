@@ -16,7 +16,7 @@ import CookieService from './services/CookieService';
 import ForgotPassword from './pages/auth/ForgotPassword';
 import ResetPassword from './pages/auth/ResetPassword';
 import TermsOfService from './pages/TermsOfService';
-import Profile from './pages/user/Profile';
+import Profile from './pages/user/Profile.jsx';
 
 function isLoggedIn(){
     if(CookieService.get('access_token') !== undefined){

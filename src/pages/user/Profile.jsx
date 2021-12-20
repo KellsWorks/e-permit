@@ -11,7 +11,9 @@ import {
     HomeIcon, 
     LocationMarkerIcon, 
     MinusCircleIcon, 
+    MinusIcon, 
     PlusCircleIcon, 
+    PlusIcon, 
     PresentationChartBarIcon, 
     SaveAsIcon, 
     SelectorIcon, 
@@ -35,11 +37,17 @@ import getHour from '../../utils/Hours'
 import CookieService from '../../services/CookieService'
 import UrlService from '../../services/UrlService'
 import moment from 'moment'
+import { toast } from 'react-toastify'
 
-interface Props{
-  buttonText: string,
-  onProcessing: boolean
+const getRandomString = (length) => {
+    var randomChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var result = '';
+    for ( var i = 0; i < length; i++ ) {
+        result += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
+    }
+    return result;
 }
+
 
 const tabs = [
     {
@@ -176,9 +184,6 @@ const categories = [
   },
 ]
 
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ')
-}
 
 export default function Profile() {
 
@@ -189,9 +194,6 @@ export default function Profile() {
     const [select, setSelect] = useState(people[3])
 
     const active = 'font-bold text-white bg-green-400'
-
-    const [countryOfExport, setCountryOfExport] = useState("")
-    const [countryOfImport, setCountryOfImport] = useState("")
 
     /*Permits and licenses tab*/
 
@@ -204,6 +206,63 @@ export default function Profile() {
 
     const [localsSteps, setLocalsSteps] = useState(1)
 
+    /*Cites */
+    const [importLicense, setImportLicense] = useState(false)
+    const [exportLicense, setExportLicense] = useState(false)
+    const [reExportLicense, setReExportLicense] = useState(false)
+    const [OtherLicense, setOtherLicense] = useState(false)
+
+    /*** Step 2 */
+    const [importerName, setImporterName] = useState("")
+    const [importerAddress, setImporterAddress] = useState("")
+    const [countryOfExport, setCountryOfExport] = useState("")
+    const [exporterName, setExporterName] = useState("")
+    const [exporterAddress, setExporterAddress] = useState("")
+    const [countryOfImport, setCountryOfImport] = useState("")
+    const [citesPurposeOfTransaction, setCitesPurposeOfTransaction] = useState("")
+
+    /***Step 3 */
+    const [speciesNumber, setSpeciesNumber] = useState(1)
+
+    const [inputList, setInputList] = useState([
+        { scientificName: "", 
+        specimenDescription: "",
+        appendixNumber: "",
+        quality: "",
+        totalQuotaExported: "",
+        operation: ""
+    }]);
+
+    const handleInputChange = (e, index) => {
+        
+        const { name, value } = e.target;
+
+        const list = [...inputList];
+
+        list[index][name] = value;
+
+        setInputList(list);
+    };
+
+   const handleAddClick = () => {
+        setInputList([...inputList, { scientificName: "", 
+        specimenDescription: "",
+        appendixNumber: "",
+        quality: "",
+        totalQuotaExported: "",
+        operation: "" }]);
+    };
+
+    const handleRemoveClick = index => {
+        const list = [...inputList];
+        list.splice(index, 1);
+        setInputList(list);
+    };
+
+    /***Step 4 - Cites Attachments */
+
+    const [citesAttachment, setCitesAttachment] = useState()
+
     /*Local forms */
 
     /* */
@@ -215,7 +274,7 @@ export default function Profile() {
     const [avatar, setAvatar] = useState("")
     const [membership, setMembership] = useState("")
 
-    const WizardButton: React.FC<Props> = ({buttonText, onProcessing}) => {
+    const WizardButton = ({buttonText, onProcessing}) => {
       return (
           <button
             onClick={() => {
@@ -234,7 +293,7 @@ export default function Profile() {
 
               }
             }
-
+            type={citesSteps === 5 ? "submit" : "button"}
             className="w-full flex bg-green-500 space-x-1 justify-between sm:items-center p-2 hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-400 transition duration-150 rounded-none sm:w-48">
               <p className="text-md text-white">
                   {buttonText}
@@ -248,7 +307,7 @@ export default function Profile() {
       )
   }
 
-  const WizardButtonLocal: React.FC<Props> = ({buttonText, onProcessing}) => {
+  const WizardButtonLocal = ({buttonText, onProcessing}) => {
       return (
           <button
             onClick={() => {
@@ -260,6 +319,23 @@ export default function Profile() {
               }
               else if(localsSteps === 3){
                   setLocalsSteps(4)
+              }
+              else if(localsSteps === 4){
+                  setLocalsSteps(5)
+              }
+              else if(localsSteps === 5){
+                  setLocalsSteps(6)
+              }
+              else if(localsSteps === 6){
+                  toast.success('Thank you submitting the application. Please regularly check your email and portal for notifications.', {
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined, 
+                    bodyStyle: {borderRadius: 0}  
+                })
               }
               
 
@@ -331,7 +407,7 @@ export default function Profile() {
                     <h3 className="uppercase text-green-500 mb-2 mt-2">
                         CREATE A NEW LICENSE APPLICATION
                     </h3>
-                    <div className="p-3" style={{ backgroundColor: '#FBF3F3' }}>
+                    <div className="py-2 px-3" style={{ backgroundColor: '#FBF3F3' }}>
                         <p className="text-sm">
                             Create a new license or permit application as provided for under the Wildlife Regulation Legislation for Malawi, incliding bird, hunting, game and trophy licenses.
                         </p>
@@ -348,7 +424,7 @@ export default function Profile() {
                     <h3 className="uppercase text-green-500 mb-2 mt-2">
                         CREATE A CITES IMPORT, EXPORT OR RE-EXPORT  APPLICATION
                     </h3>
-                    <div className="p-3" style={{ backgroundColor: '#FBF3F3' }}>
+                    <div className="py-2 px-3" style={{ backgroundColor: '#FBF3F3' }}>
                         <p className="text-sm">
                             Create a new import, export or re-export license for wildlife or wildlife products as provided for in the international CITES treaty.
                         </p>
@@ -370,6 +446,15 @@ export default function Profile() {
                 <div className={selected === "Applications" ? "block" : "hidden"} id="link2">
                     { applicationType === "cites" ? 
                     <div>
+                        <form noValidate onSubmit={(e) => {
+                            e.preventDefault()
+                            console.log(OtherLicense);
+                            console.log(importLicense);
+                            console.log(exportLicense);
+                            console.log(reExportLicense);
+                            console.log(inputList);
+                            console.log(citesAttachment);
+                        }}>
                         <div className={citesSteps === 1 ? "block bg-white border p-5" : "hidden bg-white border p-5"}>
                             <div>
                                 <h3 className='text-2xl border-b border-green-500 text-green-500'>Create a New CITES Application</h3>
@@ -381,21 +466,48 @@ export default function Profile() {
                                     <div>
                                     <span className="text-gray-700">Select type of CITES Application</span>
                                     <div className="mt-2 flex flex-col">
+
                                         <label className="inline-flex items-center">
-                                        <input type="radio" className="form-radio" value="Import license"/>
-                                        <span className="ml-2">Import license</span>
+                                            <input 
+                                            type="radio" 
+                                            className="form-radio" 
+                                            checked={importLicense}  
+                                            onChange={() => setImportLicense(!importLicense)}
+                                            />
+                                            <span className="ml-2">Import license</span>
                                         </label>
+
                                         <label className="inline-flex items-center">
-                                        <input type="radio" className="form-radio" value="Export license"/>
-                                        <span className="ml-2">Export license</span>
+                                            <input 
+                                            type="radio" 
+                                            className="form-radio" 
+                                            value="Export license"
+                                            checked={exportLicense}  
+                                            onChange={() => setExportLicense(!exportLicense)}
+                                            />
+                                            <span className="ml-2">Export license</span>
                                         </label>
+
                                         <label className="inline-flex items-center">
-                                        <input type="radio" className="form-radio" value="Re-export license"/>
-                                        <span className="ml-2">Re-export license</span>
+                                            <input 
+                                            type="radio" 
+                                            className="form-radio" 
+                                            value="Re-export license"
+                                            checked={reExportLicense}  
+                                            onChange={() => setReExportLicense(!reExportLicense)}
+                                            />
+                                            <span className="ml-2">Re-export license</span>
                                         </label>
+
                                         <label className="inline-flex items-center">
-                                        <input type="radio" className="form-radio" value="Other"/>
-                                        <span className="ml-2">Other</span>
+                                            <input 
+                                            type="radio" 
+                                            className="form-radio" 
+                                            value="Other"
+                                            checked={OtherLicense}  
+                                            onChange={() => setOtherLicense(!OtherLicense)}
+                                            />
+                                            <span className="ml-2">Other</span>
                                         </label>
                                         
                                     </div>
@@ -418,7 +530,9 @@ export default function Profile() {
                                             type="text"
                                             autoComplete="name"
                                             required
-                                            className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                                            value={importerName}
+                                            onChange={(e) => setImporterName(e.target.value)}
+                                            className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 py-2 px-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
                                             placeholder="Enter the full name of the importer"
                                             />
                                     </div>
@@ -427,14 +541,16 @@ export default function Profile() {
                                         <textarea
                                             autoComplete="address"
                                             required
-                                            className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                                            value={importerAddress}
+                                            onChange={(e) => setImporterAddress(e.target.value)}
+                                            className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 py-2 px-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
                                             placeholder="Full address of importer"
                                             />
                                     </div>
                                     <div className="mb-4 pr-3 space-y-2">
                                         <label htmlFor="">Country of import:</label>
                                         <div
-                                        className="w-full bg-white dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                                        className="w-full bg-white dark:border-gray-800 dark:text-gray-300 appearance-none rounded-none  block border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
                                         >
                                         <CountryDropdown classes='outline-none w-full focus:outline-none focus:ring-blue-400 focus:border-blue-400' 
                                         value={countryOfExport} 
@@ -449,7 +565,9 @@ export default function Profile() {
                                             type="text"
                                             autoComplete="name"
                                             required
-                                            className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                                            value={exporterName}
+                                            onChange={(e) => setExporterName(e.target.value)}
+                                            className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 py-2 px-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
                                             placeholder="Enter the full name of the importer"
                                             />
                                     </div>
@@ -458,14 +576,16 @@ export default function Profile() {
                                         <textarea
                                             autoComplete="address"
                                             required
-                                            className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                                            value={exporterAddress}
+                                            onChange={(e) => setExporterAddress(e.target.value)}
+                                            className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 py-2 px-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
                                             placeholder="Full address of importer"
                                             />
                                     </div>
                                     <div className="mb-4 pr-3 space-y-2">
                                         <label htmlFor="">Country of export:</label>
                                         <div
-                                        className="w-full bg-white dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                                        className="w-full bg-white dark:border-gray-800 dark:text-gray-300 appearance-none rounded-none  block border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
                                         >
                                         <CountryDropdown classes='outline-none w-full focus:outline-none focus:ring-blue-400 focus:border-blue-400' 
                                         value={countryOfImport} 
@@ -479,7 +599,9 @@ export default function Profile() {
                                     <textarea
                                             autoComplete="address"
                                             required
-                                            className="mt-2 focus-within:dark:bg-transparent h-32 dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                                            value={citesPurposeOfTransaction}
+                                            onChange={(e) => setCitesPurposeOfTransaction(e.target.value)}
+                                            className="mt-2 focus-within:dark:bg-transparent h-32 dark:border-gray-800 dark:text-gray-300 py-2 px-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
                                             placeholder="Purpose of making the transaction"
                                             />
                                 </div>
@@ -501,75 +623,111 @@ export default function Profile() {
                                 Specify details of species that you wish to export/import. Click the + icon to add more species.
                             </p>
                             <div style={{ backgroundColor: '#FBF3F3' }} className="p-10">
-                                <div className="flex w-full space-x-3 p-2">
-                                   <div className="border-r border-dotted w-1/2">
-                                        <div className="mb-4 pr-3 space-y-2">
-                                            <label htmlFor="">Scientific name (genus and species) and common name of animal or plant:</label>
-                                            <input
-                                                type="text"
-                                                autoComplete="name"
-                                                required
-                                                className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
-                                                placeholder=""
-                                                />
-                                        </div>
-                                        <div className="mb-4 pr-3 space-y-2">
-                                            <label htmlFor="">Appendix No. and source:</label>
-                                            <input
-                                                type="text"
-                                                autoComplete="name"
-                                                required
-                                                className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
-                                                placeholder=""
-                                                />
-                                        </div>
-                                        <div className="mb-4 pr-3 space-y-2">
-                                            <label htmlFor="">Total quota exported:</label>
-                                            <input
-                                                type="text"
-                                                autoComplete="name"
-                                                required
-                                                className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
-                                                placeholder=""
-                                                />
-                                        </div>
-                                    </div> 
-                                    <div className="w-1/2">
-                                        <div className="mb-4 pr-3 space-y-2">
-                                            <label htmlFor="">Description of specimens, including identifying marks and numbers (age, sex if live):</label>
-                                            <input
-                                                type="text"
-                                                autoComplete="name"
-                                                required
-                                                className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
-                                                placeholder=""
-                                                />
-                                        </div>
-                                        <div className="mb-4 pr-3 space-y-2">
-                                            <label htmlFor="">Quality (including units):</label>
-                                            <input
-                                                type="text"
-                                                autoComplete="name"
-                                                required
-                                                className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
-                                                placeholder=""
-                                                />
-                                        </div>
-                                        <div className="mb-4 pr-3 space-y-2">
-                                            <label htmlFor="">No. of the operation or date of acquisition (for pre-Convention specimens):</label>
-                                            <input
-                                                type="text"
-                                                autoComplete="name"
-                                                required
-                                                className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
-                                                placeholder=""
-                                                />
-                                        </div>
-                                    </div> 
+                                {
+                                    Array(speciesNumber).fill(speciesNumber).map((item, i) => (
+                                        <div key={item.id} className="flex w-full space-x-3 p-2 border-b">
+                                            <div className="border-r border-dotted w-1/2">
+                                                    <div className="mb-4 pr-3 space-y-2">
+                                                        <label htmlFor="">Scientific name (genus and species) and common name of animal or plant:</label>
+                                                        <input
+                                                            type="text"
+                                                            autoComplete="name"
+                                                            required
+                                                            className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 py-2 px-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                                                            placeholder="Foe example: Acinonyx jubatus for cheetah"
+                                                            onChange={(e) => handleInputChange(e, i)}
+                                                            value={item.scientificName}
+                                                            name="scientificName"
+                                                            />
+                                                    </div>
+                                                    <div className="mb-4 pr-3 space-y-2">
+                                                        <label htmlFor="">Appendix No. and source:</label>
+                                                        <input
+                                                            type="text"
+                                                            required
+                                                            disabled
+                                                            className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 py-2 px-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                                                            value={getRandomString(15)}
+                                                            onChange={(e) => handleInputChange(e, i)}
+                                                            name="appendixNumber"
+                                                            />
+                                                    </div>
+                                                    <div className="mb-4 pr-3 space-y-2">
+                                                        <label htmlFor="">Total quota exported:</label>
+                                                        <input
+                                                            type="text"
+                                                            required
+                                                            className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 py-2 px-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                                                            onChange={(e) => handleInputChange(e, i)}
+                                                            value={item.totalQuotaExported}
+                                                            name="totalQuotaExported"
+                                                            />
+                                                    </div>
+                                                </div> 
+                                                <div className="w-1/2">
+                                                    <div className="mb-4 pr-3 space-y-2">
+                                                        <label htmlFor="">Description of specimens, including identifying marks and numbers (age, sex if live):</label>
+                                                        <input
+                                                            type="text"
+                                                            required
+                                                            className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 py-2 px-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                                                            onChange={(e) => handleInputChange(e, i)}
+                                                            value={item.specimenDescription}
+                                                            name="specimenDescription"
+                                                            />
+                                                    </div>
+                                                    <div className="mb-4 pr-3 space-y-2">
+                                                        <label htmlFor="">Quality (including units):</label>
+                                                        <input
+                                                            type="text"
+                                                            required
+                                                            className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 py-2 px-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                                                            onChange={(e) => handleInputChange(e, i)}
+                                                            value={item.quality}
+                                                            name="quality"
+                                                            />
+                                                    </div>
+                                                    <div className="mb-4 pr-3 space-y-2">
+                                                        <label htmlFor="">No. of the operation or date of acquisition (for pre-Convention specimens):</label>
+                                                        <input
+                                                            type="text"
+                                                            required
+                                                            className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 py-2 px-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                                                            onChange={(e) => handleInputChange(e, i)}
+                                                            value={item.operation}
+                                                            name="operation"
+                                                            />
+                                                    </div>
+                                                </div> 
 
-                                    
+                                                
+                                                
+                                            </div>
+                                    ))
+                                }
+                                <div className="flex justify-between mt-2">
+                                    <button 
+                                    onClick={() => { 
+                                        handleAddClick()
+                                        setSpeciesNumber(speciesNumber + 1)
+                                    }}
+                                    className="justify-right border-2 border-blue-400 rounded-full text-center p-2">
+                                        <PlusIcon className='w-5 h-5 text-blue-400'/>
+                                    </button>
+                                    {
+                                        speciesNumber === 1 ? <></> : <button 
+                                        onClick={() => { 
+                                            handleRemoveClick()
+                                            setSpeciesNumber(speciesNumber - 1)
+                                        }}
+                                        className="justify-right border-2 rounded-full border-red-400 text-center p-2">
+                                            <MinusIcon className='w-5 h-5 text-red-400'/>
+                                        </button>
+                                    }
                                 </div>
-                                <div>
+                                {
+                                    reExportLicense ? 
+                                    <div>
                                     <div className="w-full border-t pt-3">
                                         <p className="text-back text-md font-semibold">For Re-Exporting only</p>
                                     </div>
@@ -578,7 +736,7 @@ export default function Profile() {
                                             <div className="mb-4 pr-3 space-y-2">
                                                 <label htmlFor="">Country of origin (if re-exporting):</label>
                                                 <div
-                                                className="w-full bg-white dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                                                className="w-full bg-white dark:border-gray-800 dark:text-gray-300 py-2 px-3 appearance-none rounded-none  block border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
                                                 >
                                                 <CountryDropdown classes='outline-none w-full focus:outline-none focus:ring-blue-400 focus:border-blue-400' 
                                                 value={countryOfExport} 
@@ -588,7 +746,7 @@ export default function Profile() {
                                             <div className="mb-4 pr-3 space-y-2">
                                                 <label htmlFor="">Country of last re-export:</label>
                                                 <div
-                                                className="w-full bg-white dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                                                className="w-full bg-white dark:border-gray-800 dark:text-gray-300 py-2 px-3 appearance-none rounded-none  block border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
                                                 >
                                                 <CountryDropdown classes='outline-none w-full focus:outline-none focus:ring-blue-400 focus:border-blue-400' 
                                                 value={countryOfExport} 
@@ -602,17 +760,17 @@ export default function Profile() {
                                             <input
                                                 type="text"
                                                 autoComplete="name"
-                                                required
-                                                className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
-                                                placeholder=""
+                                                className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 py-2 px-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                                                value={Math.random(5)}
                                                 />
-                                        </div><div className="mb-4 pr-3 space-y-2">
+                                        </div>
+                                        <div className="mb-4 pr-3 space-y-2">
                                             <label htmlFor="">Certificate number:</label>
                                             <input
                                                 type="text"
                                                 autoComplete="name"
                                                 required
-                                                className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                                                className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 py-2 px-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
                                                 placeholder=""
                                                 />
                                         </div>
@@ -624,7 +782,7 @@ export default function Profile() {
                                                 type="text"
                                                 autoComplete="name"
                                                 required
-                                                className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                                                className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 py-2 px-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
                                                 placeholder=""
                                                 />
                                         </div>
@@ -634,13 +792,16 @@ export default function Profile() {
                                                 type="text"
                                                 autoComplete="name"
                                                 required
-                                                className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                                                className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 py-2 px-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
                                                 placeholder=""
                                                 />
                                         </div>
+                                        
                                         </div>
+                                        
                                     </div>
-                                </div>
+                                </div> : <></>
+                                }
                             </div>
                             <div className="mt-3 flex justify-between">
 
@@ -668,7 +829,8 @@ export default function Profile() {
                                         type="file"
                                         required
                                         className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 mt-2 py-1 px-2 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
-                                        placeholder=""
+                                        value={citesAttachment}
+                                        onChange={(e) => setCitesAttachment(e.target.value)}
                                         />
                                 </div>
                             </div>
@@ -693,22 +855,31 @@ export default function Profile() {
                             <div style={{ borderColor: '#F9D5D5', borderWidth: 1 }} className="p-2">
                                 <div className="flex space-x-2">
                                     <h3 className='text-black font-semibold'>APPLICATION TYPE:</h3>
-                                    <h3> CITES EXPORT</h3>
+                                    <h3>
+                                        { importLicense ? ' CITES IMPORT' : ''}
+                                        { exportLicense ? ' CITES EXPORT' : ''}
+                                        { reExportLicense ? ' CITES RE-EXPORT' : ''}
+                                        { OtherLicense ? ' CITES OTHERS' : ''}
+                                    </h3>
                                 </div>
                                 <div className="flex">
-                                    <p className=''>Country of import: Malawi | Country of Export: Republic of South Africa (RSA)</p>
+                                    <p className=''>Country of import: {countryOfImport} | Country of Export: {countryOfExport}</p>
                                 </div>
 
                                 <div style={{ borderTopColor: '#F9D5D5' }} className="pt-5 border-t border-dotted mt-2 flex w-full.space-x-2">
                                     <div className="w-1/3">
                                        <h3 className="font-semibold">Importer details:</h3>
                                        <p className="mt-">
-                                           K. Chidothi, Kwande Game Reserve, Fort Brown, Grahamstown, 9140, RSA.
+                                           {importerName}, 
+                                           {importerAddress}
                                        </p>
                                     </div>
                                     <div className="w-1/3">
                                         <h3 className="font-semibold">Exporter details:</h3>
-                                        <p>W. Gondwe, Nyika National Park, C/o Department of National Parks and Wildlife, Rumphi, Malawi.</p>
+                                        <p>
+                                           {exporterName}, 
+                                           {exporterAddress} 
+                                        </p>
                                     </div>
                                     <div className="w-1/3">
                                         <h3 className="font-semibold">Management Authority:</h3>
@@ -717,7 +888,7 @@ export default function Profile() {
                                 </div>
                                 <div style={{ borderTopColor: '#F9D5D5' }} className="pt-2 border-t border-dotted mt-2">
                                     <h3 className="font-semibold">Purpose of transaction:</h3>
-                                    <p className="mt-2">Detailed purpose of transaction here. Lorem ipsum lorem ipsum lorem ipsum etc etc.</p>
+                                    <p className="mt-2">{citesPurposeOfTransaction}</p>
                                 </div>
                                 <div style={{ borderTopColor: '#F9D5D5' }} className="pt-2 border-t border-dotted mt-2">
                                     <h3 className="font-semibold">Schedule:</h3>
@@ -767,27 +938,25 @@ export default function Profile() {
                                                     </tr>
                                                 </thead>
                                                 <tbody className="bg-white divide-y divide-gray-200">
-                                                    {peoples.map((person) => (
-                                                    <tr key={person.email}>
+                                                    {inputList.map((input) => (
+                                                    <tr key={input.appendixNumber}>
                                                         <td className="px-6 py-4 whitespace-nowrap">
-                                                        <div className="flex items-center">
-                                                            <div className="flex-shrink-0 h-10 w-10">
-                                                             1
-                                                            </div>
-                                                        </div>
+                                                         {input.index + 1}
                                                         </td>
                                                         <td className="px-6 py-4 whitespace-nowrap">
-                                                        <div className="text-sm text-gray-900">{person.title}</div>
-                                                        <div className="text-sm text-gray-500">{person.department}</div>
+                                                         {input.scientificName}
                                                         </td>
                                                         <td className="px-6 py-4 whitespace-nowrap">
-                                                         SOme stuff
+                                                         {input.specimenDescription}
                                                         </td>
-                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{person.role}</td>
-                                                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                        <a href="#" className="text-indigo-600 hover:text-indigo-900">
-                                                            Edit
-                                                        </a>
+                                                        <td className="px-6 py-4 whitespace-nowrap">
+                                                         {getRandomString(12)}
+                                                        </td>
+                                                        <td className="px-6 py-4 whitespace-nowrap">
+                                                         {input.quality}
+                                                        </td>
+                                                        <td className="px-6 py-4 whitespace-nowrap">
+                                                         {input.totalQuotaExported}
                                                         </td>
                                                     </tr>
                                                     ))}
@@ -812,6 +981,7 @@ export default function Profile() {
 
                             </div>
                         </div>
+                        </form>
                     </div> : 
                     <div>
                         <div className={localsSteps === 1 ? "block bg-white border p-5" : "hidden bg-white border p-5"}>
@@ -850,8 +1020,8 @@ export default function Profile() {
                                             <Listbox.Option
                                                 key={category.id}
                                                 className={({ active }) =>
-                                                classNames(
-                                                    active ? 'text-white bg-green-400' : 'text-gray-900',
+                                                (
+                                                    active ? 'text-white bg-green-400' : 'text-gray-900' +
                                                     'cursor-default select-none relative py-2 pl-3 pr-9'
                                                 )
                                                 }
@@ -862,7 +1032,7 @@ export default function Profile() {
                                                 <>
                                                     <div className="flex items-center">
                                                     <span
-                                                        className={classNames(selected ? 'font-semibold' : 'font-normal', 'ml-3 block truncate')}
+                                                        className={(selected ? 'font-semibold' : 'font-normal', 'ml-3 block truncate')}
                                                     >
                                                         {category.name}
                                                     </span>
@@ -870,7 +1040,7 @@ export default function Profile() {
 
                                                     {selected ? (
                                                     <span
-                                                        className={classNames(
+                                                        className={(
                                                         active ? 'text-white' : 'text-blue-600',
                                                         'absolute inset-y-0 right-0 flex items-center pr-4'
                                                         )}
@@ -914,8 +1084,8 @@ export default function Profile() {
                                         type="text"
                                         autoComplete="name"
                                         required
-                                        className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
-                                        placeholder=""
+                                        className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 py-2 px-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                                        placeholder={name}
                                         />
                                         </div>
                                     </div>
@@ -926,7 +1096,7 @@ export default function Profile() {
                                         type="text"
                                         autoComplete="name"
                                         required
-                                        className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 p-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                                        className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 py-2 px-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
                                         placeholder=""
                                         />
                                         </div>
@@ -1059,7 +1229,234 @@ export default function Profile() {
                             </div>
                         </div>
                         <div className={localsSteps === 4 ? "block bg-white border p-5" : "hidden bg-white border p-5"}>
-                            *Step 4
+                            <div className={selectedCategory.name === 'Bird license' ? "block" : "hidden"}>
+                                
+                                <h3 className='text-2xl border-b border-green-500 text-green-500 '>Create a New Licence Application</h3>
+                                
+                                <p className="mt-2 mb-2 text-sm">
+                                   Specify the area for which you are applying the license and details of species (Species are required for hunting and special licenses only)
+                                </p>
+                                <div style={{ backgroundColor: '#FBF3F3' }} className="p-10">
+                                    <div>
+                                        <h3>Area for which you are applying:</h3>
+                                        <div className="mt-2 border-b border-dotted pb-4 space-y-2 w-full">
+                                            <input
+                                                type="text"
+                                                autoComplete="name"
+                                                required
+                                                className="px-3 py-1 dark:bg-transparent dark:border-gray-800 dark:text-gray-300 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                                                placeholder=""
+                                                />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h3>Specify names and numbers of species (for hunting and special licenses only). Click on + to add more.</h3>
+                                        {
+                                        Array(fireArmsNumber).fill(fireArmsNumber).map((item) => (
+                                            <div key={item.item} className="w-full flex space-x-3">
+                                        <div className="w-1/2">
+                                            <h3>Species name:</h3>
+                                            <div className='flex space-x-2 mt-2'>
+                                                <p>{item.index}</p>
+                                                    <div className="mb-4 space-y-2 w-full">
+                                                        <input
+                                                            type="text"
+                                                            autoComplete="name"
+                                                            required
+                                                            className="px-3 py-1 dark:bg-transparent dark:border-gray-800 dark:text-gray-300 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                                                            placeholder=""
+                                                            />
+                                                    </div>
+                                                </div>
+                                        </div>
+                                        <div className="w-1/2">
+                                            <h3>Number applied for:</h3>
+                                            <div className='flex space-x-2 mt-2'>
+                                                    <div className="mb-4 space-y-2 w-full">
+                                                        <input
+                                                            type="text"
+                                                            autoComplete="name"
+                                                            required
+                                                            className="px-3 py-1 dark:bg-transparent dark:border-gray-800 dark:text-gray-300 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                                                            placeholder=""
+                                                            />
+                                                    </div>
+                                                    <div className="flex space-x-2">
+                                                        <Link to="#" onClick={() => {setFireArmsNumber(fireArmsNumber + 1)}}><PlusCircleIcon className="w-4 h-4 text-blue-400"/></Link>
+                                                        <Link to="#" onClick={() => {setFireArmsNumber(fireArmsNumber - 1)}}><MinusCircleIcon className="w-4 h-4 text-red-400"/></Link>
+                                                    </div>
+                                                </div>
+                                        </div>
+                                    </div>
+                                        ))
+                                    }
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="w-full flex justify-between mt-3">
+
+                                <button 
+                                    onClick={() => {setLocalsSteps(localsSteps-1)}}
+                                    className="flex items-center p-2 bg-gray-700 text-white rounded-none hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-700 transition duration-150">
+                                    <ChevronLeftIcon className='w-5 h-5 text-white'/>
+                                    <p>Previous</p>
+                                </button>
+
+                                <WizardButtonLocal buttonText="Save & proceed" onProcessing={false}/>
+
+                            </div>
+                        </div>
+                        <div className={localsSteps === 5 ? "block bg-white border p-5" : "hidden bg-white border p-5"}>
+
+                            <h3 className='text-2xl border-b border-green-500 text-green-500 '>Create a New Licence Application</h3>
+                                
+                            <p className="mt-2 mb-2 text-sm">
+                                Attach any relevant documents in support of your application:
+                            </p>
+
+                            <div className={selectedCategory.name === 'Bird license' ? "block" : "hidden"}>
+                                <div style={{ backgroundColor: '#FBF3F3' }} className="p-10">
+                                <h3 className="text-gray-700">
+                                    Attach supporting documents (5MB or less):
+                                </h3>
+                                <div className="mb-4 pr-3 space-y-2">
+                                    <input
+                                        type="file"
+                                        required
+                                        className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 mt-2 py-1 px-2 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                                        placeholder=""
+                                        />
+                                </div>
+                            </div>
+                            </div>
+                            <div className="w-full flex justify-between mt-3">
+
+                                <button 
+                                    onClick={() => {setLocalsSteps(localsSteps-1)}}
+                                    className="flex items-center p-2 bg-gray-700 text-white rounded-none hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-700 transition duration-150">
+                                    <ChevronLeftIcon className='w-5 h-5 text-white'/>
+                                    <p>Previous</p>
+                                </button>
+
+                                <WizardButtonLocal buttonText="Save & proceed" onProcessing={false}/>
+
+                            </div>
+                        </div>
+                        <div className={localsSteps === 6 ? "block bg-white border p-5" : "hidden bg-white border p-5"}>
+                            <h3 className='text-2xl border-b border-green-500 text-green-500 '>Create a New Licence Application</h3>
+                                
+                            <p className="mt-2 mb-2 text-sm">
+                                Confirm application details and submit:
+                            </p>
+                            <div className={selectedCategory.name === 'Bird license' ? "block" : "hidden"}>
+                                <div style={{ borderColor: '#F9D5D5', borderWidth: 1 }} className="p-2">
+                                <div className="flex space-x-2">
+                                    <h3 className='text-black font-semibold'>APPLICATION TYPE:</h3>
+                                    <h3> CITES EXPORT</h3>
+                                </div>
+                                <div className="flex">
+                                    <p className=''>Country of import: Malawi | Country of Export: Republic of South Africa (RSA)</p>
+                                </div>
+
+                                <div style={{ borderTopColor: '#F9D5D5' }} className="pt-5 border-t border-dotted mt-2 flex w-full.space-x-2">
+                                    <div className="w-1/3">
+                                       <h3 className="font-semibold">Importer details:</h3>
+                                       <p className="mt-">
+                                           K. Chidothi, Kwande Game Reserve, Fort Brown, Grahamstown, 9140, RSA.
+                                       </p>
+                                    </div>
+                                    <div className="w-1/3">
+                                        <h3 className="font-semibold">Exporter details:</h3>
+                                        <p>W. Gondwe, Nyika National Park, C/o Department of National Parks and Wildlife, Rumphi, Malawi.</p>
+                                    </div>
+                                    <div className="w-1/3">
+                                        <h3 className="font-semibold">Management Authority:</h3>
+                                        <p>Department of National Parks and Wildlife, P.O. Box 30131, Lilongwe 3, Malawi.</p>
+                                    </div>
+                                </div>
+                                <div style={{ borderTopColor: '#F9D5D5' }} className="pt-2 border-t border-dotted mt-2">
+                                    <h3 className="font-semibold">Purpose of transaction:</h3>
+                                    <p className="mt-2">Detailed purpose of transaction here. Lorem ipsum lorem ipsum lorem ipsum etc etc.</p>
+                                </div>
+                                <div style={{ borderTopColor: '#F9D5D5' }} className="pt-2 border-t border-dotted mt-2">
+                                    <h3 className="font-semibold">Schedule:</h3>
+                                    <div className="flex flex-col">
+                                        <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                                            <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                                            <div className=" overflow-hidden border-b border-gray-200">
+                                                <table className="min-w-full divide-y divide-gray-200">
+                                                <thead className="bg-gray-50">
+                                                    <tr>
+                                                    <th
+                                                        scope="col"
+                                                        className="px-6 py-3 text-left text-sm font-semibold uppercase"
+                                                    >
+                                                        sn.
+                                                    </th>
+                                                    <th
+                                                        scope="col"
+                                                        className="px-6 py-3 text-left text-sm font-semibold uppercase"
+                                                    >
+                                                        name
+                                                    </th>
+                                                    <th
+                                                        scope="col"
+                                                        className="px-6 py-3 text-left text-sm font-semibold uppercase"
+                                                    >
+                                                        description
+                                                    </th>
+                                                    <th
+                                                        scope="col"
+                                                        className="px-6 py-3 text-left text-sm font-semibold uppercase"
+                                                    >
+                                                        Appendix No. & Source
+                                                    </th>
+                                                    <th
+                                                        scope="col"
+                                                        className="px-6 py-3 text-left text-sm font-semibold uppercase"
+                                                    >
+                                                        Quality
+                                                    </th>
+                                                    <th
+                                                        scope="col"
+                                                        className="px-6 py-3 text-left text-sm font-semibold uppercase"
+                                                    >
+                                                       Total Exported/Quota
+                                                    </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody className="bg-white divide-y divide-gray-200">
+                                                    {peoples.map((person) => (
+                                                    <tr key={person.email}>
+                                                        <td className="px-6 py-4 whitespace-nowrap">
+                                                        <div className="flex items-center">
+                                                            <div className="flex-shrink-0 h-10 w-10">
+                                                             1
+                                                            </div>
+                                                        </div>
+                                                        </td>
+                                                        <td className="px-6 py-4 whitespace-nowrap">
+                                                        <div className="text-sm text-gray-900">{person.title}</div>
+                                                        <div className="text-sm text-gray-500">{person.department}</div>
+                                                        </td>
+                                                        <td className="px-6 py-4 whitespace-nowrap">
+                                                         SOme stuff
+                                                        </td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{person.role}</td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                     k
+                                                        </td>
+                                                    </tr>
+                                                    ))}
+                                                </tbody>
+                                                </table>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                </div>
+                            </div>
+                            </div>
                             <div className="w-full flex justify-between mt-3">
 
                                 <button 
@@ -1150,8 +1547,8 @@ export default function Profile() {
                                         <Listbox.Option
                                             key={person.id}
                                             className={({ active }) =>
-                                            classNames(
-                                                active ? 'text-white bg-green-600' : 'text-gray-900',
+                                            (
+                                                active ? 'text-white bg-green-600' : 'text-gray-900' +
                                                 'cursor-default select-none relative py-2 pl-3 pr-9'
                                             )
                                             }
@@ -1161,7 +1558,7 @@ export default function Profile() {
                                             <>
                                                 <div className="flex items-center">
                                                 <span
-                                                    className={classNames(selected ? 'font-semibold' : 'font-normal', 'ml-3 block')}
+                                                    className={(selected ? 'font-semibold' : 'font-normal', 'ml-3 block')}
                                                 >
                                                     {person.name}
                                                 </span>
@@ -1169,7 +1566,7 @@ export default function Profile() {
 
                                                 {selected ? (
                                                 <span
-                                                    className={classNames(
+                                                    className={(
                                                     active ? 'text-white' : 'text-indigo-600',
                                                     'absolute inset-y-0 right-0 flex items-center pr-4'
                                                     )}

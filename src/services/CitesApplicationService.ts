@@ -1,43 +1,40 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import UrlService from "./UrlService";
 
 interface Props{
-    file: File
     applicant_id: string,
+    importer_name: string,
+    importer_address: string,
+    importer_identification: string,
     type: string,
+    importer_id_number: string,
+    country_of_import: string,
     exporter_name: string,
     exporter_address: string,
     exporter_identification: string,
     exporter_id_number: string,
     country_of_export: string,
-    importer_name: string,
-    importer_address: string,
-    importer_identification: string,
-    importer_id_number: string,
-    country_of_import: string,
     purpose: string,
     date_submitted: string,
     proof_of_payment: string,
     waybill: string,
+    file: File
 }
 
 class CitesApplicationService{
 
     async processApplication(props: Props){
 
-        const formData =  new FormData()
-
-        formData.append('file', props.file)
+        console.log(props);
 
         const instance = axios.create({
             baseURL: "http://localhost:8000",
             withCredentials: false,
             headers: {
                 'Access-Control-Allow-Origin' : 'http://localhost:8000',
-                "Content-Type": "multipart/form-data" 
-            },
-            data: formData
-        })
+                 "Content-Type": "multipart/form-data"
+            }
+                })
         
         try{
 
@@ -45,10 +42,11 @@ class CitesApplicationService{
                 await (await instance.post(UrlService.createCitesApplication(), props))
             )
             
-            return response.data
+            return response
         }
         catch(error){
-            console.log(error);
+            const err = error as AxiosError
+            console.log(err);
             return false
         }
     }

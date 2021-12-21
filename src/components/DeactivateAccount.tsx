@@ -13,7 +13,7 @@ export default function DeactivateAccount() {
     <div>
         <button 
         onClick={() => {setOpen(!open)}}
-        className="border h-10 bg-red-500 text-white rounded-sm py-1 px-2">
+        className="w-full mt-2 focus:ring-2 focus:ring-red-500 focus:ring-offset-1 border h-10 bg-red-500 text-white rounded-none py-1 px-2">
             Deactivate account
         </button>
         <Transition.Root show={open} as={Fragment}>
@@ -45,7 +45,7 @@ export default function DeactivateAccount() {
               <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                 <div className="sm:flex sm:items-start">
                   <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                    <ExclamationIcon className="h-6 w-6 text-red-600" aria-hidden="true" />
+                    <ExclamationIcon className="h-6 w-6 text-red-600 animate-pulse" aria-hidden="true" />
                   </div>
                   <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                     <Dialog.Title as="h3" className="text-lg leading-6 font-medium text-gray-900">

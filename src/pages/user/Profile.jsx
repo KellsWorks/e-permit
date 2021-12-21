@@ -19,7 +19,9 @@ import {
     SelectorIcon, 
     SupportIcon, 
     UserCircleIcon, 
-    UserIcon
+    UserIcon,
+    DocumentSearchIcon,
+    CashIcon
  } from '@heroicons/react/outline'
 
 import { 
@@ -38,6 +40,9 @@ import CookieService from '../../services/CookieService'
 import UrlService from '../../services/UrlService'
 import moment from 'moment'
 import { toast } from 'react-toastify'
+// import CitesApplicationService from '../../services/CitesApplicationService'
+
+import DeactivateAccount from '../../components/DeactivateAccount'
 
 const getRandomString = (length) => {
     var randomChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -95,14 +100,10 @@ const permitTabs = [
     },
     {
         id: 5,
-        title: 'denied',
+        title: 'rejected',
         count: 0
     },
-    {
-        id: 6,
-        title: 'accepted',
-        count: 0
-    },
+    
 ]
 
 const people = [
@@ -263,11 +264,116 @@ export default function Profile() {
 
     const [citesAttachment, setCitesAttachment] = useState()
 
-    /*Local forms */
+    /***Last step */
+    const handleCitesApplication = () => {
 
+        const formData = new FormData()
+
+        formData.append('applicant_id', CookieService.get('user_id'))
+        formData.append('type', 'License')
+        formData.append('importer_id_number', CookieService.get('user_id'))
+        formData.append('applicant_id', '')
+        formData.append('country_of_import', countryOfImport)
+        formData.append('exporter_name', exporterName)
+        formData.append('exporter_address', exporterAddress)
+        formData.append('exporter_identification', '')
+        formData.append('exporter_id_number', '')
+        formData.append('country_of_export', countryOfExport)
+        formData.append('purpose', citesPurposeOfTransaction)
+        formData.append('date_submitted', new Date().getDate())
+        formData.append('proof_of_payment', 'Bank deposit')
+        formData.append('waybill', 'Waybill')
+        formData.append('importer_identification', '')
+        formData.append('importer_address', importerAddress)
+        formData.append('importer_name', importerName)
+        formData.append('file', citesAttachment)
+
+        console.log(formData);
+
+        const requestOptions = {
+            method: 'post',
+            headers: {
+                'Access-Control-Allow-Origin' : 'http://localhost:8000', 
+                "Content-Type": "multipart/form-data"
+            },
+            body: formData,
+            redirect: 'follow'
+        };
+
+        fetch(UrlService.createCitesApplication(), requestOptions)
+        .then(response => response.json())
+        .then(result => {
+            console.log(result);
+            })
+        .catch(error => {
+            console.log('error', error)
+        });
+        
+    }
+    /*Local forms */
+    const [localName, setLocalName] = useState("")
+    const [localPostalAddress, setLocalPostalAddress] = useState("")
+    const [areaOfApplication, setAreaOfApplication] = useState("")
+    const [localAttachment, setLocalAttachment] = useState()
     /* */
     const [fireArmsNumber, setFireArmsNumber] = useState(1)
 
+    const [fireArmsList, setFireArmsList] = useState([
+        { fireArmType: "", 
+        fireArmLicenseNumber: ""
+    }]);
+    const handleFireArmChange = (e, index) => {
+        
+        const { name, value } = e.target;
+
+        const list = [...fireArmsList];
+
+        list[index][name] = value;
+
+        setFireArmsList(list);
+    };
+
+   const handleAddFirearm = () => {
+        setFireArmsList([...fireArmsList, { fireArmType: "", 
+        fireArmLicenseNumber: "", }]);
+    };
+
+    const handleRemoveFirearm = index => {
+        const list = [...fireArmsList];
+        list.splice(index, 1);
+        setFireArmsList(list);
+    };
+
+    /****Local species */
+    const [localSpeciesNumber, setLocalSpeciesNumber] = useState(1)
+
+    const [localSpeciesList, setLocalSpeciesList] = useState([
+        { name: "", 
+          number: ""
+        }
+    ]);
+
+    const handleLocalSpeciesChange = (e, index) => {
+        
+        const { name, value } = e.target;
+
+        const list = [...localSpeciesList];
+
+        list[index][name] = value;
+
+        setLocalSpeciesList(list);
+    };
+
+   const handleAddLocalSpecies = () => {
+        setLocalSpeciesList([...localSpeciesList, { name: "", 
+        number: "", }]);
+    };
+
+    const handleRemoveLocalSpecies = index => {
+        const list = [...localSpeciesList];
+        list.splice(index, 1);
+        setLocalSpeciesList(list);
+    };
     /* User */
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
@@ -289,6 +395,16 @@ export default function Profile() {
               }
               else if(citesSteps === 4){
                   setCitesSteps(5)
+              }else if(citesSteps === 5){
+                  toast.success('Thank you submitting the application. Please regularly check your email and portal for notifications.', {
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined, 
+                    bodyStyle: {borderRadius: 0}  
+                })
               }
 
               }
@@ -399,7 +515,8 @@ export default function Profile() {
             <div className="sm:w-full sm:p-5">
                 <div className={selected === "Home" ? "block p-5 bg-white border" : "hidden p-5 bg-white border"} id="link2">
                     <h3 className="border-b border-green-500 pb-3 text-gray-600 text-2xl">
-                        { Number(getHour) <= 12 ? 'Good morning' : 'Good evening'}, {name}
+                        {/* { Number(getHour) < 12 ? 'Good morning' : 'Good evening'}, {name} */}
+                        Good morning, {name}
                     </h3>
                     <p className="mt-2 mb-2 text-sm border-b pb-2">
                         The DNPW E-permit portal is the official permit and license application platform for the Department of National Parks and Wildlife of the Government of Malawi. You can apply for all licenses including import, export and re-export permits under the international CITES treaty. 
@@ -448,12 +565,7 @@ export default function Profile() {
                     <div>
                         <form noValidate onSubmit={(e) => {
                             e.preventDefault()
-                            console.log(OtherLicense);
-                            console.log(importLicense);
-                            console.log(exportLicense);
-                            console.log(reExportLicense);
-                            console.log(inputList);
-                            console.log(citesAttachment);
+                            handleCitesApplication()
                         }}>
                         <div className={citesSteps === 1 ? "block bg-white border p-5" : "hidden bg-white border p-5"}>
                             <div>
@@ -828,9 +940,11 @@ export default function Profile() {
                                     <input
                                         type="file"
                                         required
-                                        className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 mt-2 py-1 px-2 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
-                                        value={citesAttachment}
-                                        onChange={(e) => setCitesAttachment(e.target.value)}
+                                        className="form-select dark:bg-transparent dark:border-gray-800 dark:text-gray-300 mt-2 py-1 px-2 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                                        onChange={(e) => {
+                                            setCitesAttachment(e.target.files[0])
+                                            console.log(citesAttachment);
+                                        }}
                                         />
                                 </div>
                             </div>
@@ -1086,6 +1200,7 @@ export default function Profile() {
                                         required
                                         className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 py-2 px-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
                                         placeholder={name}
+                                        onChange={(e) => {setLocalName(e.target.value)}}
                                         />
                                         </div>
                                     </div>
@@ -1097,7 +1212,7 @@ export default function Profile() {
                                         autoComplete="name"
                                         required
                                         className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 py-2 px-3 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
-                                        placeholder=""
+                                        onChange={(e) => {setLocalPostalAddress(e.target.value)}}
                                         />
                                         </div>
                                     </div>
@@ -1173,7 +1288,7 @@ export default function Profile() {
 
                                 <div style={{ backgroundColor: '#FBF3F3' }} className="p-10">
                                     {
-                                        Array(fireArmsNumber).fill(fireArmsNumber).map((item) => (
+                                        Array(fireArmsNumber).fill(fireArmsNumber).map((item, index) => (
                                             <div key={item.item} className="w-full flex space-x-3">
                                         <div className="w-1/2">
                                             <h3>Type of firearm:</h3>
@@ -1185,7 +1300,8 @@ export default function Profile() {
                                                             autoComplete="name"
                                                             required
                                                             className="px-3 py-1 dark:bg-transparent dark:border-gray-800 dark:text-gray-300 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
-                                                            placeholder=""
+                                                            onChange={(e) => handleFireArmChange(e, index)}
+                                                            value={item.fireArmType}
                                                             />
                                                     </div>
                                                 </div>
@@ -1196,15 +1312,21 @@ export default function Profile() {
                                                     <div className="mb-4 space-y-2 w-full">
                                                         <input
                                                             type="text"
-                                                            autoComplete="name"
                                                             required
                                                             className="px-3 py-1 dark:bg-transparent dark:border-gray-800 dark:text-gray-300 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
-                                                            placeholder=""
+                                                            onChange={(e) => handleFireArmChange(e, index)}
+                                                            value={item.fireArmLicenseNumber}
                                                             />
                                                     </div>
                                                     <div className="flex space-x-2">
-                                                        <Link to="#" onClick={() => {setFireArmsNumber(fireArmsNumber + 1)}}><PlusCircleIcon className="w-4 h-4 text-blue-400"/></Link>
-                                                        <Link to="#" onClick={() => {setFireArmsNumber(fireArmsNumber - 1)}}><MinusCircleIcon className="w-4 h-4 text-red-400"/></Link>
+                                                        <Link to="#" onClick={() => {
+                                                            handleAddFirearm()
+                                                            setFireArmsNumber(fireArmsNumber + 1)
+                                                            }}><PlusCircleIcon className="w-4 h-4 text-blue-400"/></Link>
+                                                        <Link to="#" onClick={() => {
+                                                            handleRemoveFirearm()
+                                                            setFireArmsNumber(fireArmsNumber - 1)}
+                                                            }><MinusCircleIcon className="w-4 h-4 text-red-400"/></Link>
                                                     </div>
                                                 </div>
                                         </div>
@@ -1246,13 +1368,15 @@ export default function Profile() {
                                                 required
                                                 className="px-3 py-1 dark:bg-transparent dark:border-gray-800 dark:text-gray-300 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
                                                 placeholder=""
+                                                value={areaOfApplication}
+                                                onChange={(e) => {setAreaOfApplication(e.target.value)}}
                                                 />
                                         </div>
                                     </div>
                                     <div>
                                         <h3>Specify names and numbers of species (for hunting and special licenses only). Click on + to add more.</h3>
                                         {
-                                        Array(fireArmsNumber).fill(fireArmsNumber).map((item) => (
+                                        Array(localSpeciesNumber).fill(localSpeciesNumber).map((item, index) => (
                                             <div key={item.item} className="w-full flex space-x-3">
                                         <div className="w-1/2">
                                             <h3>Species name:</h3>
@@ -1261,10 +1385,10 @@ export default function Profile() {
                                                     <div className="mb-4 space-y-2 w-full">
                                                         <input
                                                             type="text"
-                                                            autoComplete="name"
                                                             required
                                                             className="px-3 py-1 dark:bg-transparent dark:border-gray-800 dark:text-gray-300 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
-                                                            placeholder=""
+                                                            onChange={(e) => handleLocalSpeciesChange(e, index)}
+                                                            value={item.name}
                                                             />
                                                     </div>
                                                 </div>
@@ -1275,15 +1399,22 @@ export default function Profile() {
                                                     <div className="mb-4 space-y-2 w-full">
                                                         <input
                                                             type="text"
-                                                            autoComplete="name"
                                                             required
-                                                            className="px-3 py-1 dark:bg-transparent dark:border-gray-800 dark:text-gray-300 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
-                                                            placeholder=""
+                                                            className="form-input px-3 py-1 dark:bg-transparent dark:border-gray-800 dark:text-gray-300 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                                                            onChange={(e) => handleLocalSpeciesChange(e, index)}
+                                                            value={item.number}
                                                             />
                                                     </div>
                                                     <div className="flex space-x-2">
-                                                        <Link to="#" onClick={() => {setFireArmsNumber(fireArmsNumber + 1)}}><PlusCircleIcon className="w-4 h-4 text-blue-400"/></Link>
-                                                        <Link to="#" onClick={() => {setFireArmsNumber(fireArmsNumber - 1)}}><MinusCircleIcon className="w-4 h-4 text-red-400"/></Link>
+                                                        <Link to="#" onClick={() => {
+                                                            handleAddLocalSpecies()
+                                                            setLocalSpeciesNumber(localSpeciesNumber + 1)
+                                                        }
+                                                            }><PlusCircleIcon className="w-4 h-4 text-blue-400"/></Link>
+                                                        <Link to="#" onClick={() => {
+                                                            handleRemoveLocalSpecies()
+                                                            setLocalSpeciesNumber(localSpeciesNumber - 1)}
+                                                            }><MinusCircleIcon className="w-4 h-4 text-red-400"/></Link>
                                                     </div>
                                                 </div>
                                         </div>
@@ -1324,7 +1455,8 @@ export default function Profile() {
                                         type="file"
                                         required
                                         className="dark:bg-transparent dark:border-gray-800 dark:text-gray-300 mt-2 py-1 px-2 appearance-none rounded-none  block w-full border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
-                                        placeholder=""
+                                        // value={localAttachment}
+                                        // onChange={(e) => {setLocalAttachment(e.target.files[0])}}
                                         />
                                 </div>
                             </div>
@@ -1352,31 +1484,35 @@ export default function Profile() {
                                 <div style={{ borderColor: '#F9D5D5', borderWidth: 1 }} className="p-2">
                                 <div className="flex space-x-2">
                                     <h3 className='text-black font-semibold'>APPLICATION TYPE:</h3>
-                                    <h3> CITES EXPORT</h3>
-                                </div>
-                                <div className="flex">
-                                    <p className=''>Country of import: Malawi | Country of Export: Republic of South Africa (RSA)</p>
+                                    <h3 className='uppercase'> {selectedCategory.name}</h3>
                                 </div>
 
                                 <div style={{ borderTopColor: '#F9D5D5' }} className="pt-5 border-t border-dotted mt-2 flex w-full.space-x-2">
                                     <div className="w-1/3">
-                                       <h3 className="font-semibold">Importer details:</h3>
+                                       <h3 className="font-semibold">Importer details</h3>
                                        <p className="mt-">
-                                           K. Chidothi, Kwande Game Reserve, Fort Brown, Grahamstown, 9140, RSA.
+                                           {localName},
+                                           { localPostalAddress}
                                        </p>
                                     </div>
+                                    
                                     <div className="w-1/3">
-                                        <h3 className="font-semibold">Exporter details:</h3>
-                                        <p>W. Gondwe, Nyika National Park, C/o Department of National Parks and Wildlife, Rumphi, Malawi.</p>
-                                    </div>
-                                    <div className="w-1/3">
-                                        <h3 className="font-semibold">Management Authority:</h3>
+                                        <h3 className="font-semibold">Postal address</h3>
                                         <p>Department of National Parks and Wildlife, P.O. Box 30131, Lilongwe 3, Malawi.</p>
+                                    </div>
+
+                                    <div className="w-1/3">
+                                        <h3 className="font-semibold">Identification number</h3>
+                                        <p>National Id Number: *****WE1</p>
                                     </div>
                                 </div>
                                 <div style={{ borderTopColor: '#F9D5D5' }} className="pt-2 border-t border-dotted mt-2">
-                                    <h3 className="font-semibold">Purpose of transaction:</h3>
-                                    <p className="mt-2">Detailed purpose of transaction here. Lorem ipsum lorem ipsum lorem ipsum etc etc.</p>
+                                    <h3 className="font-semibold">Firearms and licenses:</h3>
+                                    {
+                                        fireArmsList.map((item, index) => (
+                                            <p key={index} className="mt-2">{item.name} [License no: {item.number}]</p>
+                                        ))
+                                    }
                                 </div>
                                 <div style={{ borderTopColor: '#F9D5D5' }} className="pt-2 border-t border-dotted mt-2">
                                     <h3 className="font-semibold">Schedule:</h3>
@@ -1397,54 +1533,32 @@ export default function Profile() {
                                                         scope="col"
                                                         className="px-6 py-3 text-left text-sm font-semibold uppercase"
                                                     >
-                                                        name
+                                                        species name
                                                     </th>
                                                     <th
                                                         scope="col"
                                                         className="px-6 py-3 text-left text-sm font-semibold uppercase"
                                                     >
-                                                        description
+                                                        number applied for:
                                                     </th>
-                                                    <th
-                                                        scope="col"
-                                                        className="px-6 py-3 text-left text-sm font-semibold uppercase"
-                                                    >
-                                                        Appendix No. & Source
-                                                    </th>
-                                                    <th
-                                                        scope="col"
-                                                        className="px-6 py-3 text-left text-sm font-semibold uppercase"
-                                                    >
-                                                        Quality
-                                                    </th>
-                                                    <th
-                                                        scope="col"
-                                                        className="px-6 py-3 text-left text-sm font-semibold uppercase"
-                                                    >
-                                                       Total Exported/Quota
-                                                    </th>
+                                                    
                                                     </tr>
                                                 </thead>
                                                 <tbody className="bg-white divide-y divide-gray-200">
-                                                    {peoples.map((person) => (
-                                                    <tr key={person.email}>
+                                                    {localSpeciesList.map((specie, index) => (
+                                                    <tr key={specie.name}>
                                                         <td className="px-6 py-4 whitespace-nowrap">
                                                         <div className="flex items-center">
                                                             <div className="flex-shrink-0 h-10 w-10">
-                                                             1
+                                                             {index}
                                                             </div>
                                                         </div>
                                                         </td>
                                                         <td className="px-6 py-4 whitespace-nowrap">
-                                                        <div className="text-sm text-gray-900">{person.title}</div>
-                                                        <div className="text-sm text-gray-500">{person.department}</div>
+                                                            <div className="text-sm text-gray-900">{specie.name}</div>
                                                         </td>
                                                         <td className="px-6 py-4 whitespace-nowrap">
-                                                         SOme stuff
-                                                        </td>
-                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{person.role}</td>
-                                                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                     k
+                                                            <div className="text-sm text-gray-900">{specie.number}</div>
                                                         </td>
                                                     </tr>
                                                     ))}
@@ -1512,13 +1626,13 @@ export default function Profile() {
 
                     <div style={{ backgroundColor: '#FBF3F3' }} className="p-5">
                         <div className={permitTabSelected === 1 ? "block" : "hidden"}>
-                            Tab 1
+                            No applications available
                         </div>
                         <div className={permitTabSelected === 2 ? "block" : "hidden"}>
-                            Tab 2
+                            No applications available
                         </div>
                         <div className={permitTabSelected === 3 ? "block" : "hidden"}>
-                            Tab 3
+                            No applications available
                         </div>
                         <div className={permitTabSelected === 4 ? "block" : "hidden"}>
                             <div className="sm:flex justify-between">
@@ -1586,30 +1700,30 @@ export default function Profile() {
                             </Listbox>
 
                         </div>
-                    
+                            No applications available
                         </div>
                         <div className={permitTabSelected === 5 ? "block" : "hidden"}>
-                            Tab 5
+                            No applications available
                         </div>
                         <div className={permitTabSelected === 6 ? "block" : "hidden"}>
-                            Tab 5
+                            No applications available
                         </div>
                         </div>
                     </div>
                 </div>
                 <div className={selected === "My account" ? "block p-5" : "hidden p-5"} id="link2">
                     <div className="w-full sm:flex sm:space-x-4">
-                        <div className="sm:w-2/5 bg-white border p-10">
-                            <div className="flex flex-col items-center">
+                        <div className="sm:w-2/5 ">
+                            <div className="bg-white border p-10 flex flex-col items-center">
                                <img className='justify-center w-40 h-40 rounded-full object-cover' src={avatar !== '' ? "http://localhost:8000/storage/profiles/" + avatar : 'data:image/jpeg;base64,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' } alt="user"/>
                                <h2 className='text-md mt-2 text-black text-lg font-semibold'>{name}</h2>
                                <p className='text-gray-500'>{email}</p>
                                <button className="w-full border border-gray-500 py-1 mt-2 transition duration-150 hover:bg-gray-500 hover:text-white text-gray-500">
                                    Preview your profile
                                </button>
-                               <button className="w-full border bg-red-500 py-1 mt-2 transition duration-150 hover:bg-gray-500 text-white">
-                                   You have not verified your email address, click here
-                               </button>
+                               <p className="text-sm mt-2">
+                                   You have not verified your email address, <button className='text-blue-400 transition duration-150 hover:text-blue-500'>click here</button>
+                               </p>
                                <div className="border-t mt-3 w-full pt-4">
                                    <div className="flex justify-between">
                                        <div className="flex space-x-2">
@@ -1627,36 +1741,47 @@ export default function Profile() {
                                    </div>
                                </div>
                             </div>
+
+                            <div className='bg-white border mt-2 p-10'>
+                                <div className="flex items-center">
+                                    <div className="-mr-5 bg-gray-200 rounded-full items-center p-5 border-gray-100 border-2">
+                                        <DocumentSearchIcon className='w-10 h-10 text-gray-400'/>
+                                    </div>
+                                    <div className="-mr-5 bg-gray-200 rounded-full items-center p-5 border-gray-100 border-2">
+                                        <SupportIcon className='w-10 h-10 text-gray-400'/>
+                                    </div>
+                                    <div className="bg-gray-200 rounded-full items-center p-5 border-gray-100 border-2">
+                                        <CashIcon className='w-10 h-10 text-gray-400'/>
+                                    </div>
+                                </div>
+                                <h3 className='mt-2 font-semibold'>Learn to understand DNPW E-prtmit</h3>
+                                <p className="mt-2 mb-2">Get to know about licenses and permits, prices, wildlife act and more</p>
+                                <button className="w-full text-white bg-green-400 py-2 px-3 focus:ring-2 focus:ring-green-500 focus:ring-offset-2">Start learning</button>
+                            </div>
                         </div>
-                        <div className="sm:w-3/5 ">
+                        <div className="sm:w-3/5 bg-white border">
                             <div className="bg-white border pt-10 pl-10 pr-10 flex space-x-6">
-                                <button className='uppercase pb-3 text-sm text-gray-500'>Active applications</button>
-                                <button className='uppercase pb-3 text-sm text-gray-500 border-b-2 border-green-500 bottom-0'>Drafts</button>
+                                <button className='uppercase pb-3 text-sm text-gray-500'>Personal information</button>
+                                <button className='uppercase pb-3 text-sm border-b-2 border-green-500 bottom-0 text-black'>Account</button>
                             </div>
-                            <div className="mt-10 flex space-x-6">
-                                <div className="bg-white border p-5">
-                                    <img className='w-40 h-40' src="data:image/jpeg;base64,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" alt="placeholder" />
-                                    <div className="justify-between flex mt-3">
-                                        <p className='text-sm text-gray-500'>Re-export license </p>
-                                    </div>
+                            
+                            <div className='p-5'>
+                                <div className='flex justify-between border-b pb-2 text-sm'>
+                                    <h3 className='font-semibold uppercase'>Username</h3>
+                                    <p>{name}</p>
                                 </div>
-                                <div className="bg-white border pl-10 pr-10 pb-5 justify-center pt-12">
-                                    <div className="flex items-center justify-center">
-                                    <button
-                                    onClick={() => setSelected('Applications')}
-                                    className="p-0 w-12 h-12 bg-green-300 rounded-full hover:bg-green-500 active:shadow-lg mouse shadow transition ease-in duration-200 focus:outline-none">
-                                    <svg viewBox="0 0 20 20" enable-background="new 0 0 20 20" className="w-6 h-6 inline-block">
-                                        <path fill="#FFFFFF" d="M16,10c0,0.553-0.048,1-0.601,1H11v4.399C11,15.951,10.553,16,10,16c-0.553,0-1-0.049-1-0.601V11H4.601
-                                                                C4.049,11,4,10.553,4,10c0-0.553,0.049-1,0.601-1H9V4.601C9,4.048,9.447,4,10,4c0.553,0,1,0.048,1,0.601V9h4.399
-                                                                C15.952,9,16,9.447,16,10z" />
-                                    </svg>
-                                    </button>
-                                    </div>
-                                    <div className="justify-between flex mt-3">
-                                        <p className='text-md font-semibold text-gray-500'>Create a new application </p>
-                                    </div>
+                                <div className='flex justify-between border-b pb-2 text-sm mt-1'>
+                                    <h3 className='font-semibold uppercase'>Email address</h3>
+                                    <p>{email}</p>
                                 </div>
+                                <div className='flex justify-between border-b pb-2 text-sm mt-1'>
+                                    <h3 className='font-semibold uppercase'>Password</h3>
+                                    <p>***********</p>
+                                </div>
+                                <button className="w-full text-white bg-green-400 py-2 px-3 focus:ring-2 focus:ring-green-500 focus:ring-offset-1">Change password</button>
+                                <DeactivateAccount/>
                             </div>
+                            
                         </div>
                     </div>
                 </div>

@@ -85,6 +85,7 @@ export default function LandingPageHeader() {
   }
 
   const [user, setUser] = useState("")
+  const [name, setName] = useState("")
 
   useEffect(() => {
 
@@ -95,7 +96,8 @@ export default function LandingPageHeader() {
           }).then(response => {
               return response.json()
           }).then(data => {
-              setUser(data.data.registrations.avatar)
+            setName(data.data.name)
+            setUser(data.data.registrations.avatar)
         }).catch((error) => {
             console.log(error)
         })
@@ -155,7 +157,7 @@ export default function LandingPageHeader() {
                   <Menu.Button className="max-w-xs flex items-center text-sm focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-offset-gray-800 focus:ring-white">
                     <span className="sr-only">Open user menu</span>
                     <div className="ml-2 flex items-center space-x-1">
-                    <p className='text-white'>Kells Kamuzu</p>
+                    <p className='text-white'>{name}</p>
                     <ChevronDownIcon className='w-3 h-3 text-white'/>
                   </div>
                   </Menu.Button>

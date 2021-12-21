@@ -71,7 +71,7 @@ export default function SignIn() {
             </div>
           )}
 
-          <div className="rounded shadow-sm -space-y-px">
+          <div className="space-y-2">
             <div>
               <label className="block text-gray-700 dark:text-gray-300">Email</label>
               <input
